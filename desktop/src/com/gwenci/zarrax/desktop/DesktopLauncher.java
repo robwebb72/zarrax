@@ -18,6 +18,9 @@ public class DesktopLauncher {
 		config.resizable = false;   // window should not be resizable
 		config.forceExit = false;   // prevent non zero exit error
 
+		config.x = 0;   // set window to top left to avoid issue with Windows 4K screens
+		config.y = 0;
+
 		new LwjglApplication(new Zarrax(), config);
 	}
 }
