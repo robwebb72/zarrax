@@ -4,10 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import javax.swing.text.View;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 public class PlayerBullets {
 
@@ -28,7 +31,6 @@ public class PlayerBullets {
 	private long lastMs = System.currentTimeMillis();
 	private Stage bulletStage;
 
-
 	PlayerBullets(Viewport vp, SpriteBatch batch) {
 		bulletStage = new Stage(vp, batch);
 		for (int i = 0; i<MAX_BULLETS; i++) {
@@ -41,23 +43,28 @@ public class PlayerBullets {
 		if(lastMs + MS_BETWEEN_BULLETS < System.currentTimeMillis()) {
 			lastMs = System.currentTimeMillis();
 //			addBullets(x - 12, y - 4);
-			addBullets(x , y);
+			boolean shotFired = addBullets(x , y);
 //			addBullets(x + 12, y - 4);
 			float pan = (x- HALF_SCREEN_WIDTH)/HALF_SCREEN_WIDTH;
-			effect.play(1.0f,1.0f,pan);
+			if (shotFired) effect.play(1.0f,1.0f,pan);
 		}
 	}
 
-	private void addBullets(float x, float y) {
+	private boolean addBullets(float x, float y) {
 		if(nextBullet>=MAX_BULLETS) nextBullet = 0;
-		bullets[nextBullet++].fire(x, y);
+		return bullets[nextBullet++].fire(x, y);
 	}
 
 	void act(float dt) {
 		bulletStage.act(dt);
 	}
+
 	void draw() {
 		bulletStage.draw();
+	}
+
+	Stream<PlayerBulletActor> activeBullets() {
+		return Arrays.stream(bullets).filter(PlayerBulletActor::isInPlay);
 	}
 
 	public void dispose() {
@@ -67,5 +74,6 @@ public class PlayerBullets {
 		}
 		bulletStage.dispose();
 		texture.dispose();
+
 	}
 }
