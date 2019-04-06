@@ -42,6 +42,7 @@ public class GameScreen extends BaseScreen {
 		}
 		playerBullets.act(dt);
 		aliens.act(dt);
+		aliens.handleCollisions(playerBullets.getList());
 		framerate.update();
 	}
 

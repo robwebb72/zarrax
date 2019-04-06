@@ -6,27 +6,31 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
+
 public class AlienWrangler {
 
-	private static final int MAX_ALIENS = 1;
+	private static final int MAX_ALIENS = 50;
 	private Stage stage;
 	private Texture alien1texture =  new Texture(Gdx.files.internal("assets/galaxian_1_1.png"));
 
-	AlienActor[] aliens = new AlienActor[MAX_ALIENS];
+	private AlienActor[] aliens = new AlienActor[MAX_ALIENS];
 
 	AlienWrangler(Viewport vp, SpriteBatch batch) {
 		stage = new Stage(vp,batch);
-/*		for(int i = 0 ; i< MAX_ALIENS; i++) {
+		for(int i = 0 ; i< MAX_ALIENS; i++) {
 			aliens[i] = new AlienActor(alien1texture);
 			stage.addActor(aliens[i]);
 		}
 		placeAliens();
-*/
+
 		// just the one alien, please..
-		aliens[0] = new AlienActor(alien1texture);
-		aliens[0].setPosition(250, 575);
-		aliens[0].setState(AlienState.ALIVE);
-		stage.addActor(aliens[0]);
+//		aliens[0] = new AlienActor(alien1texture);
+//		aliens[0].setPosition(250, 575);
+//		aliens[0].setState(AlienState.ALIVE);
+//		stage.addActor(aliens[0]);
 
 	}
 
@@ -44,6 +48,21 @@ public class AlienWrangler {
 	}
 	void draw() {
 		stage.draw();
+	}
+
+	void handleCollisions(List<PlayerBulletActor> bullets) {
+		for (int i= 0; i< MAX_ALIENS; i++) {
+
+			if(!aliens[i].isAlive()) continue;
+			for (PlayerBulletActor bullet : bullets) {
+				if(aliens[i].collidesWith(bullet)) {
+					aliens[i].setState(AlienState.DEAD);
+					bullet.setInPlay(false);
+					// NEED AN EXPLOSION!
+				}
+			}
+		}
+
 	}
 
 }

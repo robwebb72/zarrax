@@ -4,14 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class PlayerActor extends BaseActor {
 
 	private static final int SCREEN_WIDTH = Gdx.graphics.getWidth();
 	private static final int SCREEN_HEIGHT = Gdx.graphics.getHeight();
 	private static final int MAX_PLAYER_HEIGHT = SCREEN_HEIGHT / 3;
-	private static final float SPEED = 300f;  //pixels per second
+	private static final float SPEED = 200f;  //pixels per second
 
 	enum Direction {
 		LEFT,
@@ -35,15 +34,16 @@ public class PlayerActor extends BaseActor {
 
 		direction = Direction.STRAIGHT;
 		if(Gdx.input.isKeyPressed(Keys.LEFT) ||Gdx.input.isKeyPressed(Keys.A)) {
-			dx = -SPEED * dt;
+			dx -= SPEED * dt;
 			direction = Direction.LEFT;
 		}
 		if(Gdx.input.isKeyPressed(Keys.RIGHT)|| Gdx.input.isKeyPressed(Keys.D)) {
-			dx = SPEED * dt;
+			dx += SPEED * dt;
 			direction = Direction.RIGHT;
 		}
-		if(Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.W)) dy = SPEED * dt;
-		if(Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S)) dy = -SPEED * dt;
+		if(dx==0.0f) direction = Direction.STRAIGHT;
+		if(Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.W)) dy += SPEED * dt;
+		if(Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S)) dy -= SPEED * dt;
 		super.moveBy(dx, dy);
 		checkBounds();
 	}

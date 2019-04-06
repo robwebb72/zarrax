@@ -1,10 +1,7 @@
 package com.gwenci.zarrax;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class PlayerBulletActor extends BaseActor {
 
@@ -16,14 +13,8 @@ public class PlayerBulletActor extends BaseActor {
 	private boolean inPlay = false;
 
 	PlayerBulletActor(Texture texture) {
-
 		this.texture = texture;
-		float[] vertices = {0.0f, 0.0f,
-				texture.getWidth(), 0.0f,
-				texture.getWidth(), texture.getHeight(),
-				0.0f, texture.getWidth()
-		};
-		super.setBoundingPolygon(vertices);
+		super.setBoundingRect(texture.getWidth(),texture.getHeight());
 	}
 
 	boolean fire(float x, float y) {
@@ -49,5 +40,9 @@ public class PlayerBulletActor extends BaseActor {
 
 	boolean isInPlay() {
 		return inPlay;
+	}
+
+	void setInPlay(boolean value) {
+		inPlay = value;
 	}
 }
