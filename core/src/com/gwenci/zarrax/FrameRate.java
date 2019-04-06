@@ -7,26 +7,26 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.TimeUtils;
 
 /**
- * A nicer class for showing framerate that doesn't spam the console
+ * A nicer class for showing frame rate that doesn't spam the console
  * like Logger.log()
  *
  * @author William Hartman
  */
 public class FrameRate implements Disposable{
-	long lastTimeCounted;
+	private long lastTimeCounted;
 	private float sinceChange;
 	private float frameRate;
 	private BitmapFont font;
 
 
-	public FrameRate() {
+	FrameRate() {
 		lastTimeCounted = TimeUtils.millis();
 		sinceChange = 0;
 		frameRate = Gdx.graphics.getFramesPerSecond();
 		font = new BitmapFont();
 	}
 
-	public void update() {
+	void update() {
 		long delta = TimeUtils.timeSinceMillis(lastTimeCounted);
 		lastTimeCounted = TimeUtils.millis();
 
@@ -37,7 +37,7 @@ public class FrameRate implements Disposable{
 		}
 	}
 
-	public void render(SpriteBatch batch) {
+	void render(SpriteBatch batch) {
 		font.draw(batch, (int)frameRate + " fps", 3, Gdx.graphics.getHeight() - 3);
 	}
 
