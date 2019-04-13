@@ -13,6 +13,7 @@ public class Zarrax extends BaseGame {
 
 	private static SpriteBatch batch;
 	private static Viewport viewPort;
+	private static ParticleFoundry particleFoundry;
 
 	@Override
 	public void create ()
@@ -20,6 +21,7 @@ public class Zarrax extends BaseGame {
 		OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		batch = new SpriteBatch();
 		viewPort = new ScreenViewport(camera);
+		particleFoundry = ParticleFoundry.getInstance();
 		setActiveScreen(new MenuScreen());
 	}
 

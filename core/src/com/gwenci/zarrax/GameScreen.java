@@ -18,6 +18,8 @@ public class GameScreen extends BaseScreen {
 	private PlayerActor player;
 
 	private AlienWrangler aliens;
+	private ParticleFoundry particleFoundry;
+	private ParticleEmitter emitter;
 
 	@Override
 	public void initialize() {
@@ -27,9 +29,9 @@ public class GameScreen extends BaseScreen {
 		playerBullets = new PlayerBullets(Zarrax.getViewPort(),Zarrax.getSpriteBatch());
 		player = new PlayerActor();
 		playerStage.addActor(player);
-
 		aliens = new AlienWrangler(Zarrax.getViewPort(),Zarrax.getSpriteBatch());
 		framerate = new FrameRate();
+		particleFoundry = ParticleFoundry.getInstance();
 	}
 
 	@Override
@@ -40,8 +42,15 @@ public class GameScreen extends BaseScreen {
 		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 			playerBullets.fireBullets(player.getX(), player.getY());
 		}
+		if(Gdx.input.isKeyPressed(Input.Keys.X)) {
+			particleFoundry.newEmitter(300,300);
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.Z)) {
+			aliens.killAllAliens();
+		}
 		playerBullets.act(dt);
 		aliens.act(dt);
+		particleFoundry.act(dt);
 		aliens.handleCollisions(playerBullets.getList());
 		framerate.update();
 	}
@@ -51,6 +60,7 @@ public class GameScreen extends BaseScreen {
 		batch.begin();
 		stars.render(batch);
 		framerate.render(batch);
+		particleFoundry.render(batch);
 		batch.end();
 		playerBullets.draw();
 		playerStage.draw();

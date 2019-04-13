@@ -24,19 +24,20 @@ public class AlienActor extends BaseActor {
 		super.act(dt);
 	}
 
-	private void checkBounds() {
-		float x = super.getX();
-		float y = super.getY();
-		x = Math.max(x, 10f);
-		x = Math.min(x, SCREEN_WIDTH-42f);
-		y = Math.max(y, 5f);
-		y = Math.min(y, SCREEN_HEIGHT-62f);
-		super.setPosition(x, y);
-	}
-
 	boolean isAlive() {
 		return state == AlienState.ALIVE;
 	}
+
+	float getCentreX() {
+		int textureHalfWidth = this.alienTexture.getWidth()/2;
+		return getX() + textureHalfWidth;
+	}
+
+	float getCentreY() {
+		int textureHalfHeight = this.alienTexture.getHeight()/2;
+		return getY() + textureHalfHeight;
+	}
+
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {

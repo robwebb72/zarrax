@@ -18,6 +18,7 @@ class PlayerBullets {
 	private static final int BULLETS_PER_SEC = 10;
 	private static final int MS_BETWEEN_BULLETS = 1000 / BULLETS_PER_SEC;
 	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth()/2;
+
 	private static Texture texture;
 	private static Sound effect;
 

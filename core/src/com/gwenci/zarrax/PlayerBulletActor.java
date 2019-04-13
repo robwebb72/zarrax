@@ -7,7 +7,7 @@ public class PlayerBulletActor extends BaseActor {
 
 	private static final float BULLET_HEIGHT = 16f;
 	private static final float BULLET_SCREEN_HEIGHT_LIMIT = SCREEN_HEIGHT + BULLET_HEIGHT;
-	private static final float SPEED = 600f;    // speed in seconds
+	private static final float SPEED = 400f;    // speed in seconds
 
 	private Texture texture;
 	private boolean inPlay = false;
