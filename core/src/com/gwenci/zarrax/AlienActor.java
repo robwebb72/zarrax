@@ -10,8 +10,8 @@ public class AlienActor extends BaseActor {
 
 	AlienActor(Texture texture) {
 		this.alienTexture = texture;
-		setPosition( SCREEN_WIDTH / 2.0f - 16f, 300f);
-		setBoundingRect(texture.getWidth(),texture.getHeight());
+		setPosition(SCREEN_WIDTH / 2.0f - 16f, 300f);
+		setBoundingRect(texture.getWidth(), texture.getHeight());
 	}
 
 	void setState(AlienState state) {
@@ -29,12 +29,12 @@ public class AlienActor extends BaseActor {
 	}
 
 	float getCentreX() {
-		int textureHalfWidth = this.alienTexture.getWidth()/2;
+		int textureHalfWidth = this.alienTexture.getWidth() / 2;
 		return getX() + textureHalfWidth;
 	}
 
 	float getCentreY() {
-		int textureHalfHeight = this.alienTexture.getHeight()/2;
+		int textureHalfHeight = this.alienTexture.getHeight() / 2;
 		return getY() + textureHalfHeight;
 	}
 

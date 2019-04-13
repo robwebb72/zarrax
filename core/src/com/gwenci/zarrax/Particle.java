@@ -3,8 +3,6 @@ package com.gwenci.zarrax;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import java.util.Random;
-
 class Particle {
 
 	private float x;
@@ -12,7 +10,6 @@ class Particle {
 	private float dx;
 	private float dy;
 	private float lifeLeft;
-	private float lifeTime;
 	private float halfLife;
 	private int colour;
 	private Texture texture;
@@ -32,9 +29,8 @@ class Particle {
 
 		this.colour = colour;
 		this.texture = texture;
-		lifeTime = life;
 		lifeLeft = life;
-		halfLife = lifeTime/2.0f;
+		halfLife = life / 2.0f;
 	}
 
 	void act(float dt) {
@@ -44,13 +40,14 @@ class Particle {
 		lifeLeft -= dt;
 
 	}
+
 	void render(SpriteBatch batch) {
 		if (isFinished()) return;
-		if (lifeLeft <halfLife) {
-			batch.draw(texture, x, y, (colour+8)*2, 0, 2,2);
+		if (lifeLeft < halfLife) {
+			batch.draw(texture, x, y, (colour + 8) * 2, 0, 2, 2);
 
 		} else {
-			batch.draw(texture, x, y, colour*2, 0, 2,2);
+			batch.draw(texture, x, y, colour * 2, 0, 2, 2);
 		}
 	}
 

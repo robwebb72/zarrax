@@ -14,26 +14,26 @@ public class PlayerBulletActor extends BaseActor {
 
 	PlayerBulletActor(Texture texture) {
 		this.texture = texture;
-		super.setBoundingRect(texture.getWidth(),texture.getHeight());
+		super.setBoundingRect(texture.getWidth(), texture.getHeight());
 	}
 
 	boolean fire(float x, float y) {
 		if (inPlay) return false;
-		super.setPosition(x + 14f, y+ 14f);
+		super.setPosition(x + 14f, y + 14f);
 		inPlay = true;
 		return true;
 	}
 
 	@Override
 	public void act(float delta) {  // note: delta is time in seconds, not milliseconds
-		if(!inPlay) return;
+		if (!inPlay) return;
 		super.moveBy(0.0f, SPEED * delta);
 		inPlay = getY() < BULLET_SCREEN_HEIGHT_LIMIT;
 	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		if(!inPlay) return;
+		if (!inPlay) return;
 		super.draw(batch, parentAlpha);
 		batch.draw(texture, getX(), getY());
 	}

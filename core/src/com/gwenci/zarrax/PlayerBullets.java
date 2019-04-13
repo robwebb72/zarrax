@@ -10,14 +10,13 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 class PlayerBullets {
 
 	private static final int MAX_BULLETS = 50;
 	private static final int BULLETS_PER_SEC = 10;
 	private static final int MS_BETWEEN_BULLETS = 1000 / BULLETS_PER_SEC;
-	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth()/2;
+	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth() / 2;
 
 	private static Texture texture;
 	private static Sound effect;
@@ -34,23 +33,23 @@ class PlayerBullets {
 
 	PlayerBullets(Viewport vp, SpriteBatch batch) {
 		bulletStage = new Stage(vp, batch);
-		for (int i = 0; i<MAX_BULLETS; i++) {
+		for (int i = 0; i < MAX_BULLETS; i++) {
 			bullets[i] = new PlayerBulletActor(texture);
 			bulletStage.addActor(bullets[i]);
 		}
 	}
 
 	void fireBullets(float x, float y) {
-		if(lastMs + MS_BETWEEN_BULLETS < System.currentTimeMillis()) {
+		if (lastMs + MS_BETWEEN_BULLETS < System.currentTimeMillis()) {
 			lastMs = System.currentTimeMillis();
-			boolean shotFired = addBullets(x , y);
-			float pan = (x- HALF_SCREEN_WIDTH)/HALF_SCREEN_WIDTH;
-			if (shotFired) effect.play(1.0f,1.0f,pan);
+			boolean shotFired = addBullets(x, y);
+			float pan = (x - HALF_SCREEN_WIDTH) / HALF_SCREEN_WIDTH;
+			if (shotFired) effect.play(1.0f, 1.0f, pan);
 		}
 	}
 
 	private boolean addBullets(float x, float y) {
-		if(nextBullet>=MAX_BULLETS) nextBullet = 0;
+		if (nextBullet >= MAX_BULLETS) nextBullet = 0;
 		return bullets[nextBullet++].fire(x, y);
 	}
 
@@ -63,7 +62,7 @@ class PlayerBullets {
 	}
 
 	void dispose() {
-		if(effect != null) {
+		if (effect != null) {
 			effect.stop();
 			effect.dispose();
 		}

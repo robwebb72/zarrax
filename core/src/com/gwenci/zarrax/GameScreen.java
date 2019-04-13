@@ -19,17 +19,16 @@ public class GameScreen extends BaseScreen {
 
 	private AlienWrangler aliens;
 	private ParticleFoundry particleFoundry;
-	private ParticleEmitter emitter;
 
 	@Override
 	public void initialize() {
 
 		stars = Starfield.getInstance();
-		playerStage = new Stage(Zarrax.getViewPort(),Zarrax.getSpriteBatch());
-		playerBullets = new PlayerBullets(Zarrax.getViewPort(),Zarrax.getSpriteBatch());
+		playerStage = new Stage(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
+		playerBullets = new PlayerBullets(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
 		player = new PlayerActor();
 		playerStage.addActor(player);
-		aliens = new AlienWrangler(Zarrax.getViewPort(),Zarrax.getSpriteBatch());
+		aliens = new AlienWrangler(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
 		framerate = new FrameRate();
 		particleFoundry = ParticleFoundry.getInstance();
 	}
@@ -39,13 +38,13 @@ public class GameScreen extends BaseScreen {
 
 		stars.update(dt);
 		player.act(dt);
-		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 			playerBullets.fireBullets(player.getX(), player.getY());
 		}
-		if(Gdx.input.isKeyPressed(Input.Keys.X)) {
-			particleFoundry.newEmitter(300,300);
+		if (Gdx.input.isKeyPressed(Input.Keys.X)) {
+			particleFoundry.newEmitter(300, 300);
 		}
-		if(Gdx.input.isKeyPressed(Input.Keys.Z)) {
+		if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
 			aliens.killAllAliens();
 		}
 		playerBullets.act(dt);
