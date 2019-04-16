@@ -85,7 +85,7 @@ class AlienWrangler {
 		particleFoundry.newEmitter(aliens[i].getCentreX(), aliens[i].getCentreY());
 
 		float pan = (aliens[i].getCentreX() - HALF_SCREEN_WIDTH)/HALF_SCREEN_WIDTH;
-		explosionSound.play(1.0f,1.0f,pan);
+		explosionSound.play(1.0f,((float) Math.random() * 0.6f) + 0.7f,pan);
 	}
 
 }
