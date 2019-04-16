@@ -44,7 +44,8 @@ class PlayerBullets {
 			lastMs = System.currentTimeMillis();
 			boolean shotFired = addBullets(x, y);
 			float pan = (x - HALF_SCREEN_WIDTH) / HALF_SCREEN_WIDTH;
-			if (shotFired) effect.play(1.0f, 1.0f, pan);
+
+			if (shotFired) effect.play(1.0f, ((float) Math.random() * 0.6f) + 0.7f, pan);
 		}
 	}
 
