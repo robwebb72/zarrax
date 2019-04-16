@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 class ParticleFoundry {
 
 	private static final int MAX_EMITTERS = 50;
-	private static final int MAX_PARTICLES_PER_EMITTER = 400;
+	private static final int MAX_PARTICLES_PER_EMITTER = 300;
 	private static final int MAX_PARTICLES = MAX_PARTICLES_PER_EMITTER * MAX_EMITTERS;
 
 	private static ParticleFoundry instance = new ParticleFoundry();
@@ -50,7 +50,7 @@ class ParticleFoundry {
 
 	void newEmitter(float x, float y) {
 		ParticleEmitter emitter = getNextEmitter();
-		emitter.initialize(x, y);
+		if (emitter!=null) emitter.initialize(x, y);
 	}
 
 	void render(SpriteBatch batch) {
