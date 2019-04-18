@@ -33,14 +33,19 @@ public class GameScreen extends BaseScreen {
 		particleFoundry = ParticleFoundry.getInstance();
 	}
 
+	private boolean spacePressed= false;
 	@Override
 	public void update(float dt) {
 
 		stars.update(dt);
 		player.act(dt);
+
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-			playerBullets.fireBullets(player.getX(), player.getY());
-		}
+			if (!spacePressed) {
+				playerBullets.fireBullets(player.getX(), player.getY());
+			}
+			spacePressed = true;
+		} else spacePressed = false;
 		if (Gdx.input.isKeyPressed(Input.Keys.X)) {
 			particleFoundry.newEmitter(300, 300);
 		}
