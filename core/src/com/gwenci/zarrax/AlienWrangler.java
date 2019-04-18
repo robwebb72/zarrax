@@ -17,7 +17,7 @@ class AlienWrangler {
 	private ParticleFoundry particleFoundry = ParticleFoundry.getInstance();
 	private AlienActor[] aliens = new AlienActor[MAX_ALIENS];
 	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth()/2;
-
+	private float swarmXTimer = 0.0f;
 	private static Sound explosionSound;
 
 	static {
@@ -46,13 +46,22 @@ class AlienWrangler {
 	private void placeAliens() {
 		for( int j = 0; j < 5 ; j++) {
 			for(int i =0; i < 10; i++) {
-				aliens[i + j * 10].setPosition(60 + i * 60, 575 + j * 35);
+				aliens[i + j * 10].setPosition(120 + i * 45, 525 + j * 40);
 				aliens[i + j * 10].setState(AlienState.ALIVE);
 			}
 		}
 	}
 
 	void act(float dt) {
+		swarmXTimer += dt;
+		if (swarmXTimer > 2.0f) swarmXTimer = 0.0f;
+		float swarmXPos = (swarmXTimer > 1.0f) ? 2.0f - swarmXTimer: swarmXTimer;
+
+		for( int i= 0; i< MAX_ALIENS; i++) {
+			if(!aliens[i].isAlive()) continue;
+			aliens[i].setX(100 + swarmXPos * 30 + (i % 10) * 45 );
+		}
+
 		stage.act(dt);
 	}
 	void draw() {
