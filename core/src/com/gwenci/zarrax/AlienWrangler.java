@@ -61,14 +61,15 @@ class AlienWrangler {
 
 		for( int i= 0; i< MAX_ALIENS; i++) {
 			if(!aliens[i].isAlive()) continue;
-			aliens[i].setX(100 + swarmXPos * 30 + (i % 10) * 45 );
-		}
+			aliens[i].setPosition(100 + swarmXPos * 30 + (i % 10) * 45 , aliens[i].getY());
+ 		}
 
 		stage.act(dt);
 	}
 	void draw() {
 		stage.draw();
 	}
+
 
 	void handleCollisions(List<PlayerBulletActor> bullets) {
 		for (int i= 0; i< MAX_ALIENS; i++) {
