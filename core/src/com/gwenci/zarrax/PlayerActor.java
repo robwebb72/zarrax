@@ -53,19 +53,15 @@ public class PlayerActor extends BaseActor {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
+		int srcX = 0;
 		switch (direction) {
 			case LEFT:
-				batch.draw(playerTexture, super.getX(), super.getY(), 30, 0, 30, 30);
+				srcX = 30;
 				break;
 			case RIGHT:
-				batch.draw(playerTexture, super.getX(), super.getY(), 60, 0, 30, 30);
-				break;
-			case STRAIGHT:
-				batch.draw(playerTexture, super.getX(), super.getY(), 0, 0, 30, 30);
-				break;
-			default:
-				break;
+				srcX = 60;
 		}
+		batch.draw(playerTexture, super.getX(), super.getY(), srcX, 0, 30, 30);
 	}
 
 	enum Direction {
