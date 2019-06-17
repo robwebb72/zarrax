@@ -52,6 +52,9 @@ public class GameScreen extends BaseScreen {
 		if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
 			aliens.killAllAliens();
 		}
+		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+			Gdx.app.exit();
+		}
 		playerBullets.act(dt);
 		aliens.act(dt);
 		particleFoundry.act(dt);
