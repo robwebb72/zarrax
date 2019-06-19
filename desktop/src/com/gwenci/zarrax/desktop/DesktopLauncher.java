@@ -15,6 +15,7 @@ public class DesktopLauncher {
 		config.backgroundFPS = 30;
 		config.foregroundFPS = 60;
 		config.title = "Zarrax";
+		config.fullscreen = false;
 		config.resizable = false;   // window should not be resizable
 		config.forceExit = false;   // prevent non zero exit error
 

@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class PlayerActor extends BaseActor {
 
-	private static final int SCREEN_WIDTH = Gdx.graphics.getWidth();
-	private static final int SCREEN_HEIGHT = Gdx.graphics.getHeight();
+	private static final int SCREEN_WIDTH = 672;
+	private static final int SCREEN_HEIGHT = 768;
 	private static final int MAX_PLAYER_HEIGHT = SCREEN_HEIGHT / 3;
 	private static final float SPEED = 200f;  //pixels per second
 	private Texture playerTexture;

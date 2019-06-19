@@ -38,7 +38,7 @@ public class FrameRate implements Disposable{
 	}
 
 	void render(SpriteBatch batch) {
-		font.draw(batch, (int)frameRate + " fps", 3, Gdx.graphics.getHeight() - 3);
+		font.draw(batch, (int)frameRate + " fps", 3, 768- 3);
 	}
 
 	public void dispose() {
