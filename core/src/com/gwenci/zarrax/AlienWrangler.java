@@ -71,13 +71,14 @@ class AlienWrangler {
 	}
 
 
-	void handleCollisions(List<PlayerBulletActor> bullets) {
+	void handleCollisions(List<PlayerBulletActor> bullets, PlayerScore score) {
 		for (int i= 0; i< MAX_ALIENS; i++) {
 
 			if(!aliens[i].isAlive()) continue;
 			for (PlayerBulletActor bullet : bullets) {
 				if(aliens[i].collidesWith(bullet)) {
 					killAlien(i);
+					score.updateScore(aliens[i].getScore());
 					bullet.setInPlay(false);
 				}
 			}
@@ -86,9 +87,12 @@ class AlienWrangler {
 	}
 
 
-	void killAllAliens() {
+	void killAllAliens(PlayerScore score) {
 		for (int i= 0; i< MAX_ALIENS; i++) {
-			if(aliens[i].isAlive()) killAlien(i);
+			if(aliens[i].isAlive()) {
+				killAlien(i);
+				score.updateScore(aliens[i].getScore());
+			}
 		}
 	}
 

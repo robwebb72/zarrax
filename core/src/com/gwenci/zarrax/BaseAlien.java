@@ -31,6 +31,10 @@ import com.badlogic.gdx.graphics.Texture;
 	}
 
 
+	int getScore() {
+		return 0;
+	}
+
 	void setState(AlienState state) {
 		this.state = state;
 	}

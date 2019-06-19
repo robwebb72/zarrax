@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
-public class GameScreen extends BaseScreen {
+
+public class GameScreen extends BaseScreen implements PlayerScore {
 
 	private SpriteBatch batch = Zarrax.getSpriteBatch();
 
@@ -19,6 +21,13 @@ public class GameScreen extends BaseScreen {
 
 	private AlienWrangler aliens;
 	private ParticleFoundry particleFoundry;
+	private int score = 0;
+	private BitmapFont font = new BitmapFont();
+
+	@Override
+	public void updateScore(int dScore) {
+		score += dScore;
+	}
 
 	@Override
 	public void initialize() {
@@ -31,6 +40,7 @@ public class GameScreen extends BaseScreen {
 		aliens = new AlienWrangler(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
 		framerate = new FrameRate();
 		particleFoundry = ParticleFoundry.getInstance();
+		score = 0;
 	}
 
 	private boolean spacePressed= false;
@@ -50,7 +60,7 @@ public class GameScreen extends BaseScreen {
 			particleFoundry.newEmitter(300, 300);
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
-			aliens.killAllAliens();
+			aliens.killAllAliens(this);
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 			Gdx.app.exit();
@@ -58,7 +68,7 @@ public class GameScreen extends BaseScreen {
 		playerBullets.act(dt);
 		aliens.act(dt);
 		particleFoundry.act(dt);
-		aliens.handleCollisions(playerBullets.getList());
+		aliens.handleCollisions(playerBullets.getList(), this);
 		framerate.update();
 	}
 
@@ -68,6 +78,7 @@ public class GameScreen extends BaseScreen {
 		stars.render(batch);
 		framerate.render(batch);
 		particleFoundry.render(batch);
+		font.draw(batch, String.format("%08d",score) , 300, 768- 3);
 		batch.end();
 		playerBullets.draw();
 		playerStage.draw();

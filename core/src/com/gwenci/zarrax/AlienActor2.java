@@ -9,4 +9,8 @@ class AlienActor2 extends BaseAlien {
 
 	}
 
+	@Override
+	int getScore() {
+		return 20;
+	}
 }
