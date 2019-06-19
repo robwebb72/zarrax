@@ -22,6 +22,9 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 	private AlienWrangler aliens;
 	private ParticleFoundry particleFoundry;
 	private int score = 0;
+	private int displayScore = 0;
+	private float lastScoreUpdateRate = 0.02f;   // the displayScore counts up by 1 every 0.02s up to the value of the score
+	private float lastScoreUpdate = 0;
 	private BitmapFont font = new BitmapFont();
 
 	@Override
@@ -69,6 +72,13 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 		aliens.act(dt);
 		particleFoundry.act(dt);
 		aliens.handleCollisions(playerBullets.getList(), this);
+
+		lastScoreUpdate -= dt;
+		if(lastScoreUpdate<0.0f) {
+			if(displayScore<score) displayScore++;
+			lastScoreUpdate = lastScoreUpdateRate;
+		}
+
 		framerate.update();
 	}
 
@@ -78,7 +88,7 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 		stars.render(batch);
 		framerate.render(batch);
 		particleFoundry.render(batch);
-		font.draw(batch, String.format("%08d",score) , 300, 768- 3);
+		font.draw(batch, String.format("%08d",displayScore) , 300, 768- 3);
 		batch.end();
 		playerBullets.draw();
 		playerStage.draw();
