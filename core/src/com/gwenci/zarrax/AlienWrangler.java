@@ -68,6 +68,8 @@ class AlienWrangler {
 
 		stage.act(dt);
 	}
+
+
 	void draw() {
 		stage.draw();
 	}
@@ -104,7 +106,7 @@ class AlienWrangler {
 	}
 
 
-	public List<BaseAlien> LiveAliens() {
+	private List<BaseAlien> LiveAliens() {
 		return Arrays.stream(aliens).filter(BaseAlien::isAlive).collect(Collectors.toList());
 	}
 }
