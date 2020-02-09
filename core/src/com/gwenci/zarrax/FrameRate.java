@@ -17,15 +17,23 @@ public class FrameRate implements Disposable{
 	private float sinceChange;
 	private float frameRate;
 	private BitmapFont font;
-
+	private boolean display;
 
 	FrameRate() {
 		lastTimeCounted = TimeUtils.millis();
 		sinceChange = 0;
 		frameRate = Gdx.graphics.getFramesPerSecond();
 		font = new BitmapFont();
+		display = false;
 	}
 
+	void flipDisplay() {
+		display = !display;
+	}
+
+	void setDisplay(boolean value) {
+		display = value;
+	}
 	void update() {
 		long delta = TimeUtils.timeSinceMillis(lastTimeCounted);
 		lastTimeCounted = TimeUtils.millis();
@@ -38,7 +46,7 @@ public class FrameRate implements Disposable{
 	}
 
 	void render(SpriteBatch batch) {
-		font.draw(batch, (int)frameRate + " fps", 3, 768- 3);
+		if(display) font.draw(batch, (int)frameRate + " fps", 3, 768- 3);
 	}
 
 	public void dispose() {

@@ -23,7 +23,7 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 	private ParticleFoundry particleFoundry;
 	private int score = 0;
 	private int displayScore = 0;
-	private float lastScoreUpdateRate = 0.02f;   // the displayScore counts up by 1 every 0.02s up to the value of the score
+	private static final float scoreUpdateRate = 0.01f;   // the displayScore counts up by 1 every 0.01s up to the value of the score
 	private float lastScoreUpdate = 0;
 	private BitmapFont font = new BitmapFont();
 
@@ -42,41 +42,50 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 		playerStage.addActor(player);
 		aliens = new AlienWrangler(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
 		framerate = new FrameRate();
+		framerate.setDisplay(false);
 		particleFoundry = ParticleFoundry.getInstance();
 		score = 0;
 	}
 
 	private boolean spacePressed= false;
+	private boolean fPressed= false;
+
 	@Override
 	public void update(float dt) {
 
-		stars.update(dt);
-		player.act(dt);
 
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-			if (!spacePressed) {
-				playerBullets.fireBullets(player.getX(), player.getY());
+			if(!spacePressed) {
+				playerBullets.fireBullet(player.getX(), player.getY());
+				spacePressed = true;
 			}
-			spacePressed = true;
-		} else spacePressed = false;
-		if (Gdx.input.isKeyPressed(Input.Keys.X)) {
-			particleFoundry.newEmitter(300, 300);
 		}
+		else spacePressed = false;
 		if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
 			aliens.killAllAliens(this);
 		}
+		if (Gdx.input.isKeyPressed(Input.Keys.F)) {
+			if(!fPressed) {
+				framerate.flipDisplay();
+				fPressed = true;
+			}
+		} else fPressed = false;
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 			Gdx.app.exit();
 		}
+		player.act(dt);
 		playerBullets.act(dt);
-		aliens.act(dt);
+
+		stars.update(dt);
 		particleFoundry.act(dt);
-		aliens.handleCollisions(playerBullets.getList(), this);
+
+		aliens.act(dt);
+		aliens.handleCollisions(playerBullets.getActiveBullets(), this);
 
 		lastScoreUpdate -= dt;
 		if(lastScoreUpdate<0.0f) {
 			if(displayScore<score) displayScore++;
-			lastScoreUpdate = lastScoreUpdateRate;
+			lastScoreUpdate = scoreUpdateRate;
 		}
 
 		framerate.update();
@@ -103,7 +112,6 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 	@Override
 	public void dispose() {
 		playerBullets.dispose();
-
 	}
 }
 
