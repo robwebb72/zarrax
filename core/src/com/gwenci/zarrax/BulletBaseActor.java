@@ -12,13 +12,15 @@ public class BulletBaseActor extends BaseActor {
 	private boolean inPlay;
 	Texture texture;
 
-
+	BulletBaseActor(Texture texture) {
+		setTexture(texture);
+	}
 	boolean fire(float x, float y, float dx, float dy) {
-		if (inPlay) return false;
+		if (this.inPlay) return false;
 		super.setPosition(x, y);
 		this.dx = dx;
 		this.dy = dy;
-		inPlay = true;
+		this.inPlay = true;
 		return true;
 	}
 
@@ -29,7 +31,7 @@ public class BulletBaseActor extends BaseActor {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		if (!inPlay) return;
+		if (!this.inPlay) return;
 
 		super.draw(batch, parentAlpha);
 		batch.draw(texture, getX(), getY());
@@ -37,9 +39,9 @@ public class BulletBaseActor extends BaseActor {
 
 	@Override
 	public void act(float dt) {  // note: delta is time in seconds, not milliseconds
-		if (inPlay) {
+		if (this.inPlay) {
 			super.moveBy(dx * dt, dy * dt);
-			inPlay = getY() > 0 && getY() < SCREEN_HEIGHT;
+			this.inPlay = getY() > 0 && getY() < SCREEN_HEIGHT;
 		}
 	}
 
@@ -51,6 +53,7 @@ public class BulletBaseActor extends BaseActor {
 		inPlay = value;
 	}
 
+	void removeFromPlay() {inPlay = false; }
 }
 
 

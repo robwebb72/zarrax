@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class AlienWrangler {
 
@@ -19,7 +21,7 @@ class AlienWrangler {
 	private Texture alien2texture =  new Texture(Gdx.files.internal("assets/galaxian_2_1.png"));
 	private ParticleFoundry particleFoundry = ParticleFoundry.getInstance();
 	private BaseAlien[] aliens = new BaseAlien[MAX_ALIENS];
-	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth()/2;
+	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth()/2.0f;
 	private float swarmXTimer = 0.0f;
 	private static Sound explosionSound;
 
@@ -64,6 +66,10 @@ class AlienWrangler {
 		for( int i= 0; i< MAX_ALIENS; i++) {
 			if(!aliens[i].isAlive()) continue;
 			aliens[i].setPosition(100 + swarmXPos * 30 + (i % 10) * 45 , aliens[i].getY());
+			int fire_chance = MathUtils.random(10000);
+			if(fire_chance < 100) {
+				// alien fires
+			}
  		}
 
 		stage.act(dt);
@@ -75,30 +81,34 @@ class AlienWrangler {
 	}
 
 
-	void handleCollisions(List<PlayerBulletActor> bullets, PlayerScore score) {
+	void handleCollisions(List<BulletBaseActor> bullets, PlayerScore score) {
 
-		for(BaseAlien alien : LiveAliens()) {
-			for (PlayerBulletActor bullet : bullets) {
-				if(alien.collidesWith(bullet)) {
-					killAlien(alien);
-					score.updateScore(alien.getScore());
-					bullet.setInPlay(false);
+		LiveAliens().forEach(
+				a -> {
+					bullets.stream().filter(a::collidesWith).forEach(
+							b -> {
+								killAlien(a);
+								score.updateScore(a.getScore());
+								b.removeFromPlay();
+							}
+					);
 				}
-			}
-		}
+		);
 	}
 
 
 	void killAllAliens(PlayerScore score) {
-		for(BaseAlien alien : LiveAliens()) {
-			killAlien(alien);
-			score.updateScore(alien.getScore());
-		}
+
+		LiveAliens().forEach(
+				a -> {killAlien(a); score.updateScore(a.getScore());}
+		);
 	}
 
 
 	private void killAlien(BaseAlien alien) {
+
 		alien.setState(AlienState.DEAD);
+
 		particleFoundry.newEmitter(alien.getCentreX(), alien.getCentreY());
 
 		float pan = (alien.getCentreX() - HALF_SCREEN_WIDTH)/HALF_SCREEN_WIDTH;
@@ -106,7 +116,7 @@ class AlienWrangler {
 	}
 
 
-	private List<BaseAlien> LiveAliens() {
-		return Arrays.stream(aliens).filter(BaseAlien::isAlive).collect(Collectors.toList());
+	private Stream<BaseAlien> LiveAliens() {
+		return Arrays.stream(aliens).filter(BaseAlien::isAlive);
 	}
 }

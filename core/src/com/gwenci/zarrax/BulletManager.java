@@ -13,12 +13,12 @@ public class BulletManager {
 	private final int maxBullets;
 	private Stage bulletStage;
 
-	PlayerBulletActor[] bullets;
+	BulletBaseActor[] bullets;
 	private int nextBullet = 0;
 
 	BulletManager(int maxBullets) {
 		this.maxBullets = maxBullets;
-		this.bullets = new PlayerBulletActor[maxBullets];
+		this.bullets = new BulletBaseActor[maxBullets];
 	}
 
 	void SetStage(Viewport vp, SpriteBatch batch) {
@@ -28,7 +28,7 @@ public class BulletManager {
 		}
 	}
 
-	PlayerBulletActor getNextBullet() {
+	BulletBaseActor getNextBullet() {
 		if (nextBullet >= maxBullets) nextBullet = 0;
 		return bullets[nextBullet++];
 	}
@@ -41,8 +41,8 @@ public class BulletManager {
 		bulletStage.draw();
 	}
 
-	List<PlayerBulletActor> getActiveBullets() {
-		return Arrays.stream(bullets).filter(PlayerBulletActor::isInPlay).collect(Collectors.toList());
+	List<BulletBaseActor> getActiveBullets() {
+		return Arrays.stream(bullets).filter(BulletBaseActor::isInPlay).collect(Collectors.toList());
 	}
 
 	void dispose() {
