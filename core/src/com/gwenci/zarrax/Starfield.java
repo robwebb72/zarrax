@@ -1,6 +1,5 @@
 package com.gwenci.zarrax;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,10 +12,12 @@ class Starfield {
 	private static final int SCREEN_HEIGHT = 768;
 	private static Starfield instance = new Starfield();
 	private Star[] stars = new Star[NSTARS];
+
+	// TODO: Do I need to dispose of these textures?
 	private TextureRegion[] textures = new TextureRegion[8];
 
 	private Starfield() {
-		Texture texture = new Texture(Gdx.files.internal("assets/stars.png"));
+		Texture texture = TextureManager.getInstance().get("assets/stars.png");
 		for (int i = 0; i < 8; i++) {
 			textures[i] = new TextureRegion(texture, i, 0, 1, 1);
 		}

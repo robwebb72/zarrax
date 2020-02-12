@@ -20,8 +20,8 @@ class PlayerBullets extends BulletManager {
 	private static Texture texture;
 
 	static {
-		texture = new Texture(Gdx.files.internal("assets/player_bullet.png"));
-		effect = Gdx.audio.newSound(Gdx.files.internal("assets/shoot.wav"));
+		texture = TextureManager.getInstance().get("assets/player_bullet.png");
+		effect = AudioManager.getInstance().get("assets/shoot.wav");
 
 	}
 
@@ -51,10 +51,5 @@ class PlayerBullets extends BulletManager {
 
 	void dispose() {
 		super.dispose();
-		if (effect != null) {
-			effect.stop();
-			effect.dispose();
-		}
-		texture.dispose();
 	}
 }

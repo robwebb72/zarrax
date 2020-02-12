@@ -2,7 +2,6 @@ package com.gwenci.zarrax;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -10,15 +9,12 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 class AlienWrangler {
 
 	private static final int MAX_ALIENS = 50;
 	private Stage stage;
-	private Texture alien1texture =  new Texture(Gdx.files.internal("assets/galaxian_1_1.png"));
-	private Texture alien2texture =  new Texture(Gdx.files.internal("assets/galaxian_2_1.png"));
 	private ParticleFoundry particleFoundry = ParticleFoundry.getInstance();
 	private BaseAlien[] aliens = new BaseAlien[MAX_ALIENS];
 	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth()/2.0f;
@@ -34,9 +30,9 @@ class AlienWrangler {
 		stage = new Stage(vp,batch);
 		for(int i = 0 ; i< MAX_ALIENS; i++) {
 			if(i>=30) {
-				aliens[i] = new AlienActor2(alien2texture);
+				aliens[i] = new AlienActor2(TextureManager.getInstance().get("assets/galaxian_2_1.png"));
 			} else {
-				aliens[i] = new AlienActor1(alien1texture);
+				aliens[i] = new AlienActor1(TextureManager.getInstance().get("assets/galaxian_1_1.png"));
 			}
 			stage.addActor(aliens[i]);
 		}

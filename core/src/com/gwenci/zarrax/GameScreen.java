@@ -112,6 +112,8 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 	@Override
 	public void dispose() {
 		playerBullets.dispose();
+		TextureManager.getInstance().dispose();
+		AudioManager.getInstance().dispose();
 	}
 }
 
