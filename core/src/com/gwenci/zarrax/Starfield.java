@@ -1,6 +1,5 @@
 package com.gwenci.zarrax;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,15 +7,17 @@ import com.badlogic.gdx.math.MathUtils;
 
 class Starfield {
 
-	private static final int NSTARS = 500;
+	private static final int NSTARS = 1000;
 	private static final int SCREEN_WIDTH = 672;
 	private static final int SCREEN_HEIGHT = 768;
 	private static Starfield instance = new Starfield();
 	private Star[] stars = new Star[NSTARS];
+
+	// TODO: Do I need to dispose of these textures?
 	private TextureRegion[] textures = new TextureRegion[8];
 
 	private Starfield() {
-		Texture texture = new Texture(Gdx.files.internal("assets/stars.png"));
+		Texture texture = TextureManager.getInstance().get("assets/stars.png");
 		for (int i = 0; i < 8; i++) {
 			textures[i] = new TextureRegion(texture, i, 0, 1, 1);
 		}
@@ -67,7 +68,8 @@ class Starfield {
 
 		private float newSpeed(int brightness) {
 			// use brightness to adjust speed (darker stars are more likely to move slower)
-			return (float) (8 - brightness) / 8f * (float) SCREEN_HEIGHT / MathUtils.random(1.0f, 3.0f);
+			return (float) SCREEN_HEIGHT / MathUtils.random(1.0f, 3.0f) *    // takes 1-3 seconds for a star to traverse screen
+					(float) (8 - brightness) / 8f;                             // apply inverse of brightness as a factor
 		}
 
 	}

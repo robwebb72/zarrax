@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public abstract class BaseActor extends Actor {
 
-	static final int SCREEN_WIDTH = Gdx.graphics.getWidth();
-	static final int SCREEN_HEIGHT = Gdx.graphics.getHeight();
+	static final int SCREEN_WIDTH = 672; // Gdx.graphics.getWidth();
+	static final int SCREEN_HEIGHT = 768; //Gdx.graphics.getHeight();
 	private Rectangle boundingRect = new Rectangle();
 
 	@Override

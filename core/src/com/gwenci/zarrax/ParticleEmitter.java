@@ -10,7 +10,7 @@ import java.util.List;
 class ParticleEmitter {
 
 	private List<Particle> particles = new ArrayList<>();
-	private Texture texture = new Texture(Gdx.files.internal("assets/spectrum.png"));
+	private Texture texture = TextureManager.getInstance().get("assets/spectrum.png");
 	private boolean isLive = false;
 
 	void add(Particle particle) {

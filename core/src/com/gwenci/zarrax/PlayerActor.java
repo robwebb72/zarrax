@@ -14,7 +14,7 @@ public class PlayerActor extends BaseActor {
 	private Texture playerTexture;
 	private Direction direction;
 	PlayerActor() {
-		playerTexture = new Texture(Gdx.files.internal("assets/player.png"));
+		playerTexture = TextureManager.getInstance().get("assets/player.png");
 		setPosition(SCREEN_WIDTH / 2.0f - 16f, 5f);
 	}
 
