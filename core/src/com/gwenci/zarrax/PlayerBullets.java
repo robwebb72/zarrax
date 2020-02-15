@@ -9,12 +9,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 class PlayerBullets extends BulletManager {
 
 	private static final int MAX_BULLETS = 250;
-	private static final float BULLET_SPEED = 400f;
-
 	private static final int BULLETS_PER_SECOND = 8;
 	private static final int MS_BETWEEN_BULLETS = 1000/BULLETS_PER_SECOND;
-	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth() / 2f;
 
+	private static final float BULLET_SPEED = 400f;
+	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth() / 2f;
 
 	private static Sound effect;
 	private static Texture texture;
@@ -49,7 +48,4 @@ class PlayerBullets extends BulletManager {
 		}
 	}
 
-	void dispose() {
-		super.dispose();
-	}
 }
