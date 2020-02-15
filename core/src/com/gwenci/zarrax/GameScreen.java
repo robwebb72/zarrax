@@ -25,7 +25,7 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 	private int displayScore = 0;
 	private static final float scoreUpdateRate = 0.01f;   // the displayScore counts up by 1 every 0.01s up to the value of the score
 	private float lastScoreUpdate = 0;
-	private BitmapFont font = new BitmapFont();
+	private BitmapFont font;
 
 	@Override
 	public void updateScore(int dScore) {
@@ -45,6 +45,7 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 		framerate.setDisplay(false);
 		particleFoundry = ParticleFoundry.getInstance();
 		score = 0;
+		font = GameFont.getInstance().getFont();
 	}
 
 	private boolean spacePressed= false;
@@ -71,6 +72,7 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 			}
 		} else fPressed = false;
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+			this.dispose();
 			Gdx.app.exit();
 		}
 		player.act(dt);
@@ -97,7 +99,8 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 		stars.render(batch);
 		framerate.render(batch);
 		particleFoundry.render(batch);
-		font.draw(batch, String.format("%08d",displayScore) , 300, 768- 3);
+		font.draw(batch, String.format("%08d",displayScore) , 275, 768- 3);
+		font.draw(batch,"hi 00000700" , 4, 768- 3);
 		batch.end();
 		playerBullets.draw();
 		playerStage.draw();
