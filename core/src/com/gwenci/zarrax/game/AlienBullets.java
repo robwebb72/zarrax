@@ -1,10 +1,11 @@
-package com.gwenci.zarrax;
+package com.gwenci.zarrax.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.gwenci.zarrax.TextureManager;
 
-public class AlienBullets extends BulletManager<BulletBaseActor>{
+public class AlienBullets extends BulletManager<BulletBaseActor> {
 
 	private static final int MAX_BULLETS = 250;
 	private static final float BULLET_SPEED = -200f;

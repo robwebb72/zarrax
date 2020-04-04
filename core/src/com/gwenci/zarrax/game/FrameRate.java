@@ -1,4 +1,4 @@
-package com.gwenci.zarrax;
+package com.gwenci.zarrax.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.TimeUtils;
  *
  * @author William Hartman
  */
-public class FrameRate implements Disposable{
+class FrameRate implements Disposable{
 	private long lastTimeCounted;
 	private float sinceChange;
 	private float frameRate;
@@ -34,6 +34,7 @@ public class FrameRate implements Disposable{
 	void setDisplay(boolean value) {
 		display = value;
 	}
+
 	void update() {
 		long delta = TimeUtils.timeSinceMillis(lastTimeCounted);
 		lastTimeCounted = TimeUtils.millis();

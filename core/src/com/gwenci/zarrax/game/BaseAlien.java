@@ -1,9 +1,10 @@
-package com.gwenci.zarrax;
+package com.gwenci.zarrax.game;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.Texture;
+import com.gwenci.zarrax.BaseActor;
 
- class BaseAlien extends BaseActor {
+class BaseAlien extends BaseActor {
 	AlienState state;
 	Texture alienTexture;
 	private int frameWidth;

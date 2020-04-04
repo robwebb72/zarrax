@@ -1,6 +1,10 @@
-package com.gwenci.zarrax;
+package com.gwenci.zarrax.menu;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.gwenci.zarrax.BaseScreen;
+import com.gwenci.zarrax.game.GameScreen;
+import com.gwenci.zarrax.Starfield;
+import com.gwenci.zarrax.Zarrax;
 
 public class MenuScreen extends BaseScreen {
 

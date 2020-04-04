@@ -1,4 +1,4 @@
-package com.gwenci.zarrax;
+package com.gwenci.zarrax.game;
 
 public interface PlayerScore {
 

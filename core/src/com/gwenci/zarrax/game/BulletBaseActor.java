@@ -1,7 +1,8 @@
-package com.gwenci.zarrax;
+package com.gwenci.zarrax.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.gwenci.zarrax.BaseActor;
 
 
 public class BulletBaseActor extends BaseActor {

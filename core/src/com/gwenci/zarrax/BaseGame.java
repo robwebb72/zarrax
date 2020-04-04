@@ -10,7 +10,7 @@ abstract class BaseGame extends Game {
 		game = this;
 	}
 
-	static void setActiveScreen(BaseScreen s) {
+	public static void setActiveScreen(BaseScreen s) {
 		game.setScreen(s);
 	}
 }

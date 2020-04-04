@@ -1,10 +1,12 @@
-package com.gwenci.zarrax;
+package com.gwenci.zarrax.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.gwenci.zarrax.AudioManager;
+import com.gwenci.zarrax.TextureManager;
 
 class PlayerBullets extends BulletManager<BulletBaseActor> {
 

@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.gwenci.zarrax.menu.MenuScreen;
+import com.gwenci.zarrax.particles.ParticleFoundry;
 
 public class Zarrax extends BaseGame {
 
@@ -13,11 +15,11 @@ public class Zarrax extends BaseGame {
 	private static Viewport viewPort;
 	BitmapFont customFont;
 
-	static SpriteBatch getSpriteBatch() {
+	public static SpriteBatch getSpriteBatch() {
 		return batch;
 	}
 
-	static Viewport getViewPort() {
+	public static Viewport getViewPort() {
 		return viewPort;
 	}
 
