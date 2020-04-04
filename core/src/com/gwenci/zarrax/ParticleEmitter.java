@@ -1,24 +1,25 @@
 package com.gwenci.zarrax;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 class ParticleEmitter {
-
-	private List<Particle> particles = new ArrayList<>();
+	private ArrayList<Particle> particles = new ArrayList<>();
 	private Texture texture = TextureManager.getInstance().get("assets/spectrum.png");
 	private boolean isLive = false;
 
-	void add(Particle particle) {
+
+	void addParticle(Particle particle) {
 		particles.add(particle);
 	}
 
+
 	void initialize(float x, float y) {
 		int counter = 0;
+
 		for (Particle p : particles) {
 			switch (counter) {
 				case 0:
@@ -37,23 +38,28 @@ class ParticleEmitter {
 		isLive = true;
 	}
 
+
 	boolean isLive() {
 		return isLive;
 	}
 
+
 	void render(SpriteBatch batch) {
-		if (!isLive) return;
-		for (Particle p : particles) p.render(batch);
+		if (isLive) {
+			particles.forEach(particle -> particle.render(batch));
+		}
 	}
+
 
 	void act(float dt) {
-		if (!isLive) return;
-		for (Particle p : particles) p.act(dt);
-		if (allParticlesDead()) isLive = false;
+		if (isLive) {
+			particles.parallelStream().forEach(particle -> particle.act(dt));
+			isLive = anyParticleAlive();
+		}
 	}
 
-	private boolean allParticlesDead() {
-		for (Particle p : particles) if (!p.isFinished()) return false;
-		return true;
+
+	private boolean anyParticleAlive() {
+		return particles.parallelStream().anyMatch(Particle::isActive);
 	}
 }

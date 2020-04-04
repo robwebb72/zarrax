@@ -2,8 +2,10 @@ package com.gwenci.zarrax;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-class ParticleFoundry {
+import java.util.Arrays;
 
+
+class ParticleFoundry {
 	private static final int MAX_EMITTERS = 50;
 	private static final int MAX_PARTICLES_PER_EMITTER = 300;
 	private static final int MAX_PARTICLES = MAX_PARTICLES_PER_EMITTER * MAX_EMITTERS;
@@ -13,26 +15,47 @@ class ParticleFoundry {
 	private ParticleEmitter[] particleEmitters = new ParticleEmitter[50];
 	private int emitterIndex = 0;
 
+
 	private ParticleFoundry() {
-		setUpEmitters();
+		setUpParticleSystem();
 	}
+
 
 	static ParticleFoundry getInstance() {
 		return instance;
 	}
 
-	private void setUpEmitters() {
+
+	private void setUpParticleSystem() {
+		createParticles();
+		createEmitters();
+		assignParticlesToEmitters();
+	}
+
+
+	private void createParticles() {
 		for (int i = 0; i < MAX_PARTICLES; i++) {
 			particles[i] = new Particle();
 		}
-		int particleCounter = 0;
-		for (int i = 0; i < MAX_EMITTERS; i++) {
+	}
+
+
+	private void createEmitters() {
+		for(int i = 0; i < MAX_EMITTERS; i++) {
 			particleEmitters[i] = new ParticleEmitter();
+		}
+	}
+
+
+	private void assignParticlesToEmitters() {
+		int particleIndex = 0;
+		for (int i = 0; i < MAX_EMITTERS; i++) {
 			for (int j = 0; j < MAX_PARTICLES_PER_EMITTER; j++) {
-				particleEmitters[i].add(particles[particleCounter++]);
+				particleEmitters[i].addParticle(particles[particleIndex++]);
 			}
 		}
 	}
+
 
 	private ParticleEmitter getNextEmitter() {
 		int originalIndex = emitterIndex;
@@ -48,16 +71,20 @@ class ParticleFoundry {
 		return null;
 	}
 
+
 	void newEmitter(float x, float y) {
 		ParticleEmitter emitter = getNextEmitter();
 		if (emitter!=null) emitter.initialize(x, y);
 	}
 
+
 	void render(SpriteBatch batch) {
-		for (ParticleEmitter emitter : particleEmitters) emitter.render(batch);
+		Arrays.stream(particleEmitters).forEach(emitter -> emitter.render(batch));
 	}
 
+
 	void act(float dt) {
-		for (ParticleEmitter emitter : particleEmitters) emitter.act(dt);
+		Arrays.stream(particleEmitters).parallel().filter(ParticleEmitter::isLive).forEach(emitter -> emitter.act(dt));
 	}
+
 }

@@ -2,56 +2,62 @@ package com.gwenci.zarrax;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 class Particle {
-
-	private float x;
-	private float y;
-	private float dx;
-	private float dy;
-	private float lifeLeft;
-	private float halfLife;
+	private Vector2 position = new Vector2();
+	private Vector2 velocity = new Vector2();
+	private float lifeLeftInSeconds;
+	private float halfLifeInSeconds;
 	private int colour;
 	private Texture texture;
 
-	Particle() {
-	}
 
-	void initialise(float x, float y, float speed, Texture texture, int colour, float life) {
+	Particle() { }
 
-		this.x = x;
-		this.y = y;
 
-		do {
-			this.dx = 2.0f * ((float) Math.random() - 0.5f) * speed;
-			this.dy = 2.0f * ((float) Math.random() - 0.5f) * speed;
-		} while ((dx * dx + dy * dy) > speed * speed);
-
+	void initialise(float x, float y, float speed, Texture texture, int colour, float lifeInSeconds) {
+		this.position.set(x, y);
+		this.velocity.set(createVelocityVector(speed));
 		this.colour = colour;
 		this.texture = texture;
-		lifeLeft = life;
-		halfLife = life / 2.0f;
+		this.lifeLeftInSeconds = lifeInSeconds;
+		this.halfLifeInSeconds = lifeInSeconds / 2.0f;
 	}
+
+
+	private Vector2 createVelocityVector(float speed) {
+		Vector2 velocity = new Vector2();
+
+		do {
+			velocity.set (
+					((float) Math.random() * 2.0f - 1.0f) * speed,
+					((float) Math.random() * 2.0f - 1.0f) * speed
+			);
+		} while (velocity.len2() > speed * speed);
+
+		return velocity;
+	}
+
 
 	void act(float dt) {
-		if (isFinished()) return;
-		x += (dt * dx);
-		y += (dt * dy);
-		lifeLeft -= dt;
-
-	}
-
-	void render(SpriteBatch batch) {
-		if (isFinished()) return;
-		if (lifeLeft < halfLife) {
-			batch.draw(texture, x, y, (colour + 8) * 2, 0, 2, 2);
-
-		} else {
-			batch.draw(texture, x, y, colour * 2, 0, 2, 2);
+		if (isActive()) {
+			position.mulAdd(velocity,dt);
+			lifeLeftInSeconds -= dt;
 		}
 	}
 
-	boolean isFinished() {
-		return (lifeLeft <= 0.0f);
+
+	void render(SpriteBatch batch) {
+		if (this.isActive()) {
+			int dullnessColourOffset = lifeLeftInSeconds < halfLifeInSeconds ? 8 : 0;
+			batch.draw(texture, position.x, position.y, (colour + dullnessColourOffset) * 2, 0, 2, 2);
+		}
 	}
+
+
+	boolean isActive() {
+		return (lifeLeftInSeconds > 0.0f);
+	}
+
 }
