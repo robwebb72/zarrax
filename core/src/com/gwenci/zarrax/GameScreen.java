@@ -15,6 +15,7 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 	private FrameRate framerate;
 
 	private PlayerBullets playerBullets;
+	private AlienBullets alienBullets;
 
 	private Stage playerStage;
 	private PlayerActor player;
@@ -38,11 +39,12 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 		stars = Starfield.getInstance();
 		playerStage = new Stage(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
 		playerBullets = new PlayerBullets(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
+		alienBullets = new AlienBullets(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
 		player = new PlayerActor();
 		playerStage.addActor(player);
-		aliens = new AlienWrangler(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
+		aliens = new AlienWrangler(Zarrax.getViewPort(), Zarrax.getSpriteBatch(),alienBullets);
 		framerate = new FrameRate();
-		framerate.setDisplay(false);
+		framerate.setDisplay(true);
 		particleFoundry = ParticleFoundry.getInstance();
 		score = 0;
 		font = GameFont.getInstance().getFont();
@@ -70,13 +72,18 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 				framerate.flipDisplay();
 				fPressed = true;
 			}
-		} else fPressed = false;
+		}
+		else fPressed = false;
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 			this.dispose();
 			Gdx.app.exit();
 		}
+		if(Gdx.input.isKeyPressed(Input.Keys.P)) {
+			alienBullets.fireBullet((float) Math.random()*600,700,100.0f - (float) Math.random()*200,0);
+		}
 		player.act(dt);
 		playerBullets.act(dt);
+		alienBullets.act(dt);
 
 		stars.update(dt);
 		particleFoundry.act(dt);
@@ -100,9 +107,10 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 		framerate.render(batch);
 		particleFoundry.render(batch);
 		font.draw(batch, String.format("%08d",displayScore) , 275, 768- 3);
-		font.draw(batch,"hi 00000700" , 4, 768- 3);
+	//	font.draw(batch,"hi 00000700" , 4, 768- 3);
 		batch.end();
 		playerBullets.draw();
+		alienBullets.draw();
 		playerStage.draw();
 		aliens.draw();
 	}

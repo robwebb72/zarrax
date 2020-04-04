@@ -3,8 +3,10 @@ package com.gwenci.zarrax;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
+
 public class BulletBaseActor extends BaseActor {
 
+	// TODO: SCREEN_HEIGHT hard coded here
 	private static final int SCREEN_HEIGHT = 768;
 
 	private float dx;
@@ -12,16 +14,22 @@ public class BulletBaseActor extends BaseActor {
 	private boolean inPlay;
 	Texture texture;
 
+
 	BulletBaseActor(Texture texture) {
 		setTexture(texture);
 	}
+
+
 	boolean fire(float x, float y, float dx, float dy) {
-		if (this.inPlay) return false;
-		super.setPosition(x, y);
-		this.dx = dx;
-		this.dy = dy;
-		this.inPlay = true;
-		return true;
+		if (!this.inPlay) {
+			super.setPosition(x, y);
+			this.dx = dx;
+			this.dy = dy;
+			this.inPlay = true;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	void setTexture(Texture texture) {
@@ -31,16 +39,16 @@ public class BulletBaseActor extends BaseActor {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		if (!this.inPlay) return;
-
-		super.draw(batch, parentAlpha);
-		batch.draw(texture, getX(), getY());
+		if (this.inPlay) {
+			super.draw(batch, parentAlpha);
+			batch.draw(texture, getX(), getY());
+		}
 	}
 
 	@Override
-	public void act(float dt) {  // note: delta is time in seconds, not milliseconds
+	public void act(float dtInSeconds) {
 		if (this.inPlay) {
-			super.moveBy(dx * dt, dy * dt);
+			super.moveBy(dx * dtInSeconds, dy * dtInSeconds);
 			this.inPlay = getY() > 0 && getY() < SCREEN_HEIGHT;
 		}
 	}
