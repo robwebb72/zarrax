@@ -1,9 +1,11 @@
-package com.gwenci.zarrax;
+package com.gwenci.zarrax.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.gwenci.zarrax.BaseActor;
+import com.gwenci.zarrax.TextureManager;
 
 public class PlayerActor extends BaseActor {
 

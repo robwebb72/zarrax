@@ -1,10 +1,12 @@
-package com.gwenci.zarrax;
+package com.gwenci.zarrax.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.gwenci.zarrax.*;
+import com.gwenci.zarrax.particles.ParticleFoundry;
 
 
 public class GameScreen extends BaseScreen implements PlayerScore {

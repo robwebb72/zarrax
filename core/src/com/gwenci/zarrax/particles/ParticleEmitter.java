@@ -1,7 +1,8 @@
-package com.gwenci.zarrax;
+package com.gwenci.zarrax.particles;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.gwenci.zarrax.TextureManager;
 
 import java.util.ArrayList;
 

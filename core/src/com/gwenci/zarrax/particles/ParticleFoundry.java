@@ -1,11 +1,11 @@
-package com.gwenci.zarrax;
+package com.gwenci.zarrax.particles;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.Arrays;
 
 
-class ParticleFoundry {
+public class ParticleFoundry {
 	private static final int MAX_EMITTERS = 50;
 	private static final int MAX_PARTICLES_PER_EMITTER = 300;
 	private static final int MAX_PARTICLES = MAX_PARTICLES_PER_EMITTER * MAX_EMITTERS;
@@ -21,7 +21,7 @@ class ParticleFoundry {
 	}
 
 
-	static ParticleFoundry getInstance() {
+	public static ParticleFoundry getInstance() {
 		return instance;
 	}
 
@@ -72,18 +72,18 @@ class ParticleFoundry {
 	}
 
 
-	void newEmitter(float x, float y) {
+	public void newEmitter(float x, float y) {
 		ParticleEmitter emitter = getNextEmitter();
 		if (emitter!=null) emitter.initialize(x, y);
 	}
 
 
-	void render(SpriteBatch batch) {
+	public void render(SpriteBatch batch) {
 		Arrays.stream(particleEmitters).forEach(emitter -> emitter.render(batch));
 	}
 
 
-	void act(float dt) {
+	public void act(float dt) {
 		Arrays.stream(particleEmitters).parallel().filter(ParticleEmitter::isLive).forEach(emitter -> emitter.act(dt));
 	}
 

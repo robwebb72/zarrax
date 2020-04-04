@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 
-class Starfield {
+public class Starfield {
 
 	private static final int NSTARS = 1000;
 	private static final int SCREEN_WIDTH = 672;
@@ -27,17 +27,17 @@ class Starfield {
 		}
 	}
 
-	static Starfield getInstance() {
+	public static Starfield getInstance() {
 		return instance;
 	}
 
-	void update(float dt) {
+	public void update(float dt) {
 		for (int i = 0; i < NSTARS; i++) {
 			stars[i].update(dt);
 		}
 	}
 
-	void render(SpriteBatch batch) {
+	public void render(SpriteBatch batch) {
 		for (int i = 0; i < NSTARS; i++) {
 			batch.draw(textures[stars[i].brightness], stars[i].x, stars[i].y);
 		}

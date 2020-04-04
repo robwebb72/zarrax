@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public abstract class BaseActor extends Actor {
 
-	static final int SCREEN_WIDTH = 672; // Gdx.graphics.getWidth();
-	static final int SCREEN_HEIGHT = 768; //Gdx.graphics.getHeight();
+	public static final int SCREEN_WIDTH = 672; // Gdx.graphics.getWidth();
+	public static final int SCREEN_HEIGHT = 768; //Gdx.graphics.getHeight();
 	private Rectangle boundingRect = new Rectangle();
 
 	@Override
@@ -33,12 +33,12 @@ public abstract class BaseActor extends Actor {
 		boundingRect.setPosition(this.getX(), this.getY());
 	}
 
-	void setBoundingRect(int width, int height) {
+	public void setBoundingRect(int width, int height) {
 		boundingRect.width = width;
 		boundingRect.height = height;
 	}
 
-	boolean collidesWith(BaseActor other) {
+	public boolean collidesWith(BaseActor other) {
 		return this.boundingRect.overlaps(other.boundingRect);
 	}
 }
