@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 class AlienWrangler {
@@ -20,13 +21,14 @@ class AlienWrangler {
 	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth()/2.0f;
 	private float swarmXTimer = 0.0f;
 	private static Sound explosionSound;
+	private AlienBullets alienBullets;
 
 	static {
 		explosionSound = Gdx.audio.newSound(Gdx.files.internal("assets/alienexpl.wav"));
 	}
 
 
-	AlienWrangler(Viewport vp, SpriteBatch batch) {
+	AlienWrangler(Viewport vp, SpriteBatch batch, AlienBullets alienBullets) {
 		stage = new Stage(vp,batch);
 		for(int i = 0 ; i< MAX_ALIENS; i++) {
 			if(i>=30) {
@@ -77,11 +79,11 @@ class AlienWrangler {
 	}
 
 
-	void handleCollisions(List<BulletBaseActor> bullets, PlayerScore score) {
-
+	void handleCollisions(Stream<BulletBaseActor> bullets, PlayerScore score) {
+		List<BulletBaseActor> bulletsList= bullets.collect(Collectors.toList());
 		LiveAliens().forEach(
 				a -> {
-					bullets.stream().filter(a::collidesWith).forEach(
+					bulletsList.stream().filter(a::collidesWith).forEach(
 							b -> {
 								killAlien(a);
 								score.updateScore(a.getScore());
