@@ -1,4 +1,4 @@
-package com.gwenci.zarrax.particles;
+package com.gwenci.zarrax.particle_system;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,9 +11,6 @@ class Particle {
 	private float halfLifeInSeconds;
 	private int colour;
 	private Texture texture;
-
-
-	Particle() { }
 
 
 	void initialise(float x, float y, float speed, Texture texture, int colour, float lifeInSeconds) {

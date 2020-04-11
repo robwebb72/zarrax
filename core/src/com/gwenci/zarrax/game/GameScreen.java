@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.gwenci.zarrax.*;
-import com.gwenci.zarrax.particles.ParticleFoundry;
+import com.gwenci.zarrax.particle_system.ParticleFoundry;
 
 
 public class GameScreen extends BaseScreen implements PlayerScore {
