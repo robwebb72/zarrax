@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gwenci.zarrax.menu.MenuScreen;
-import com.gwenci.zarrax.particles.ParticleFoundry;
+import com.gwenci.zarrax.particle_system.ParticleFoundry;
 
 public class Zarrax extends BaseGame {
 

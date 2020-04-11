@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gwenci.zarrax.TextureManager;
-import com.gwenci.zarrax.particles.ParticleFoundry;
+import com.gwenci.zarrax.particle_system.ParticleFoundry;
 
 import java.util.Arrays;
 import java.util.List;
