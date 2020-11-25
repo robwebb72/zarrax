@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.gwenci.zarrax.SoundSystem;
 import com.gwenci.zarrax.TextureManager;
+import com.gwenci.zarrax.Updatable;
 import com.gwenci.zarrax.particle_system.ParticleFoundry;
 
 import java.util.Arrays;
@@ -14,23 +16,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-class AlienWrangler {
+class AlienWrangler implements Updatable {
 
 	private static final int MAX_ALIENS = 50;
-	private Stage stage;
-	private ParticleFoundry particleFoundry = ParticleFoundry.getInstance();
-	private BaseAlien[] aliens = new BaseAlien[MAX_ALIENS];
 	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth()/2.0f;
+	private static final Sound explosionSound;
+
+	private final Stage stage;
+	private final ParticleFoundry particleFoundry = ParticleFoundry.getInstance();
+	private final BaseAlien[] aliens = new BaseAlien[MAX_ALIENS];
+	private final AlienBullets alienBullets;
+
 	private float swarmXTimer = 0.0f;
-	private static Sound explosionSound;
-	private AlienBullets alienBullets;
-	private float chanceToFire;
 	private float chanceToFireMod = 1;
 
 	static {
 		explosionSound = Gdx.audio.newSound(Gdx.files.internal("assets/alienexpl.wav"));
 	}
-
 
 	AlienWrangler(Viewport vp, SpriteBatch batch, AlienBullets alienBullets) {
 		stage = new Stage(vp,batch);
@@ -61,11 +63,9 @@ class AlienWrangler {
 		}
 	}
 
-	int count() {
-		return (int) LiveAliens().count();
-	}
 
-	void act(float dt) {
+	@Override
+	public void update(float dt) {
 		swarmXTimer += dt;
 		if (swarmXTimer > 2.0f) swarmXTimer = 0.0f;
 		float swarmXPos = (swarmXTimer > 1.0f) ? 2.0f - swarmXTimer: swarmXTimer;
@@ -81,11 +81,11 @@ class AlienWrangler {
 
 
 	void firing() {
-		updateChanceToFire();
+		float chanceToFire = updateChanceToFire() * chanceToFireMod;
 		LiveAliens().forEach(
 				alien -> {
 					if (alien.isFiring(chanceToFire))
-						alienBullets.fireBullet(alien.getX() + alien.getWidth()/2, alien.getY(), 50 - MathUtils.random(100), -MathUtils.random(200));
+						alienBullets.fireBullet( alien.getCentreX(), alien.getY()-alien.getHeight(), 50 - MathUtils.random(100), -MathUtils.random(250.0f, 350.f));
 				}
 		);
 	}
@@ -96,19 +96,15 @@ class AlienWrangler {
 	}
 
 
-	void updateChanceToFire() {
-
+	private float updateChanceToFire() {
 		int numberAliens = (int) LiveAliens().count();
 
-		float chance = 0.00025f;
-
-		if (numberAliens < 35) chance = 0.002f;
-		if (numberAliens < 20) chance = 0.005f;
-		if (numberAliens < 10) chance = 0.008f;
-		if (numberAliens < 5) chance = 0.03f;
-		if (numberAliens < 2) chance = 0.06f;
-
-		chanceToFire = chance;
+		if (numberAliens < 2) return 0.06f;
+		if (numberAliens < 5) return 0.03f;
+		if (numberAliens < 10) return 0.008f;
+		if (numberAliens < 20) return 0.005f;
+		if (numberAliens < 35) return 0.002f;
+		return 0.00025f;
 	}
 
 
@@ -119,7 +115,7 @@ class AlienWrangler {
 					bulletsList.stream().filter(alien::collidesWith).forEach(
 							bullet -> {
 								killAlien(alien);
-								score.updateScore(alien.getScore());
+								score.addScore(alien.getScore());
 								bullet.removeFromPlay();
 							}
 					);
@@ -129,9 +125,8 @@ class AlienWrangler {
 
 
 	void killAllAliens(PlayerScore score) {
-
 		LiveAliens().forEach(
-				alien -> {killAlien(alien); score.updateScore(alien.getScore());}
+				alien -> {killAlien(alien); score.addScore(alien.getScore());}
 		);
 	}
 
@@ -143,7 +138,8 @@ class AlienWrangler {
 		particleFoundry.newEmitter(alien.getCentreX(), alien.getCentreY());
 
 		float pan = (alien.getCentreX() - HALF_SCREEN_WIDTH)/HALF_SCREEN_WIDTH;
-		explosionSound.play(1.0f,((float) Math.random() * 0.6f) + 0.7f,pan);
+//		explosionSound.play(1.0f,((float) Math.random() * 0.6f) + 0.7f,pan);
+		SoundSystem.getInstance().play(explosionSound,1.0f,MathUtils.random(0.7f,1.3f),pan);
 	}
 
 

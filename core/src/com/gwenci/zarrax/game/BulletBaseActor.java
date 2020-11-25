@@ -7,8 +7,8 @@ import com.gwenci.zarrax.BaseActor;
 
 public class BulletBaseActor extends BaseActor {
 
-	// TODO: SCREEN_HEIGHT hard coded here
-	private static final int SCREEN_HEIGHT = 768;
+	// TODO : SCREEN_HEIGHT hard coded here
+//	private static final int SCREEN_HEIGHT = 768;
 
 	private float dx;
 	private float dy;
@@ -21,15 +21,12 @@ public class BulletBaseActor extends BaseActor {
 	}
 
 
-	boolean fire(float x, float y, float dx, float dy) {
+	void fire(float x, float y, float dx, float dy) {
 		if (!this.inPlay) {
 			super.setPosition(x, y);
 			this.dx = dx;
 			this.dy = dy;
 			this.inPlay = true;
-			return true;
-		} else {
-			return false;
 		}
 	}
 
@@ -56,10 +53,6 @@ public class BulletBaseActor extends BaseActor {
 
 	boolean isInPlay() {
 		return inPlay;
-	}
-
-	void setInPlay(boolean value) {
-		inPlay = value;
 	}
 
 	void removeFromPlay() {inPlay = false; }

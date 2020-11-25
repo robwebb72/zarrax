@@ -10,9 +10,6 @@ abstract class BaseAlien extends BaseActor {
 
 	private AlienState state;
 	private final Texture alienTexture;
-	private final int frameWidth;
-	private final int halfFrameWidth;
-	private final int halfFrameHeight;
 
 	long lastTimeFired = TimeUtils.millis();
 
@@ -23,10 +20,9 @@ abstract class BaseAlien extends BaseActor {
 		animator = new Animator(nFrames, animFrameRate);
 
 		alienTexture = texture;
-		frameWidth = texture.getWidth() / nFrames;
-
-		halfFrameWidth = this.alienTexture.getWidth() / 2;
-		halfFrameHeight = this.alienTexture.getHeight() / 2;
+		int frameWidth = texture.getWidth() / nFrames;
+		super.setWidth(frameWidth);
+		super.setHeight(texture.getHeight());
 
 		animator.setCurrentFrame((int) (nFrames * Math.random()));
 		setPosition(SCREEN_WIDTH / 2.0f - 16f, 300f);
@@ -44,12 +40,12 @@ abstract class BaseAlien extends BaseActor {
 
 
 	float getCentreX() {
-		 return getX() + halfFrameWidth;
+		 return getX() + getWidth()/2.0f;
 	 }
 
 
 	float getCentreY() {
-		 return getY() + halfFrameHeight;
+		 return getY() + getHeight()/2.0f;
 	 }
 
 
@@ -59,16 +55,16 @@ abstract class BaseAlien extends BaseActor {
 
 
 	public void act(float dt) {
-		super.act(dt);
 		animator.update(dt);
+		super.act(dt);
 	}
 
 
 	public void draw(Batch batch, float parentAlpha) {
 		if (state != AlienState.ALIVE ) return;
 		super.draw(batch, parentAlpha);
-		batch.draw(alienTexture, getX(), getY(), animator.getCurrentFrame() * frameWidth, 0, frameWidth,
-				this.alienTexture.getHeight() );
+		batch.draw(alienTexture, getX(), getY(), animator.getCurrentFrame() *  (int) getWidth(), 0, (int) getWidth(),
+				(int) getHeight() );
 	}
 
 

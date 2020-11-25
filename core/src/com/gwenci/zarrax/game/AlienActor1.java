@@ -9,7 +9,6 @@ public class AlienActor1 extends BaseAlien {
 
 	public AlienActor1(Texture texture) {
 		super(texture, 3, 0.2f);
-
 	}
 
 	@Override
@@ -19,12 +18,12 @@ public class AlienActor1 extends BaseAlien {
 
 	@Override
 	public boolean canFire() {
-		return TimeUtils.timeSinceMillis(lastTimeFired)> 1000;
+		return TimeUtils.timeSinceMillis(lastTimeFired) > 1000;
 	}
 
 	@Override
 	public boolean isFiring(float chanceToFire) {
-		boolean firing = (MathUtils.random(1.0f)<chanceToFire) && canFire();
+		boolean firing = (MathUtils.random(1.0f) < chanceToFire) && canFire();
 
 		if (firing) {
 			lastTimeFired = TimeUtils.millis();

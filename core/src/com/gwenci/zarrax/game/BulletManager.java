@@ -3,11 +3,12 @@ package com.gwenci.zarrax.game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.gwenci.zarrax.Updatable;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class BulletManager<T extends BulletBaseActor> {
+public class BulletManager<T extends BulletBaseActor> implements Updatable {
 
 	private final int maxBullets;
 	private Stage bulletStage;
@@ -42,6 +43,11 @@ public class BulletManager<T extends BulletBaseActor> {
 	}
 
 
+	@Override
+	public void update(float dt) {
+		act(dt);
+	}
+
 	void draw() {
 		bulletStage.draw();
 	}
@@ -49,6 +55,11 @@ public class BulletManager<T extends BulletBaseActor> {
 
 	Stream<T> getActiveBullets() {
 		return Arrays.stream(bullets).filter(BulletBaseActor::isInPlay);
+	}
+
+
+	public void fireBullet(float x, float y, float dx, float dy) {
+		getNextBullet().fire(x, y, dx, dy);
 	}
 
 

@@ -8,10 +8,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.gwenci.zarrax.*;
 import com.gwenci.zarrax.particle_system.ParticleFoundry;
 
+import java.util.*;
 
-public class GameScreen extends BaseScreen implements PlayerScore {
+
+public class GameScreen extends BaseScreen {
 
 	private SpriteBatch batch = Zarrax.getSpriteBatch();
+
+	private PlayerScore playerScore;
 
 	private Starfield stars;
 	private FrameRate framerate;
@@ -24,20 +28,12 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 
 	private AlienWrangler aliens;
 	private ParticleFoundry particleFoundry;
-	private int score = 0;
-	private int displayScore = 0;
-	private static final float scoreUpdateRate = 0.01f;   // the displayScore counts up by 1 every 0.01s up to the value of the score
-	private float lastScoreUpdate = 0;
 	private BitmapFont font;
 
-	@Override
-	public void updateScore(int dScore) {
-		score += dScore;
-	}
+	private List<Updatable> updatables;
 
 	@Override
 	public void initialize() {
-
 		stars = Starfield.getInstance();
 		playerStage = new Stage(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
 		playerBullets = new PlayerBullets(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
@@ -48,48 +44,49 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 		framerate = new FrameRate();
 		framerate.setDisplay(true);
 		particleFoundry = ParticleFoundry.getInstance();
-		score = 0;
 		font = GameFont.getInstance().getFont();
+		playerScore = new PlayerScore(0.01f);  // the displayScore counts up by 1 every 0.01s up to the value of the score
+
+		setUpUpdatables();
 	}
 
-	private boolean fPressed= false;
+	private void setUpUpdatables() {
+		updatables = new ArrayList<>();
+		updatables.add(aliens);
+		updatables.add(playerScore);
+		updatables.add(stars);
+		updatables.add(playerBullets);
+		updatables.add(alienBullets);
+		updatables.add(particleFoundry);
+
+	}
+
+	private boolean muted = false;
 
 	@Override
 	public void update(float dt) {
 
-
 		if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
-			aliens.killAllAliens(this);
+			aliens.killAllAliens(playerScore);
 		}
-		if (Gdx.input.isKeyPressed(Input.Keys.F)) {
-			if(!fPressed) {
-				framerate.flipDisplay();
-				fPressed = true;
-			}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+			framerate.flipDisplay();
 		}
-		else fPressed = false;
+
+		if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+			muted = !muted;
+			SoundSystem.getInstance().setMute(muted);
+		}
+
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 			this.dispose();
 			Gdx.app.exit();
 		}
-		if(Gdx.input.isKeyPressed(Input.Keys.P)) {
-			alienBullets.fireBullet((float) Math.random()*600,700,100.0f - (float) Math.random()*200,0);
-		}
+
 		player.act(dt);
-		playerBullets.act(dt);
-		alienBullets.act(dt);
 
-		stars.update(dt);
-		particleFoundry.act(dt);
-
-		aliens.act(dt);
-		aliens.handleCollisions(playerBullets.getActiveBullets(), this);
-
-		lastScoreUpdate -= dt;
-		if(lastScoreUpdate<0.0f) {
-			if(displayScore<score) displayScore++;
-			lastScoreUpdate = scoreUpdateRate;
-		}
+		updatables.forEach(update -> update.update(dt));
+		aliens.handleCollisions(playerBullets.getActiveBullets(), playerScore);
 
 		framerate.update();
 	}
@@ -100,7 +97,8 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 		stars.render(batch);
 		framerate.render(batch);
 		particleFoundry.render(batch);
-		font.draw(batch, String.format("%08d",displayScore) , 275, 768- 3);
+		font.draw(batch, String.format("%08d",playerScore.getDisplayScore()) , 275, 768- 3);
+		if(muted) font.draw(batch, "muted" , 570, 43);
 	//	font.draw(batch,"hi 00000700" , 4, 768- 3);
 		batch.end();
 		playerBullets.draw();

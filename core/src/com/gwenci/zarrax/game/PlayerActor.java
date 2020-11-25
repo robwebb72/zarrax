@@ -13,10 +13,9 @@ public class PlayerActor extends BaseActor {
 	private static final int SCREEN_HEIGHT = 768;
 	private static final int MAX_PLAYER_HEIGHT = SCREEN_HEIGHT / 3;
 	private static final float SPEED = 200f;  //pixels per second
-	private Texture playerTexture;
+	private final Texture playerTexture;
 	private Direction direction;
 	private final PlayerBullets bullets;
-	private boolean spacePressed;
 
 	PlayerActor(PlayerBullets bullets) {
 		playerTexture = TextureManager.getInstance().get("assets/player.png");
@@ -43,12 +42,8 @@ public class PlayerActor extends BaseActor {
 		if (Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S)) dy -= SPEED * dt;
 		super.moveBy(dx, dy);
 
-		if (Gdx.input.isKeyPressed(Keys.SPACE) && !spacePressed) {
+		if (Gdx.input.isKeyJustPressed(Keys.SPACE))
 			bullets.fireBullet(getX(), getY());
-			spacePressed = true;
-		}
-		else spacePressed = false;
-
 
 		checkBounds();
 	}

@@ -1,11 +1,12 @@
 package com.gwenci.zarrax.particle_system;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.gwenci.zarrax.Updatable;
 
 import java.util.Arrays;
 
 
-public class ParticleFoundry {
+public class ParticleFoundry implements Updatable {
 	private static final int MAX_EMITTERS = 50;
 	private static final int MAX_PARTICLES_PER_EMITTER = 300;
 	private static final int MAX_PARTICLES = MAX_PARTICLES_PER_EMITTER * MAX_EMITTERS;
@@ -83,8 +84,9 @@ public class ParticleFoundry {
 	}
 
 
-	public void act(float dt) {
+	@Override
+	public void update(float dt) {
 		Arrays.stream(particleEmitters).parallel().filter(ParticleEmitter::isLive).forEach(emitter -> emitter.act(dt));
 	}
-
 }
+
