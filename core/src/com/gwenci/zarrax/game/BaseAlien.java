@@ -2,9 +2,10 @@ package com.gwenci.zarrax.game;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.gwenci.zarrax.BaseActor;
 
-class BaseAlien extends BaseActor {
+abstract class BaseAlien extends BaseActor {
 	AlienState state;
 	Texture alienTexture;
 	private int frameWidth;
@@ -14,6 +15,8 @@ class BaseAlien extends BaseActor {
 	float animFrameRate;
 	float animFrameRateTimer = 0;
 	int animFrame = 0;
+	long lastTimeFired = TimeUtils.millis();
+
 
 	BaseAlien(Texture texture, int nframes, float animFrameRate) {
 
@@ -74,5 +77,10 @@ class BaseAlien extends BaseActor {
 				animFrame * frameWidth, 0,
 				frameWidth, this.alienTexture.getHeight() );
 	 }
+
+
+	 public abstract boolean canFire();
+
+	 public abstract boolean isFiring(float chanceToFire);
 
  }

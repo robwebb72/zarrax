@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 public class BulletManager<T extends BulletBaseActor> {
 
-	private int maxBullets;
+	private final int maxBullets;
 	private Stage bulletStage;
 	private int nextBullet = 0;
 

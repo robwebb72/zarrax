@@ -24,6 +24,8 @@ class AlienWrangler {
 	private float swarmXTimer = 0.0f;
 	private static Sound explosionSound;
 	private AlienBullets alienBullets;
+	private float chanceToFire;
+	private float chanceToFireMod = 1;
 
 	static {
 		explosionSound = Gdx.audio.newSound(Gdx.files.internal("assets/alienexpl.wav"));
@@ -41,7 +43,8 @@ class AlienWrangler {
 			stage.addActor(aliens[i]);
 		}
 		placeAliens();
-
+		this.alienBullets = alienBullets;
+		updateChanceToFire();
 		// just the one alien, please..
 //		aliens[0] = new AlienActor1(alien1texture);
 //		aliens[0].setPosition(250, 575);
@@ -58,6 +61,10 @@ class AlienWrangler {
 		}
 	}
 
+	int count() {
+		return (int) LiveAliens().count();
+	}
+
 	void act(float dt) {
 		swarmXTimer += dt;
 		if (swarmXTimer > 2.0f) swarmXTimer = 0.0f;
@@ -66,13 +73,21 @@ class AlienWrangler {
 		for( int i= 0; i< MAX_ALIENS; i++) {
 			if(!aliens[i].isAlive()) continue;
 			aliens[i].setPosition(100 + swarmXPos * 30 + (i % 10) * 45 , aliens[i].getY());
-			int fire_chance = MathUtils.random(10000);
-			if(fire_chance < 100) {
-				// alien fires
-			}
- 		}
+		}
 
+		firing();
 		stage.act(dt);
+	}
+
+
+	void firing() {
+		updateChanceToFire();
+		LiveAliens().forEach(
+				alien -> {
+					if (alien.isFiring(chanceToFire))
+						alienBullets.fireBullet(alien.getX() + alien.getWidth()/2, alien.getY(), 50 - MathUtils.random(100), -MathUtils.random(200));
+				}
+		);
 	}
 
 
@@ -81,15 +96,31 @@ class AlienWrangler {
 	}
 
 
+	void updateChanceToFire() {
+
+		int numberAliens = (int) LiveAliens().count();
+
+		float chance = 0.00025f;
+
+		if (numberAliens < 35) chance = 0.002f;
+		if (numberAliens < 20) chance = 0.005f;
+		if (numberAliens < 10) chance = 0.008f;
+		if (numberAliens < 5) chance = 0.03f;
+		if (numberAliens < 2) chance = 0.06f;
+
+		chanceToFire = chance;
+	}
+
+
 	void handleCollisions(Stream<BulletBaseActor> bullets, PlayerScore score) {
 		List<BulletBaseActor> bulletsList= bullets.collect(Collectors.toList());
 		LiveAliens().forEach(
-				a -> {
-					bulletsList.stream().filter(a::collidesWith).forEach(
-							b -> {
-								killAlien(a);
-								score.updateScore(a.getScore());
-								b.removeFromPlay();
+				alien -> {
+					bulletsList.stream().filter(alien::collidesWith).forEach(
+							bullet -> {
+								killAlien(alien);
+								score.updateScore(alien.getScore());
+								bullet.removeFromPlay();
 							}
 					);
 				}
@@ -100,7 +131,7 @@ class AlienWrangler {
 	void killAllAliens(PlayerScore score) {
 
 		LiveAliens().forEach(
-				a -> {killAlien(a); score.updateScore(a.getScore());}
+				alien -> {killAlien(alien); score.updateScore(alien.getScore());}
 		);
 	}
 
