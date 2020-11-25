@@ -35,7 +35,7 @@ class PlayerBullets extends BulletManager<BulletBaseActor> {
 	PlayerBullets(Viewport vp, SpriteBatch batch) {
 		super(MAX_BULLETS);
 		for(int i= 0; i<MAX_BULLETS; i++) {
-			bullets[i] = new BulletBaseActor(texture);
+			bullets[i] = new BulletBaseActor(texture, 1, 0.0f);
 		}
 		super.SetStage(vp,batch);
 	}

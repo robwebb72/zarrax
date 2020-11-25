@@ -13,11 +13,17 @@ public class BulletBaseActor extends BaseActor {
 	private float dx;
 	private float dy;
 	private boolean inPlay;
+	private float animFrameRateTimer = 0.0f;
+	private final float animFrameRate;
+	private final int nFrames;
+	private int currentFrame;
 	Texture texture;
 
 
-	BulletBaseActor(Texture texture) {
+	BulletBaseActor(Texture texture, int nFrames, float animFrameRate) {
 		setTexture(texture);
+		this.animFrameRate = animFrameRate;
+		this.nFrames = nFrames;
 	}
 
 
@@ -49,8 +55,18 @@ public class BulletBaseActor extends BaseActor {
 	@Override
 	public void act(float dtInSeconds) {
 		if (this.inPlay) {
+			updateAnim(dtInSeconds);
 			super.moveBy(dx * dtInSeconds, dy * dtInSeconds);
 			this.inPlay = getY() > 0 && getY() < SCREEN_HEIGHT;
+		}
+	}
+
+	private void updateAnim(float dtInSeconds) {
+		if (nFrames == 1) return;
+		animFrameRateTimer += dtInSeconds;
+		if (animFrameRateTimer > animFrameRate) {
+			animFrameRateTimer = 0.0f;
+			currentFrame = currentFrame == (nFrames-1) ? 0 : currentFrame++;
 		}
 	}
 
