@@ -15,6 +15,7 @@ public class PlayerActor extends BaseActor {
 	private static final float SPEED = 200f;  //pixels per second
 	private Texture playerTexture;
 	private Direction direction;
+
 	PlayerActor() {
 		playerTexture = TextureManager.getInstance().get("assets/player.png");
 		setPosition(SCREEN_WIDTH / 2.0f - 16f, 5f);
@@ -23,10 +24,9 @@ public class PlayerActor extends BaseActor {
 	@Override
 	public void act(float dt) {
 		super.act(dt);
-		float dx = 0;
-		float dy = 0;
+		float dx = 0.0f;
+		float dy = 0.0f;
 
-		direction = Direction.STRAIGHT;
 		if (Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.A)) {
 			dx -= SPEED * dt;
 			direction = Direction.LEFT;
@@ -55,14 +55,15 @@ public class PlayerActor extends BaseActor {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-		int srcX = 0;
-		switch (direction) {
-			case LEFT:
-				srcX = 30;
-				break;
-			case RIGHT:
-				srcX = 60;
-		}
+		int srcX;
+
+		if (direction == Direction.LEFT)
+			srcX = 30;
+		else if (direction == Direction.RIGHT)
+			srcX = 60;
+		else
+			srcX = 0;
+
 		batch.draw(playerTexture, super.getX(), super.getY(), srcX, 0, 30, 30);
 	}
 
