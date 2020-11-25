@@ -85,7 +85,7 @@ class AlienWrangler {
 		LiveAliens().forEach(
 				alien -> {
 					if (alien.isFiring(chanceToFire))
-						alienBullets.fireBullet(alien.getX() + alien.getWidth()/2, alien.getY(), 50 - MathUtils.random(100), -MathUtils.random(200));
+						alienBullets.fireBullet(alien.getX() + alien.getWidth()/2, alien.getY(), 50 - MathUtils.random(100), -200-MathUtils.random(200));
 				}
 		);
 	}

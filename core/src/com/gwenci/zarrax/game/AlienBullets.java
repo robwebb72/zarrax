@@ -8,7 +8,6 @@ import com.gwenci.zarrax.TextureManager;
 public class AlienBullets extends BulletManager<BulletBaseActor> {
 
 	private static final int MAX_BULLETS = 250;
-	private static final float BULLET_SPEED = -200f;
 	private static Texture texture;
 
 	static {
@@ -20,7 +19,7 @@ public class AlienBullets extends BulletManager<BulletBaseActor> {
 	AlienBullets(Viewport vp, SpriteBatch batch) {
 		super(MAX_BULLETS);
 		for(int i= 0; i<MAX_BULLETS; i++) {
-			bullets[i] = new BulletBaseActor(texture);
+			bullets[i] = new BulletBaseActor(texture, 1, 0.0f);
 		}
 		super.SetStage(vp,batch);
 	}
@@ -30,7 +29,7 @@ public class AlienBullets extends BulletManager<BulletBaseActor> {
 	void fireBullet(float x, float y, float dx, float dy) {
 		BulletBaseActor bullet = super.getNextBullet();
 		if(!bullet.isInPlay()) {
-			bullet.fire(x, y, dx, BULLET_SPEED+dy);
+			bullet.fire(x, y, dx, dy);
 		}
 	}
 
