@@ -42,7 +42,7 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 		playerStage = new Stage(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
 		playerBullets = new PlayerBullets(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
 		alienBullets = new AlienBullets(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
-		player = new PlayerActor();
+		player = new PlayerActor(playerBullets);
 		playerStage.addActor(player);
 		aliens = new AlienWrangler(Zarrax.getViewPort(), Zarrax.getSpriteBatch(),alienBullets);
 		framerate = new FrameRate();
@@ -52,20 +52,12 @@ public class GameScreen extends BaseScreen implements PlayerScore {
 		font = GameFont.getInstance().getFont();
 	}
 
-	private boolean spacePressed= false;
 	private boolean fPressed= false;
 
 	@Override
 	public void update(float dt) {
 
 
-		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-			if(!spacePressed) {
-				playerBullets.fireBullet(player.getX(), player.getY());
-				spacePressed = true;
-			}
-		}
-		else spacePressed = false;
 		if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
 			aliens.killAllAliens(this);
 		}

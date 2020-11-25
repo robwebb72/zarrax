@@ -15,10 +15,13 @@ public class PlayerActor extends BaseActor {
 	private static final float SPEED = 200f;  //pixels per second
 	private Texture playerTexture;
 	private Direction direction;
+	private final PlayerBullets bullets;
+	private boolean spacePressed;
 
-	PlayerActor() {
+	PlayerActor(PlayerBullets bullets) {
 		playerTexture = TextureManager.getInstance().get("assets/player.png");
 		setPosition(SCREEN_WIDTH / 2.0f - 16f, 5f);
+		this.bullets = bullets;
 	}
 
 	@Override
@@ -39,6 +42,14 @@ public class PlayerActor extends BaseActor {
 		if (Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.W)) dy += SPEED * dt;
 		if (Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S)) dy -= SPEED * dt;
 		super.moveBy(dx, dy);
+
+		if (Gdx.input.isKeyPressed(Keys.SPACE) && !spacePressed) {
+			bullets.fireBullet(getX(), getY());
+			spacePressed = true;
+		}
+		else spacePressed = false;
+
+
 		checkBounds();
 	}
 
