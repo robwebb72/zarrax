@@ -65,7 +65,7 @@ abstract class BaseAlien extends BaseActor {
 		 if (animFrameRateTimer > animFrameRate) {
 			 animFrameRateTimer = 0;
 			 animFrame--;
-			 if (animFrame < 0) animFrame = 2;
+			 if (animFrame < 0) animFrame = nframes-1;
 		 }
 	}
 
