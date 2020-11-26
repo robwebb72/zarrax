@@ -66,18 +66,12 @@ public class GameScreen extends BaseScreen {
 	@Override
 	public void update(float dt) {
 
-		if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
-			aliens.killAllAliens(playerScore);
-		}
-		if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
-			framerate.flipDisplay();
-		}
-
+		if (Gdx.input.isKeyPressed(Input.Keys.Z)) aliens.killAllAliens(playerScore);
+		if (Gdx.input.isKeyJustPressed(Input.Keys.F)) framerate.flipDisplay();
 		if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
 			muted = !muted;
 			SoundSystem.getInstance().setMute(muted);
 		}
-
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 			this.dispose();
 			Gdx.app.exit();
@@ -87,7 +81,6 @@ public class GameScreen extends BaseScreen {
 
 		updatables.forEach(update -> update.update(dt));
 		aliens.handleCollisions(playerBullets.getActiveBullets(), playerScore);
-
 		framerate.update();
 	}
 
