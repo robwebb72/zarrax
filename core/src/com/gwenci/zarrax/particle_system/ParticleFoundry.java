@@ -11,9 +11,9 @@ public class ParticleFoundry implements Updatable {
 	private static final int MAX_PARTICLES_PER_EMITTER = 300;
 	private static final int MAX_PARTICLES = MAX_PARTICLES_PER_EMITTER * MAX_EMITTERS;
 
-	private static ParticleFoundry instance = new ParticleFoundry();
-	private Particle[] particles = new Particle[MAX_PARTICLES];
-	private ParticleEmitter[] particleEmitters = new ParticleEmitter[50];
+	private static final ParticleFoundry instance = new ParticleFoundry();
+	private final Particle[] particles = new Particle[MAX_PARTICLES];
+	private final ParticleEmitter[] particleEmitters = new ParticleEmitter[MAX_EMITTERS];
 	private int emitterIndex = 0;
 
 
@@ -42,7 +42,7 @@ public class ParticleFoundry implements Updatable {
 
 
 	private void createEmitters() {
-		for(int i = 0; i < MAX_EMITTERS; i++) {
+		for (int i = 0; i < MAX_EMITTERS; i++) {
 			particleEmitters[i] = new ParticleEmitter();
 		}
 	}
@@ -58,24 +58,29 @@ public class ParticleFoundry implements Updatable {
 	}
 
 
-	private ParticleEmitter getNextEmitter() {
-		int originalIndex = emitterIndex;
-		emitterIndex++;
-
-		while (emitterIndex != originalIndex) {
-			if (emitterIndex == MAX_EMITTERS) emitterIndex = 0;
-			if (!particleEmitters[emitterIndex].isLive()) {
-				return particleEmitters[emitterIndex];
-			}
-			emitterIndex++;
-		}
-		return null;
+	public ParticleEmitter getEmitter() {
+		ParticleEmitter emitter = getNextEmitter();
+		if (emitter != null) emitter.setReserved(true);
+		return emitter;
 	}
 
 
 	public void newEmitter(float x, float y) {
 		ParticleEmitter emitter = getNextEmitter();
-		if (emitter!=null) emitter.initialize(x, y);
+		if (emitter != null) emitter.initialize(x, y);
+	}
+
+
+	private ParticleEmitter getNextEmitter() {
+		int originalIndex = emitterIndex;
+		do {
+			emitterIndex++;
+			if (emitterIndex == MAX_EMITTERS)
+				emitterIndex = 0;
+			if (particleEmitters[emitterIndex].isAvailable())
+				return particleEmitters[emitterIndex];
+		} while (emitterIndex != originalIndex);
+		return null;
 	}
 
 
@@ -86,7 +91,7 @@ public class ParticleFoundry implements Updatable {
 
 	@Override
 	public void update(float dt) {
-		Arrays.stream(particleEmitters).parallel().filter(ParticleEmitter::isLive).forEach(emitter -> emitter.act(dt));
+		Arrays.stream(particleEmitters).parallel().filter(ParticleEmitter::isActive).forEach(emitter -> emitter.act(dt));
 	}
 }
 

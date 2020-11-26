@@ -8,15 +8,20 @@ import java.util.ArrayList;
 
 
 class ParticleEmitter {
-	private ArrayList<Particle> particles = new ArrayList<>();
-	private Texture texture = TextureManager.getInstance().get("assets/spectrum.png");
-	private boolean isLive = false;
+	private final ArrayList<Particle> particles = new ArrayList<>();
+	private final Texture texture = TextureManager.getInstance().get("assets/spectrum.png");
+	private boolean isActive = false;
+	private boolean reserved = false;
 
 
 	void addParticle(Particle particle) {
 		particles.add(particle);
 	}
 
+
+	public void setReserved(boolean reserved) {
+		this.reserved = reserved;
+	}
 
 	void initialize(float x, float y) {
 		int counter = 0;
@@ -36,26 +41,29 @@ class ParticleEmitter {
 			counter++;
 			if (counter > 3) counter = 0;
 		}
-		isLive = true;
+		isActive = true;
 	}
 
+	boolean isAvailable() {
+		return !isActive && !reserved;
+	}
 
-	boolean isLive() {
-		return isLive;
+	boolean isActive() {
+		return isActive;
 	}
 
 
 	void render(SpriteBatch batch) {
-		if (isLive) {
+		if (isActive) {
 			particles.forEach(particle -> particle.render(batch));
 		}
 	}
 
 
 	void act(float dt) {
-		if (isLive) {
+		if (isActive) {
 			particles.parallelStream().forEach(particle -> particle.act(dt));
-			isLive = anyParticleAlive();
+			isActive = anyParticleAlive();
 		}
 	}
 
