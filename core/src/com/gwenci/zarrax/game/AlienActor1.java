@@ -3,6 +3,9 @@ package com.gwenci.zarrax.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.gwenci.zarrax.particle_system.AlienParticleExplosion01;
+import com.gwenci.zarrax.particle_system.EmitterType;
+import com.gwenci.zarrax.particle_system.ParticleColours;
 
 public class AlienActor1 extends BaseAlien {
 
@@ -29,5 +32,10 @@ public class AlienActor1 extends BaseAlien {
 			lastTimeFired = TimeUtils.millis();
 		}
 		return firing;
+	}
+
+	@Override
+	public EmitterType particleExplosion() {
+		return new AlienParticleExplosion01(ParticleColours.GREEN);
 	}
 }

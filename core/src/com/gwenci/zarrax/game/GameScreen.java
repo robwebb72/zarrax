@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.gwenci.zarrax.*;
+import com.gwenci.zarrax.particle_system.AlienParticleExplosion01;
+import com.gwenci.zarrax.particle_system.ParticleColours;
 import com.gwenci.zarrax.particle_system.ParticleFoundry;
 
 import java.util.*;
@@ -75,6 +77,11 @@ public class GameScreen extends BaseScreen {
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 			this.dispose();
 			Gdx.app.exit();
+		}
+
+		// TEMPORARY HACK TO "FAKE" PLAYER EXPLOSION
+		if(Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+			particleFoundry.newEmitter(player, new AlienParticleExplosion01(ParticleColours.WHITE));
 		}
 
 		player.act(dt);

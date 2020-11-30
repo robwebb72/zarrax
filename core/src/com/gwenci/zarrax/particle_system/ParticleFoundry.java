@@ -1,14 +1,18 @@
 package com.gwenci.zarrax.particle_system;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.gwenci.zarrax.Updatable;
 
 import java.util.Arrays;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 
 public class ParticleFoundry implements Updatable {
-	private static final int MAX_EMITTERS = 50;
-	private static final int MAX_PARTICLES_PER_EMITTER = 300;
+
+	private static final int MAX_EMITTERS = 60;
+	static final int MAX_PARTICLES_PER_EMITTER = 300;
 	private static final int MAX_PARTICLES = MAX_PARTICLES_PER_EMITTER * MAX_EMITTERS;
 
 	private static final ParticleFoundry instance = new ParticleFoundry();
@@ -64,10 +68,13 @@ public class ParticleFoundry implements Updatable {
 		return emitter;
 	}
 
-
-	public void newEmitter(float x, float y) {
+	public ParticleEmitter newEmitter(ILocation loc, EmitterType type) {
 		ParticleEmitter emitter = getNextEmitter();
-		if (emitter != null) emitter.initialize(x, y);
+
+		if (emitter==null) return null;
+		emitter.initialize(loc, type); //, velocity_func, colour_func, speed_func);
+		return emitter;
+
 	}
 
 

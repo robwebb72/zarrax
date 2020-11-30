@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.gwenci.zarrax.Animator;
 import com.gwenci.zarrax.BaseActor;
+import com.gwenci.zarrax.particle_system.EmitterType;
 
 abstract class BaseAlien extends BaseActor {
 
@@ -71,5 +72,7 @@ abstract class BaseAlien extends BaseActor {
 	public abstract boolean canFire();
 
 	public abstract boolean isFiring(float chanceToFire);
+
+	public abstract EmitterType particleExplosion();
 
  }

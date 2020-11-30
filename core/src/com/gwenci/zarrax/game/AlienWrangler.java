@@ -130,12 +130,11 @@ class AlienWrangler implements Updatable {
 		);
 	}
 
-
+	boolean temp = false;
 	private void killAlien(BaseAlien alien) {
 
 		alien.setState(AlienState.DEAD);
-
-		particleFoundry.newEmitter(alien.getCentreX(), alien.getCentreY());
+		particleFoundry.newEmitter(alien, alien.particleExplosion());
 
 		float pan = (alien.getCentreX() - HALF_SCREEN_WIDTH)/HALF_SCREEN_WIDTH;
 //		explosionSound.play(1.0f,((float) Math.random() * 0.6f) + 0.7f,pan);
