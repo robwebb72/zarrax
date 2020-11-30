@@ -1,18 +1,23 @@
 package com.gwenci.zarrax.particle_system;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.gwenci.zarrax.Updatable;
 
 import java.util.Arrays;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 
-public class ParticleFoundry {
-	private static final int MAX_EMITTERS = 50;
-	private static final int MAX_PARTICLES_PER_EMITTER = 300;
+public class ParticleFoundry implements Updatable {
+
+	private static final int MAX_EMITTERS = 60;
+	static final int MAX_PARTICLES_PER_EMITTER = 300;
 	private static final int MAX_PARTICLES = MAX_PARTICLES_PER_EMITTER * MAX_EMITTERS;
 
-	private static ParticleFoundry instance = new ParticleFoundry();
-	private Particle[] particles = new Particle[MAX_PARTICLES];
-	private ParticleEmitter[] particleEmitters = new ParticleEmitter[50];
+	private static final ParticleFoundry instance = new ParticleFoundry();
+	private final Particle[] particles = new Particle[MAX_PARTICLES];
+	private final ParticleEmitter[] particleEmitters = new ParticleEmitter[MAX_EMITTERS];
 	private int emitterIndex = 0;
 
 
@@ -41,7 +46,7 @@ public class ParticleFoundry {
 
 
 	private void createEmitters() {
-		for(int i = 0; i < MAX_EMITTERS; i++) {
+		for (int i = 0; i < MAX_EMITTERS; i++) {
 			particleEmitters[i] = new ParticleEmitter();
 		}
 	}
@@ -57,24 +62,32 @@ public class ParticleFoundry {
 	}
 
 
-	private ParticleEmitter getNextEmitter() {
-		int originalIndex = emitterIndex;
-		emitterIndex++;
+	public ParticleEmitter getEmitter() {
+		ParticleEmitter emitter = getNextEmitter();
+		if (emitter != null) emitter.setReserved(true);
+		return emitter;
+	}
 
-		while (emitterIndex != originalIndex) {
-			if (emitterIndex == MAX_EMITTERS) emitterIndex = 0;
-			if (!particleEmitters[emitterIndex].isLive()) {
-				return particleEmitters[emitterIndex];
-			}
-			emitterIndex++;
-		}
-		return null;
+	public ParticleEmitter newEmitter(ILocation loc, EmitterType type) {
+		ParticleEmitter emitter = getNextEmitter();
+
+		if (emitter==null) return null;
+		emitter.initialize(loc, type); //, velocity_func, colour_func, speed_func);
+		return emitter;
+
 	}
 
 
-	public void newEmitter(float x, float y) {
-		ParticleEmitter emitter = getNextEmitter();
-		if (emitter!=null) emitter.initialize(x, y);
+	private ParticleEmitter getNextEmitter() {
+		int originalIndex = emitterIndex;
+		do {
+			emitterIndex++;
+			if (emitterIndex == MAX_EMITTERS)
+				emitterIndex = 0;
+			if (particleEmitters[emitterIndex].isAvailable())
+				return particleEmitters[emitterIndex];
+		} while (emitterIndex != originalIndex);
+		return null;
 	}
 
 
@@ -83,8 +96,9 @@ public class ParticleFoundry {
 	}
 
 
-	public void act(float dt) {
-		Arrays.stream(particleEmitters).parallel().filter(ParticleEmitter::isLive).forEach(emitter -> emitter.act(dt));
+	@Override
+	public void update(float dt) {
+		Arrays.stream(particleEmitters).parallel().filter(ParticleEmitter::isActive).forEach(emitter -> emitter.act(dt));
 	}
-
 }
+

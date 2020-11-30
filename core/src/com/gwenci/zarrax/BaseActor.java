@@ -3,12 +3,14 @@ package com.gwenci.zarrax;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.gwenci.zarrax.particle_system.ILocation;
 
-public abstract class BaseActor extends Actor {
+public abstract class BaseActor extends Actor implements ILocation {
 
-	public static final int SCREEN_WIDTH = 672; // Gdx.graphics.getWidth();
-	public static final int SCREEN_HEIGHT = 768; //Gdx.graphics.getHeight();
+	public static final int SCREEN_WIDTH = Gdx.graphics.getWidth();
+	public static final int SCREEN_HEIGHT = Gdx.graphics.getHeight();
 	private Rectangle boundingRect = new Rectangle();
 
 	@Override
@@ -27,6 +29,10 @@ public abstract class BaseActor extends Actor {
 		boundingRect.setPosition(x,y);
 	}
 
+	public Vector2 getPositionVector() {
+		return new Vector2(getX(),getY());
+	}
+
 	@Override
 	public void moveBy(float dx, float dy) {
 		super.moveBy(dx,dy);
@@ -40,5 +46,9 @@ public abstract class BaseActor extends Actor {
 
 	public boolean collidesWith(BaseActor other) {
 		return this.boundingRect.overlaps(other.boundingRect);
+	}
+
+	public Vector2 location() {
+		return new Vector2(getX()+ getWidth()/2, getY()+ getHeight()/2);
 	}
 }

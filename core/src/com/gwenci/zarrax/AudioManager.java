@@ -8,8 +8,8 @@ import java.util.HashMap;
 
 public class AudioManager {
 
-	private HashMap<String,Sound> sounds = new HashMap<>();
-	private static AudioManager instance = new AudioManager();
+	private static final AudioManager instance = new AudioManager();
+	private final HashMap<String,Sound> sounds = new HashMap<>();
 
 	private AudioManager() {}
 
