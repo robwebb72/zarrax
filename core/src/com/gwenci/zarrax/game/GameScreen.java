@@ -15,6 +15,7 @@ import java.util.*;
 
 public class GameScreen extends BaseScreen {
 
+	private static final int MAX_ALIEN_BULLETS = 250;
 	private SpriteBatch batch = Zarrax.getSpriteBatch();
 
 	private PlayerScore playerScore;
@@ -23,7 +24,7 @@ public class GameScreen extends BaseScreen {
 	private FrameRate framerate;
 
 	private PlayerBullets playerBullets;
-	private AlienBullets alienBullets;
+	private BulletManager alienBullets;
 
 	private Stage playerStage;
 	private PlayerActor player;
@@ -39,7 +40,8 @@ public class GameScreen extends BaseScreen {
 		stars = Starfield.getInstance();
 		playerStage = new Stage(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
 		playerBullets = new PlayerBullets(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
-		alienBullets = new AlienBullets(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
+		alienBullets = new BulletManager(MAX_ALIEN_BULLETS);
+		alienBullets.setStage(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
 		player = new PlayerActor(playerBullets);
 		playerStage.addActor(player);
 		aliens = new AlienWrangler(Zarrax.getViewPort(), Zarrax.getSpriteBatch(),alienBullets);

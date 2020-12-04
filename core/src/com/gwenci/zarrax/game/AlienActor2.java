@@ -12,13 +12,15 @@ import com.gwenci.zarrax.particle_system.ParticleColours;
 
 public class AlienActor2 extends BaseAlien {
 
+	// TODO: ADD BULLET TYPE FIRE SOUND
 
 	public AlienActor2(Texture texture) {
 		super(texture, 3, 0.25f);
 		bulletType = new BulletType(
 				TextureManager.getInstance().get("assets/alien_bullet2.png"),
 				new Animator(2, 0.2f),
-				1.5f
+				350f,
+				null
 		);
 	}
 

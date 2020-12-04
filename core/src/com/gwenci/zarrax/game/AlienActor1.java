@@ -14,10 +14,13 @@ public class AlienActor1 extends BaseAlien {
 
 	public AlienActor1(Texture texture) {
 		super(texture, 3, 0.2f);
+
+		// TODO: ADD BULLET TYPE FIRE SOUND
 		bulletType = new BulletType(
 				TextureManager.getInstance().get("assets/alien_bullet.png"),
 				new Animator(2, 0.2f),
-				0.9f
+				250.0f,
+				null
 		);
 	}
 

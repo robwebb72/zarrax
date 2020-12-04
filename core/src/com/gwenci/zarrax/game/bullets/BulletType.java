@@ -10,10 +10,17 @@ public class BulletType {
 	private final Animator animator;
 	private final float speed;
 
-	public BulletType(Texture texture, Animator animator, float speed) {
+	public Sound getFireSound() {
+		return fireSound;
+	}
+
+	private final Sound fireSound;
+
+	public BulletType(Texture texture, Animator animator, float speed, Sound fireSound) {
 		this.texture = texture;
 		this.animator = animator;
 		this.speed = speed;
+		this.fireSound = fireSound;
 
 	}
 
