@@ -26,7 +26,7 @@ class AlienWrangler implements Updatable {
 	private final Stage stage;
 	private final ParticleFoundry particleFoundry = ParticleFoundry.getInstance();
 	private final BaseAlien[] aliens = new BaseAlien[MAX_ALIENS];
-	private final AlienBullets alienBullets;
+	private final BulletManager alienBullets;
 
 	private float swarmXTimer = 0.0f;
 	private float chanceToFireMod = 1;
@@ -35,7 +35,7 @@ class AlienWrangler implements Updatable {
 		explosionSound = Gdx.audio.newSound(Gdx.files.internal("assets/alienexpl.wav"));
 	}
 
-	AlienWrangler(Viewport vp, SpriteBatch batch, AlienBullets alienBullets) {
+	AlienWrangler(Viewport vp, SpriteBatch batch, BulletManager alienBullets) {
 		stage = new Stage(vp,batch);
 		for(int i = 0 ; i< MAX_ALIENS; i++) {
 			if(i>=30) {
@@ -108,12 +108,12 @@ class AlienWrangler implements Updatable {
 	private float updateBulletSpeed() {
 		int numberAliens = (int) LiveAliens().count();
 
-		if (numberAliens < 2) return 500.0f;
-		if (numberAliens < 5) return 350.0f;
-		if (numberAliens < 10) return 350.0f;
-		if (numberAliens < 20) return 250.0f;
-		if (numberAliens < 35) return 250.0f;
-		return 250.0f;
+		if (numberAliens < 2) return 2.0f;
+		if (numberAliens < 5) return 1.5f;
+		if (numberAliens < 10) return 1.5f;
+		if (numberAliens < 20) return 1.0f;
+		if (numberAliens < 35) return 1.0f;
+		return 1.0f;
 	}
 
 

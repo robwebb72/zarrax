@@ -1,10 +1,12 @@
 package com.gwenci.zarrax.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.gwenci.zarrax.Animator;
 import com.gwenci.zarrax.BaseActor;
+import com.gwenci.zarrax.SoundSystem;
 import com.gwenci.zarrax.game.bullets.BulletType;
 
 
@@ -41,6 +43,31 @@ public class BulletBaseActor extends BaseActor {
 			this.inPlay = true;
 		}
 	}
+
+	//TODO: Potential screen size issues (HALF_SCREEN_WIDTH used for panning sound)
+	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth() / 2f;
+
+
+	public boolean fire(BulletType bulletType, Vector2 location, Vector2 delta_vec) {
+		if (!this.inPlay) {
+			initialise(bulletType);
+			delta_vec.scl(bulletType.getSpeed());
+			this.delta_vec = delta_vec;
+			super.setPosition(location.x, location.y);
+			this.inPlay = true;
+
+			if (bulletType.getFireSound() != null) {
+				// TODO: give the SoundSystem a vector as a location for panning
+				float pan = (location.x - HALF_SCREEN_WIDTH) / HALF_SCREEN_WIDTH;
+				SoundSystem.getInstance().play(bulletType.getFireSound(), 1.0f, ((float) Math.random() * 0.6f) + 0.7f, pan);
+
+			}
+
+			return true;
+		}
+		return false;
+	}
+
 
 	void setTexture(Texture texture) {
 		this.texture = texture;

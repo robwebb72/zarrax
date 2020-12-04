@@ -5,14 +5,18 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import com.gwenci.zarrax.Animator;
+import com.gwenci.zarrax.AudioManager;
 import com.gwenci.zarrax.BaseActor;
 import com.gwenci.zarrax.TextureManager;
+import com.gwenci.zarrax.game.bullets.BulletType;
 import com.gwenci.zarrax.particle_system.ILocation;
 import com.gwenci.zarrax.particle_system.JetPlumeParticles;
 import com.gwenci.zarrax.particle_system.ParticleFoundry;
 
 public class PlayerActor extends BaseActor {
 
+	private static final int N_ANIM_FRAMES = 3;
 	private static final int SCREEN_WIDTH = 672;
 	private static final int SCREEN_HEIGHT = 768;
 	private static final int MAX_PLAYER_HEIGHT = SCREEN_HEIGHT / 3;
@@ -44,6 +48,11 @@ public class PlayerActor extends BaseActor {
 
 	PlayerActor(PlayerBullets bullets) {
 		playerTexture = TextureManager.getInstance().get("assets/player.png");
+		int frameWidth = playerTexture.getWidth() / N_ANIM_FRAMES;
+		super.setWidth(frameWidth);
+		super.setHeight(playerTexture.getHeight());
+		setBoundingRect(frameWidth, playerTexture.getHeight());
+
 		setPosition(SCREEN_WIDTH / 2.0f - 16f, 5f);
 		this.bullets = bullets;
 
@@ -76,10 +85,20 @@ public class PlayerActor extends BaseActor {
 		if (Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S)) dy -= SPEED * dt;
 		super.moveBy(dx, dy);
 
-		if (Gdx.input.isKeyJustPressed(Keys.SPACE))
-			// TODO: Player class needs to be updated to use Vector2
-			bullets.fireBullet(new Vector2(getX(), getY()));
+		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 
+			bullets.fireBullet(
+			new Vector2(getX() + getWidth() / 2, getY() + getHeight())
+
+			);
+			// TODO: Player class needs to be updated to use Vector2
+		}
+		updateEngineOffsets(direction);
+		checkBounds();
+	}
+
+
+	private void updateEngineOffsets(Direction direction) {
 		switch (direction) {
 			case LEFT:
 				leftEngineLoc.setOffsetX(11.0f);
@@ -93,7 +112,6 @@ public class PlayerActor extends BaseActor {
 				leftEngineLoc.setOffsetX(10.0f);
 				rightEngineLoc.setOffsetX(16.0f);
 		}
-		checkBounds();
 	}
 
 	private void checkBounds() {
