@@ -4,12 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.gwenci.zarrax.Animator;
 import com.gwenci.zarrax.AudioManager;
 import com.gwenci.zarrax.SoundSystem;
 import com.gwenci.zarrax.TextureManager;
+import com.gwenci.zarrax.game.bullets.BulletType;
 
-class PlayerBullets extends BulletManager<BulletBaseActor> {
+class PlayerBullets extends BulletManager {
 
 	private static final int MAX_BULLETS = 50;
 	private static final int BULLETS_PER_SECOND = 8;
@@ -22,10 +25,8 @@ class PlayerBullets extends BulletManager<BulletBaseActor> {
 	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth() / 2f;
 
 	private static final Sound effect;
-	private static final Texture texture;
 
 	static {
-		texture = TextureManager.getInstance().get("assets/player_bullet.png");
 		effect = AudioManager.getInstance().get("assets/shoot.wav");
 
 	}
@@ -35,20 +36,27 @@ class PlayerBullets extends BulletManager<BulletBaseActor> {
 
 	PlayerBullets(Viewport vp, SpriteBatch batch) {
 		super(MAX_BULLETS);
+		BulletType playerBullet = new BulletType(
+				TextureManager.getInstance().get("assets/player_bullet.png"),
+				new Animator(2, 0.05f),
+				1.0f
+		);
 		for(int i= 0; i<MAX_BULLETS; i++) {
-			bullets[i] = new BulletBaseActor(texture, 1, 0.0f);
+			bullets[i] = new BulletBaseActor();
+			bullets[i].initialise(playerBullet);
 		}
 		super.SetStage(vp,batch);
 	}
 
 
-	void fireBullet(float x, float y) {
+	void fireBullet(Vector2 location) {
 		if (lastMs + MS_BETWEEN_BULLETS < System.currentTimeMillis()) {
 			BulletBaseActor bullet = getNextBullet();
 			if(!bullet.isInPlay()) {
-				bullet.fire(x+PLAYER_SHIP_HALF_WIDTH, y+PLAYER_SHIP_HEIGHT, 0, BULLET_SPEED);
-				float pan = (x - HALF_SCREEN_WIDTH) / HALF_SCREEN_WIDTH;
-//				effect.play(1.0f, ((float) Math.random() * 0.6f) + 0.7f, pan);
+				bullet.fire(location, new Vector2(0.0f,BULLET_SPEED));
+
+				// TODO: give the SoundSystem a vector as a location for panning
+				float pan = (location.x - HALF_SCREEN_WIDTH) / HALF_SCREEN_WIDTH;
 				SoundSystem.getInstance().play(effect,1.0f,((float) Math.random() * 0.6f) + 0.7f, pan);
 
 				lastMs = System.currentTimeMillis();

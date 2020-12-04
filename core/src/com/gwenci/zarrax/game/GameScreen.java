@@ -64,6 +64,7 @@ public class GameScreen extends BaseScreen {
 	}
 
 	private boolean muted = false;
+	private boolean paused = false;
 
 	@Override
 	public void update(float dt) {
@@ -79,15 +80,21 @@ public class GameScreen extends BaseScreen {
 			Gdx.app.exit();
 		}
 
+		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+			paused = !paused;
+		}
+
 		// TEMPORARY HACK TO "FAKE" PLAYER EXPLOSION
 		if(Gdx.input.isKeyJustPressed(Input.Keys.X)) {
 			particleFoundry.newEmitter(player, new AlienParticleExplosion01(ParticleColours.WHITE));
 		}
 
-		player.act(dt);
+		if(!paused) {
+			player.act(dt);
 
-		updatables.forEach(update -> update.update(dt));
-		aliens.handleCollisions(playerBullets.getActiveBullets(), playerScore);
+			updatables.forEach(update -> update.update(dt));
+			aliens.handleCollisions(playerBullets.getActiveBullets(), playerScore);
+		}
 		framerate.update();
 	}
 
@@ -99,6 +106,7 @@ public class GameScreen extends BaseScreen {
 		particleFoundry.render(batch);
 		font.draw(batch, String.format("%08d",playerScore.getDisplayScore()) , 275, 768- 3);
 		if(muted) font.draw(batch, "muted" , 570, 43);
+		if(paused) font.draw(batch, "paused" , 300, 400);
 	//	font.draw(batch,"hi 00000700" , 4, 768- 3);
 		batch.end();
 		playerBullets.draw();

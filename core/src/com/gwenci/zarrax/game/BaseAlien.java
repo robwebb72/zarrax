@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.gwenci.zarrax.Animator;
 import com.gwenci.zarrax.BaseActor;
+import com.gwenci.zarrax.game.bullets.BulletType;
 import com.gwenci.zarrax.particle_system.EmitterType;
 
 abstract class BaseAlien extends BaseActor {
@@ -15,6 +16,7 @@ abstract class BaseAlien extends BaseActor {
 	long lastTimeFired = TimeUtils.millis();
 
 	private final Animator animator;
+	BulletType bulletType;
 
 	BaseAlien(Texture texture, int nFrames, float animFrameRate) {
 
@@ -73,6 +75,10 @@ abstract class BaseAlien extends BaseActor {
 
 	public abstract boolean isFiring(float chanceToFire);
 
+
+	public BulletType getBulletType() {
+		return bulletType;
+	};
 	public abstract EmitterType particleExplosion();
 
  }

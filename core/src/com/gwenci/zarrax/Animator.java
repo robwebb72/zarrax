@@ -11,6 +11,10 @@ public class Animator {
 		this.frameTimeInSecs = frameTimeInSecs;
 	}
 
+	public int getNFrames() {
+		return nFrames;
+	}
+
 	public void update(float dtInSec) {
 		timerInSecs += dtInSec;
 		if (timerInSecs > frameTimeInSecs) {
