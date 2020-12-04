@@ -1,25 +1,27 @@
 package com.gwenci.zarrax.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gwenci.zarrax.Updatable;
+import com.gwenci.zarrax.game.bullets.BulletType;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class BulletManager<T extends BulletBaseActor> implements Updatable {
+public class BulletManager implements Updatable {
 
 	private final int maxBullets;
 	private Stage bulletStage;
 	private int nextBullet = 0;
 
-	T[] bullets;
+	BulletBaseActor[] bullets;
 
 
 	BulletManager(int maxBullets) {
 		this.maxBullets = maxBullets;
-		this.bullets = (T[]) new BulletBaseActor[maxBullets];
+		this.bullets = new BulletBaseActor[maxBullets];
 	}
 
 
@@ -31,7 +33,7 @@ public class BulletManager<T extends BulletBaseActor> implements Updatable {
 	}
 
 
-	T getNextBullet() {
+	BulletBaseActor getNextBullet() {
 		nextBullet++;
 		if (nextBullet >= maxBullets) nextBullet= 0;
 		return bullets[nextBullet];
@@ -53,15 +55,17 @@ public class BulletManager<T extends BulletBaseActor> implements Updatable {
 	}
 
 
-	Stream<T> getActiveBullets() {
+	Stream<BulletBaseActor> getActiveBullets() {
 		return Arrays.stream(bullets).filter(BulletBaseActor::isInPlay);
 	}
 
 
-	public void fireBullet(float x, float y, float dx, float dy) {
-		getNextBullet().fire(x, y, dx, dy);
+	public void fireBullet(BulletType bulletType, Vector2 location, Vector2 delta_vec) {
+		BulletBaseActor bullet=getNextBullet();
+		bullet.initialise(bulletType);
+		delta_vec.scl(bulletType.getSpeed());
+		bullet.fire(location, delta_vec);
 	}
-
 
 	void dispose() {
 		bulletStage.dispose();

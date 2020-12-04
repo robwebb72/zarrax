@@ -77,7 +77,8 @@ public class PlayerActor extends BaseActor {
 		super.moveBy(dx, dy);
 
 		if (Gdx.input.isKeyJustPressed(Keys.SPACE))
-			bullets.fireBullet(getX(), getY());
+			// TODO: Player class needs to be updated to use Vector2
+			bullets.fireBullet(new Vector2(getX(), getY()));
 
 		switch (direction) {
 			case LEFT:

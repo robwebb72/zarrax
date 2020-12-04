@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gwenci.zarrax.SoundSystem;
@@ -84,8 +85,16 @@ class AlienWrangler implements Updatable {
 		float chanceToFire = updateChanceToFire() * chanceToFireMod;
 		LiveAliens().forEach(
 				alien -> {
-					if (alien.isFiring(chanceToFire))
-						alienBullets.fireBullet( alien.getCentreX(), alien.getY()-alien.getHeight(), 50 - MathUtils.random(100), -MathUtils.random(250.0f, 350.f));
+					if (alien.isFiring(chanceToFire)) {
+						Vector2 fire_vector = new Vector2(MathUtils.random(-50.0f, 50.0f), -MathUtils.random(250.0f, 350.f));
+						fire_vector.scl(1.0f/fire_vector.len());
+						fire_vector.scl(updateBulletSpeed());
+						alienBullets.fireBullet(
+									alien.getBulletType(),
+									new Vector2(alien.getCentreX(), alien.getY()-alien.getHeight()),
+									fire_vector
+						);
+					}
 				}
 		);
 	}
@@ -94,6 +103,19 @@ class AlienWrangler implements Updatable {
 	void draw() {
 		stage.draw();
 	}
+
+
+	private float updateBulletSpeed() {
+		int numberAliens = (int) LiveAliens().count();
+
+		if (numberAliens < 2) return 500.0f;
+		if (numberAliens < 5) return 350.0f;
+		if (numberAliens < 10) return 350.0f;
+		if (numberAliens < 20) return 250.0f;
+		if (numberAliens < 35) return 250.0f;
+		return 250.0f;
+	}
+
 
 
 	private float updateChanceToFire() {
@@ -137,7 +159,6 @@ class AlienWrangler implements Updatable {
 		particleFoundry.newEmitter(alien, alien.particleExplosion());
 
 		float pan = (alien.getCentreX() - HALF_SCREEN_WIDTH)/HALF_SCREEN_WIDTH;
-//		explosionSound.play(1.0f,((float) Math.random() * 0.6f) + 0.7f,pan);
 		SoundSystem.getInstance().play(explosionSound,1.0f,MathUtils.random(0.7f,1.3f),pan);
 	}
 
