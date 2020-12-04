@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.gwenci.zarrax.Animator;
+import com.gwenci.zarrax.AudioManager;
 import com.gwenci.zarrax.TextureManager;
 import com.gwenci.zarrax.game.bullets.BulletType;
 import com.gwenci.zarrax.particle_system.AlienParticleExplosion01;
@@ -15,12 +16,11 @@ public class AlienActor1 extends BaseAlien {
 	public AlienActor1(Texture texture) {
 		super(texture, 3, 0.2f);
 
-		// TODO: ADD BULLET TYPE FIRE SOUND
 		bulletType = new BulletType(
 				TextureManager.getInstance().get("assets/alien_bullet.png"),
 				new Animator(2, 0.2f),
 				250.0f,
-				null
+				AudioManager.getInstance().get("assets/sfx/alien_fire_1.wav")
 		);
 	}
 

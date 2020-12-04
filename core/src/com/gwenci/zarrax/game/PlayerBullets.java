@@ -17,11 +17,6 @@ class PlayerBullets extends BulletManager {
 	private static final int BULLETS_PER_SECOND = 8;
 	private static final int MS_BETWEEN_BULLETS = 1000/BULLETS_PER_SECOND;
 	private static final float BULLET_SPEED = 400f;
-	private static final int PLAYER_SHIP_HEIGHT = 28;
-	public static final int PLAYER_SHIP_HALF_WIDTH = 14;
-
-	//TODO: Potential screen size issues (HALF_SCREEN_WIDTH used for panning sound)
-	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth() / 2f;
 
 	private long lastMs = System.currentTimeMillis();
 
@@ -29,7 +24,7 @@ class PlayerBullets extends BulletManager {
 			TextureManager.getInstance().get("assets/player_bullet.png"),
 			new Animator(2, 0.05f),
 			1.0f,
-			AudioManager.getInstance().get("assets/shoot.wav")
+			AudioManager.getInstance().get("assets/sfx/player_fire.wav")
 	);
 
 	PlayerBullets(Viewport vp, SpriteBatch batch) {
@@ -42,7 +37,7 @@ class PlayerBullets extends BulletManager {
 			BulletBaseActor bullet = getNextBullet();
 			bullet.initialise(playerBullet);
 			if(!bullet.isInPlay()) {
-				bullet.fire(location, new Vector2(0.0f,BULLET_SPEED));
+				bullet.fire(playerBullet, location, new Vector2(0.0f,BULLET_SPEED));
 				lastMs = System.currentTimeMillis();
 			}
 		}

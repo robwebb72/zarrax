@@ -46,16 +46,6 @@ public class PlayerActor extends BaseActor {
 		}
 	}
 
-	private static final float BULLET_SPEED = 400f;
-
-	BulletType playerBullet = new BulletType(
-			TextureManager.getInstance().get("assets/player_bullet.png"),
-			new Animator(2, 0.05f),
-			BULLET_SPEED,
-			AudioManager.getInstance().get("assets/shoot.wav")
-	);
-
-
 	PlayerActor(PlayerBullets bullets) {
 		playerTexture = TextureManager.getInstance().get("assets/player.png");
 		int frameWidth = playerTexture.getWidth() / N_ANIM_FRAMES;
@@ -96,12 +86,12 @@ public class PlayerActor extends BaseActor {
 		super.moveBy(dx, dy);
 
 		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-			// TODO: Player class needs to be updated to use Vector2
-			BulletBaseActor bullet = bullets.getNextBullet();
 
-			bullet.fire(playerBullet,
-					new Vector2(getX() + getWidth() / 2, getY() + getHeight()),
-					new Vector2(0.0f,1.0f));
+			bullets.fireBullet(
+			new Vector2(getX() + getWidth() / 2, getY() + getHeight())
+
+			);
+			// TODO: Player class needs to be updated to use Vector2
 		}
 		updateEngineOffsets(direction);
 		checkBounds();
