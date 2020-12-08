@@ -32,16 +32,16 @@ class AlienWrangler implements Updatable {
 	private float chanceToFireMod = 1;
 
 	static {
-		explosionSound = Gdx.audio.newSound(Gdx.files.internal("assets/alienexpl.wav"));
+		explosionSound = Gdx.audio.newSound(Gdx.files.internal("assets/sfx/alienexpl.wav"));
 	}
 
 	AlienWrangler(Viewport vp, SpriteBatch batch, BulletManager alienBullets) {
 		stage = new Stage(vp,batch);
 		for(int i = 0 ; i< MAX_ALIENS; i++) {
 			if(i>=30) {
-				aliens[i] = new AlienActor2(TextureManager.getInstance().get("assets/galaxian_2_1.png"));
+				aliens[i] = new AlienActor2(TextureManager.getInstance().get("assets/sprites/galaxian_3_1.png"));
 			} else {
-				aliens[i] = new AlienActor1(TextureManager.getInstance().get("assets/galaxian_1_1.png"));
+				aliens[i] = new AlienActor1(TextureManager.getInstance().get("assets/sprites/galaxian_1_1.png"));
 			}
 			stage.addActor(aliens[i]);
 		}
