@@ -9,6 +9,7 @@ import com.gwenci.zarrax.*;
 import com.gwenci.zarrax.particle_system.AlienParticleExplosion01;
 import com.gwenci.zarrax.particle_system.ParticleColours;
 import com.gwenci.zarrax.particle_system.ParticleFoundry;
+import com.gwenci.zarrax.particle_system.PlayerExplosion;
 
 import java.util.*;
 
@@ -88,9 +89,13 @@ public class GameScreen extends BaseScreen {
 
 		// TEMPORARY HACK TO "FAKE" PLAYER EXPLOSION
 		if(Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-			particleFoundry.newEmitter(player, new AlienParticleExplosion01(ParticleColours.WHITE));
+			particleFoundry.newEmitter(player, new PlayerExplosion());
 		}
-
+		if(aliens.noOfLiveAliens()==0)  {
+			dispose();
+			Zarrax.setActiveScreen(new GameScreen());
+			return;
+		}
 		if(!paused) {
 			player.act(dt);
 
