@@ -58,6 +58,7 @@ abstract class BaseAlien extends BaseActor {
 
 
 	public void act(float dt) {
+		if (state != AlienState.ALIVE ) return;
 		animator.update(dt);
 		super.act(dt);
 	}

@@ -162,6 +162,9 @@ class AlienWrangler implements Updatable {
 		SoundSystem.getInstance().play(explosionSound,1.0f,MathUtils.random(0.7f,1.3f),pan);
 	}
 
+	public int noOfLiveAliens() {
+		return (int) LiveAliens().count();
+	}
 
 	private Stream<BaseAlien> LiveAliens() {
 		return Arrays.stream(aliens).filter(BaseAlien::isAlive);
