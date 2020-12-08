@@ -1,13 +1,10 @@
 package com.gwenci.zarrax.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gwenci.zarrax.Animator;
 import com.gwenci.zarrax.AudioManager;
-import com.gwenci.zarrax.SoundSystem;
 import com.gwenci.zarrax.TextureManager;
 import com.gwenci.zarrax.game.bullets.BulletType;
 

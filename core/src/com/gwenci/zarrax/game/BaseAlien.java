@@ -1,7 +1,7 @@
 package com.gwenci.zarrax.game;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.gwenci.zarrax.Animator;
 import com.gwenci.zarrax.BaseActor;
