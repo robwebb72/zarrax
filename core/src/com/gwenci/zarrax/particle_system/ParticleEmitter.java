@@ -31,12 +31,11 @@ public class ParticleEmitter {
 		if (infinite) p.initialise(this.location.location(), getParticleType(), texture);
 	}
 
-	public void setReserved(boolean reserved) {
-		this.reserved = reserved;
-	}
-
-	public void setInfinite(boolean infinite) {
-		this.infinite = infinite;
+	void reset() {
+		isActive = false;
+		infinite = false;
+		particleTypes.clear();
+		for(Particle part: particles) part.reset();
 	}
 
 	void initialize(ILocation location, EmitterType type) {

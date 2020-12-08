@@ -1,7 +1,7 @@
 package com.gwenci.zarrax.game;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.gwenci.zarrax.Animator;
 import com.gwenci.zarrax.BaseActor;
@@ -58,6 +58,7 @@ abstract class BaseAlien extends BaseActor {
 
 
 	public void act(float dt) {
+		if (state != AlienState.ALIVE ) return;
 		animator.update(dt);
 		super.act(dt);
 	}

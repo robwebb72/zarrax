@@ -1,12 +1,9 @@
 package com.gwenci.zarrax.particle_system;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.gwenci.zarrax.Updatable;
 
 import java.util.Arrays;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 
 public class ParticleFoundry implements Updatable {
@@ -62,10 +59,8 @@ public class ParticleFoundry implements Updatable {
 	}
 
 
-	public ParticleEmitter getEmitter() {
-		ParticleEmitter emitter = getNextEmitter();
-		if (emitter != null) emitter.setReserved(true);
-		return emitter;
+	public void resetFoundry() {
+		for(ParticleEmitter pe : particleEmitters) pe.reset();
 	}
 
 	public ParticleEmitter newEmitter(ILocation loc, EmitterType type) {

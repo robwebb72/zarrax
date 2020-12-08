@@ -2,8 +2,6 @@ package com.gwenci.zarrax.particle_system;
 
 import com.badlogic.gdx.math.Vector2;
 
-import java.util.function.Function;
-
 public class JetPlumeParticles extends EmitterType {
 
 	public JetPlumeParticles() {

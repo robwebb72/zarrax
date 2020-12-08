@@ -1,14 +1,11 @@
 package com.gwenci.zarrax.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.gwenci.zarrax.SoundSystem;
 import com.gwenci.zarrax.Updatable;
 import com.gwenci.zarrax.game.bullets.BulletType;
-import com.gwenci.zarrax.particle_system.ILocation;
 
 import java.util.Arrays;
 import java.util.stream.Stream;

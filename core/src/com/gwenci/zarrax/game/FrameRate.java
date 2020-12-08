@@ -16,7 +16,7 @@ class FrameRate implements Disposable{
 	private long lastTimeCounted;
 	private float sinceChange;
 	private float frameRate;
-	private BitmapFont font;
+	private final BitmapFont font;
 	private boolean display;
 
 	FrameRate() {

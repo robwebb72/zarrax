@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.gwenci.zarrax.AudioManager;
 import com.gwenci.zarrax.SoundSystem;
 import com.gwenci.zarrax.TextureManager;
 import com.gwenci.zarrax.Updatable;
@@ -32,16 +33,16 @@ class AlienWrangler implements Updatable {
 	private float chanceToFireMod = 1;
 
 	static {
-		explosionSound = Gdx.audio.newSound(Gdx.files.internal("assets/alienexpl.wav"));
+		explosionSound = AudioManager.getInstance().get("assets/sfx/alienexpl.wav");
 	}
 
 	AlienWrangler(Viewport vp, SpriteBatch batch, BulletManager alienBullets) {
 		stage = new Stage(vp,batch);
 		for(int i = 0 ; i< MAX_ALIENS; i++) {
 			if(i>=30) {
-				aliens[i] = new AlienActor2(TextureManager.getInstance().get("assets/galaxian_2_1.png"));
+				aliens[i] = new AlienActor2(TextureManager.getInstance().get("assets/sprites/galaxian_3_1.png"));
 			} else {
-				aliens[i] = new AlienActor1(TextureManager.getInstance().get("assets/galaxian_1_1.png"));
+				aliens[i] = new AlienActor1(TextureManager.getInstance().get("assets/sprites/galaxian_1_1.png"));
 			}
 			stage.addActor(aliens[i]);
 		}
@@ -162,6 +163,9 @@ class AlienWrangler implements Updatable {
 		SoundSystem.getInstance().play(explosionSound,1.0f,MathUtils.random(0.7f,1.3f),pan);
 	}
 
+	public int noOfLiveAliens() {
+		return (int) LiveAliens().count();
+	}
 
 	private Stream<BaseAlien> LiveAliens() {
 		return Arrays.stream(aliens).filter(BaseAlien::isAlive);

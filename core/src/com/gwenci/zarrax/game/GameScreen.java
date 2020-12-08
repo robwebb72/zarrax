@@ -2,15 +2,16 @@ package com.gwenci.zarrax.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.gwenci.zarrax.*;
-import com.gwenci.zarrax.particle_system.AlienParticleExplosion01;
-import com.gwenci.zarrax.particle_system.ParticleColours;
+import com.gwenci.zarrax.assets.AssetDisposer;
 import com.gwenci.zarrax.particle_system.ParticleFoundry;
+import com.gwenci.zarrax.particle_system.PlayerExplosion;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class GameScreen extends BaseScreen {
@@ -79,7 +80,8 @@ public class GameScreen extends BaseScreen {
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 			this.dispose();
-			Gdx.app.exit();
+
+			Zarrax.setActiveScreen(new AssetDisposer());
 		}
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
@@ -88,9 +90,14 @@ public class GameScreen extends BaseScreen {
 
 		// TEMPORARY HACK TO "FAKE" PLAYER EXPLOSION
 		if(Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-			particleFoundry.newEmitter(player, new AlienParticleExplosion01(ParticleColours.WHITE));
+			particleFoundry.newEmitter(player, new PlayerExplosion());
 		}
-
+		if(aliens.noOfLiveAliens()==0)  {
+			dispose();
+			ParticleFoundry.getInstance().resetFoundry();
+			Zarrax.setActiveScreen(new GameScreen());
+			return;
+		}
 		if(!paused) {
 			player.act(dt);
 
@@ -125,8 +132,7 @@ public class GameScreen extends BaseScreen {
 	@Override
 	public void dispose() {
 		playerBullets.dispose();
-		TextureManager.getInstance().dispose();
-		AudioManager.getInstance().dispose();
+
 	}
 }
 
