@@ -93,6 +93,7 @@ public class GameScreen extends BaseScreen {
 		}
 		if(aliens.noOfLiveAliens()==0)  {
 			dispose();
+			ParticleFoundry.getInstance().resetFoundry();
 			Zarrax.setActiveScreen(new GameScreen());
 			return;
 		}

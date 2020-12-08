@@ -33,6 +33,10 @@ class Particle {
 		setColour(colourFunc.apply(time_pc));
 	}
 
+	void reset() {
+		lifeInSeconds = 0.0f;
+		remainingLife = 0.0f;
+	}
 
 	void setEmitter(ParticleEmitter emitter) {
 		this.emitter = emitter;

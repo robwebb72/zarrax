@@ -62,10 +62,8 @@ public class ParticleFoundry implements Updatable {
 	}
 
 
-	public ParticleEmitter getEmitter() {
-		ParticleEmitter emitter = getNextEmitter();
-		if (emitter != null) emitter.setReserved(true);
-		return emitter;
+	public void resetFoundry() {
+		for(ParticleEmitter pe : particleEmitters) pe.reset();
 	}
 
 	public ParticleEmitter newEmitter(ILocation loc, EmitterType type) {
