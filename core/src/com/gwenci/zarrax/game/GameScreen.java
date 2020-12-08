@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.gwenci.zarrax.*;
-import com.gwenci.zarrax.assets.AssetDisposer;
+import com.gwenci.zarrax.asset_handler.AssetDisposer;
 import com.gwenci.zarrax.particle_system.ParticleFoundry;
 import com.gwenci.zarrax.particle_system.PlayerExplosion;
 

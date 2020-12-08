@@ -1,4 +1,4 @@
-package com.gwenci.zarrax.assets;
+package com.gwenci.zarrax.asset_handler;
 
 import com.badlogic.gdx.Gdx;
 import com.gwenci.zarrax.AudioManager;

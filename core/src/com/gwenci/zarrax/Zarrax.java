@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.gwenci.zarrax.assets.AssetLoader;
+import com.gwenci.zarrax.asset_handler.AssetLoader;
 import com.gwenci.zarrax.particle_system.ParticleFoundry;
 
 public class Zarrax extends BaseGame {
