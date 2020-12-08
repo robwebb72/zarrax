@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.gwenci.zarrax.asset_handler.AssetLoader;
+import com.gwenci.zarrax.particle_system.ParticleFoundry;
 
 public class Zarrax extends BaseGame {
 
@@ -13,11 +15,11 @@ public class Zarrax extends BaseGame {
 	private static Viewport viewPort;
 	BitmapFont customFont;
 
-	static SpriteBatch getSpriteBatch() {
+	public static SpriteBatch getSpriteBatch() {
 		return batch;
 	}
 
-	static Viewport getViewPort() {
+	public static Viewport getViewPort() {
 		return viewPort;
 	}
 
@@ -28,7 +30,7 @@ public class Zarrax extends BaseGame {
 		batch = new SpriteBatch();
 		viewPort = new FitViewport(672,768, camera);
 		ParticleFoundry.getInstance();
-		setActiveScreen(new MenuScreen());
+		setActiveScreen(new AssetLoader());
 	}
 
 	public void dispose() {

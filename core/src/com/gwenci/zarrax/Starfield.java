@@ -5,13 +5,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 
-class Starfield {
+public class Starfield implements Updatable {
 
 	private static final int NSTARS = 1000;
+
+	// TODO: Screen Height and Width Hard coded
+
 	private static final int SCREEN_WIDTH = 672;
 	private static final int SCREEN_HEIGHT = 768;
-	private static Starfield instance = new Starfield();
-	private Star[] stars = new Star[NSTARS];
+	private static final Starfield instance = new Starfield();
+	private final Star[] stars = new Star[NSTARS];
 
 	// TODO: Do I need to dispose of these textures?
 	private TextureRegion[] textures = new TextureRegion[8];
@@ -27,17 +30,18 @@ class Starfield {
 		}
 	}
 
-	static Starfield getInstance() {
+	public static Starfield getInstance() {
 		return instance;
 	}
 
-	void update(float dt) {
+	@Override
+	public void update(float dt) {
 		for (int i = 0; i < NSTARS; i++) {
 			stars[i].update(dt);
 		}
 	}
 
-	void render(SpriteBatch batch) {
+	public void render(SpriteBatch batch) {
 		for (int i = 0; i < NSTARS; i++) {
 			batch.draw(textures[stars[i].brightness], stars[i].x, stars[i].y);
 		}
