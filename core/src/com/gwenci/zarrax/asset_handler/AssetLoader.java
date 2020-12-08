@@ -1,4 +1,4 @@
-package com.gwenci.zarrax.assets;
+package com.gwenci.zarrax.asset_handler;
 
 import com.gwenci.zarrax.AudioManager;
 import com.gwenci.zarrax.BaseScreen;
