@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.gwenci.zarrax.AudioManager;
 import com.gwenci.zarrax.SoundSystem;
 import com.gwenci.zarrax.TextureManager;
 import com.gwenci.zarrax.Updatable;
@@ -32,7 +33,7 @@ class AlienWrangler implements Updatable {
 	private float chanceToFireMod = 1;
 
 	static {
-		explosionSound = Gdx.audio.newSound(Gdx.files.internal("assets/sfx/alienexpl.wav"));
+		explosionSound = AudioManager.getInstance().get("assets/sfx/alienexpl.wav");
 	}
 
 	AlienWrangler(Viewport vp, SpriteBatch batch, BulletManager alienBullets) {
