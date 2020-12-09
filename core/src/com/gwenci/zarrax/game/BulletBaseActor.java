@@ -79,7 +79,13 @@ public class BulletBaseActor extends BaseActor {
 		if (this.inPlay) {
 			super.draw(batch, parentAlpha);
 			batch.draw(texture, getX(), getY(), animator.getCurrentFrame() *  (int) getWidth(), 0, (int) getWidth(),
-					(int) getHeight() );		}
+					(int) getHeight() );
+		}
+	}
+
+	public void draw(Batch batch) {
+		batch.draw(texture, getX(), getY(), animator.getCurrentFrame() *  (int) getWidth(), 0, (int) getWidth(),
+				(int) getHeight() );
 	}
 
 	@Override

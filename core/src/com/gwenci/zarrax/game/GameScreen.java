@@ -21,7 +21,7 @@ public class GameScreen extends BaseScreen {
 
 	private PlayerScore playerScore;
 
-	private Starfield stars;
+	private Starfield starfield;
 	private FrameRate framerate;
 
 	private PlayerBullets playerBullets;
@@ -35,21 +35,41 @@ public class GameScreen extends BaseScreen {
 	private BitmapFont font;
 
 	private List<Updatable> updatables;
+	private GameState gameState;
+
+	enum GameState {
+		LEVEL_START,
+		LEVEL_END,
+		PLAYER_START,
+		GAME_LOOP,
+		PLAYER_DIED,
+		GAME_OVER
+	}
+
+
 
 	@Override
 	public void initialize() {
-		stars = Starfield.getInstance();
-		playerStage = new Stage(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
-		playerBullets = new PlayerBullets(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
-		alienBullets = new BulletManager(MAX_ALIEN_BULLETS);
-		alienBullets.setStage(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
-		player = new PlayerActor(playerBullets);
-		playerStage.addActor(player);
-		aliens = new AlienWrangler(Zarrax.getViewPort(), Zarrax.getSpriteBatch(),alienBullets);
+		starfield = Starfield.getInstance();
+		particleFoundry = ParticleFoundry.getInstance();
+		ParticleFoundry.getInstance().resetFoundry();
 		framerate = new FrameRate();
 		framerate.setDisplay(true);
-		particleFoundry = ParticleFoundry.getInstance();
 		font = GameFont.getInstance().getFont();
+
+
+		playerBullets = new PlayerBullets(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
+		alienBullets = new BulletManager(MAX_ALIEN_BULLETS);
+
+
+
+		gameState = GameState.LEVEL_START;
+
+		// TODO: Could this be factored out?
+		playerStage = new Stage(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
+		player = new PlayerActor(playerBullets);
+		playerStage.addActor(player);
+
 		playerScore = new PlayerScore(0.01f);  // the displayScore counts up by 1 every 0.01s up to the value of the score
 
 		setUpUpdatables();
@@ -57,9 +77,8 @@ public class GameScreen extends BaseScreen {
 
 	private void setUpUpdatables() {
 		updatables = new ArrayList<>();
-		updatables.add(aliens);
 		updatables.add(playerScore);
-		updatables.add(stars);
+		updatables.add(starfield);
 		updatables.add(playerBullets);
 		updatables.add(alienBullets);
 		updatables.add(particleFoundry);
@@ -71,7 +90,33 @@ public class GameScreen extends BaseScreen {
 
 	@Override
 	public void update(float dt) {
+		framerate.update();
 
+		switch (gameState) {
+			case LEVEL_START:
+				aliens = new AlienWrangler(Zarrax.getViewPort(), Zarrax.getSpriteBatch(),alienBullets);
+				updatables.add(aliens);
+				gameState = GameState.PLAYER_START;
+				break;
+			case PLAYER_START:
+				gameState = GameState.GAME_LOOP;
+				updateGameWorld(dt);
+				handleInputs();
+				break;
+			case GAME_LOOP:
+				updateGameWorld(dt);
+				handleInputs();
+				break;
+			case PLAYER_DIED:
+			case LEVEL_END:
+				updatables.remove(aliens);
+				gameState = GameState.LEVEL_START;
+			case GAME_OVER:
+		}
+
+	}
+
+	private void handleInputs() {
 		if (Gdx.input.isKeyPressed(Input.Keys.Z)) aliens.killAllAliens(playerScore);
 		if (Gdx.input.isKeyJustPressed(Input.Keys.F)) framerate.flipDisplay();
 		if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
@@ -92,10 +137,12 @@ public class GameScreen extends BaseScreen {
 		if(Gdx.input.isKeyJustPressed(Input.Keys.X)) {
 			particleFoundry.newEmitter(player, new PlayerExplosion());
 		}
+
+	}
+
+	private void updateGameWorld(float dt) {
 		if(aliens.noOfLiveAliens()==0)  {
-			dispose();
-			ParticleFoundry.getInstance().resetFoundry();
-			Zarrax.setActiveScreen(new GameScreen());
+			gameState = GameState.LEVEL_END;
 			return;
 		}
 		if(!paused) {
@@ -104,22 +151,23 @@ public class GameScreen extends BaseScreen {
 			updatables.forEach(update -> update.update(dt));
 			aliens.handleCollisions(playerBullets.getActiveBullets(), playerScore);
 		}
-		framerate.update();
 	}
 
 	@Override
 	public void render() {
 		batch.begin();
-		stars.render(batch);
+		starfield.render(batch);
 		framerate.render(batch);
 		particleFoundry.render(batch);
 		font.draw(batch, String.format("%08d",playerScore.getDisplayScore()) , 275, 768- 3);
 		if(muted) font.draw(batch, "muted" , 570, 43);
 		if(paused) font.draw(batch, "paused" , 300, 400);
 	//	font.draw(batch,"hi 00000700" , 4, 768- 3);
+		playerBullets.getActiveBullets().forEach(b -> b.draw(batch));
+		alienBullets.getActiveBullets().forEach(b->b.draw(batch));
 		batch.end();
-		playerBullets.draw();
-		alienBullets.draw();
+
+		// TODO: Need to make the drawing method consistent - have all items draw in the same batch
 		playerStage.draw();
 		aliens.draw();
 	}
@@ -131,7 +179,7 @@ public class GameScreen extends BaseScreen {
 
 	@Override
 	public void dispose() {
-		playerBullets.dispose();
+//		playerBullets.dispose();
 
 	}
 }

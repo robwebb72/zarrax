@@ -26,7 +26,7 @@ class PlayerBullets extends BulletManager {
 
 	PlayerBullets(Viewport vp, SpriteBatch batch) {
 		super(MAX_BULLETS);
-		super.setStage(vp,batch);
+//		super.setStage(vp,batch);
 	}
 
 	void fireBullet(Vector2 location) {
