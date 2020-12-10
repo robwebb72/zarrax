@@ -13,12 +13,14 @@ class ParticleType {
 	Function<Float, Integer> colourFunc;     // the colour of the particle, reevaluated during the lifetime of the object
 	Function<Float, Integer> sizeFunc;       // the size of the particle, reevaluated during the lifetime of the object
 	Vector2 offset;                          // an offset vector applied to a particle's initial starting location
+	Supplier<Vector2> offsetFunc;
 
 	ParticleType(int particleCount,
 				 Supplier<Float> lifeTime,
 				 Function<Float, Integer> colourFunc,
 				 Function<Float, Integer> sizeFunc,
 				 Supplier<Vector2> moveFunc,
+				 Supplier<Vector2> offsetFunc,
 				 Vector2 offset
 	) {
 		this.particleCount = particleCount;
@@ -26,6 +28,7 @@ class ParticleType {
 		this.moveFunc = moveFunc;
 		this.colourFunc = colourFunc;
 		this.sizeFunc = sizeFunc;
+		this.offsetFunc = offsetFunc;
 		this.offset = offset;
 	}
 }
