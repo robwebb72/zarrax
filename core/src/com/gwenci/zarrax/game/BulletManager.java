@@ -1,9 +1,6 @@
 package com.gwenci.zarrax.game;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gwenci.zarrax.Updatable;
 import com.gwenci.zarrax.game.bullets.BulletType;
 
@@ -46,6 +43,9 @@ public class BulletManager implements Updatable {
 	}
 
 
+	public void reset() {
+		getActiveBullets().forEach(BulletBaseActor::removeFromPlay);
+	}
 
 	public void fireBullet(BulletType bulletType, Vector2 location, Vector2 direction) {
 		BulletBaseActor bullet = getNextBullet();

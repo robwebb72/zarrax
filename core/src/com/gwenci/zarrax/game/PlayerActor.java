@@ -7,9 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.gwenci.zarrax.BaseActor;
 import com.gwenci.zarrax.TextureManager;
-import com.gwenci.zarrax.particle_system.ILocation;
-import com.gwenci.zarrax.particle_system.JetPlumeParticles;
-import com.gwenci.zarrax.particle_system.ParticleFoundry;
+import com.gwenci.zarrax.particle_system.*;
 
 public class PlayerActor extends BaseActor {
 
@@ -22,6 +20,11 @@ public class PlayerActor extends BaseActor {
 	private Direction direction;
 	private final PlayerBullets bullets;
 	private final EngineLocation leftEngineLoc, rightEngineLoc;
+	private ParticleEmitter shieldEmitter, leftEngine, rightEngine;
+	private boolean shield;
+	private float shieldTimer = 0.0f;
+
+	private boolean isAlive = false;
 
 	class EngineLocation implements ILocation {
 		Vector2 offset;
@@ -50,22 +53,28 @@ public class PlayerActor extends BaseActor {
 		super.setHeight(playerTexture.getHeight());
 		setBoundingRect(frameWidth, playerTexture.getHeight());
 
-		setPosition(SCREEN_WIDTH / 2.0f - 16f, 5f);
 		this.bullets = bullets;
 
 		leftEngineLoc = new EngineLocation(new Vector2(10.0f,2.0f));
-		ParticleFoundry.getInstance().newEmitter(leftEngineLoc,new JetPlumeParticles());
+		leftEngine = ParticleFoundry.getInstance().newEmitter(leftEngineLoc,new ParticleEffectJetPlume());
 
 		rightEngineLoc = new EngineLocation(new Vector2(15.0f,2.0f));
-		ParticleFoundry.getInstance().newEmitter(rightEngineLoc,new JetPlumeParticles());
+		rightEngine = ParticleFoundry.getInstance().newEmitter(rightEngineLoc,new ParticleEffectJetPlume());
+
+		shieldEmitter = ParticleFoundry.getInstance().newEmitter(this,new ParticleEffectPlayerShield());
 	}
 
 	@Override
 	public void act(float dt) {
+		if (!isAlive) return;
 		super.act(dt);
 		float dx = 0.0f;
 		float dy = 0.0f;
 
+		if(shield) {
+			shieldTimer -= dt;
+			shield = shieldTimer > 0.0f;
+		}
 		if (Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.A)) {
 			dx -= SPEED * dt;
 			direction = Direction.LEFT;
@@ -91,6 +100,7 @@ public class PlayerActor extends BaseActor {
 			// TODO: Player class needs to be updated to use Vector2
 		}
 		updateEngineOffsets(direction);
+		shieldEmitter.setOn(shield);
 		checkBounds();
 	}
 
@@ -111,6 +121,16 @@ public class PlayerActor extends BaseActor {
 		}
 	}
 
+	public void setShieldsOn(float seconds) {
+		this.shieldTimer = seconds;
+		shield = true;
+		shieldEmitter.setOn(true);
+	}
+
+	public void setShield(boolean shield) {
+		this.shield= shield;
+	}
+
 	private void checkBounds() {
 		float x = super.getX();
 		float y = super.getY();
@@ -123,6 +143,7 @@ public class PlayerActor extends BaseActor {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		if (!isAlive) return;
 		super.draw(batch, parentAlpha);
 		int srcX;
 
@@ -134,6 +155,20 @@ public class PlayerActor extends BaseActor {
 			srcX = 0;
 
 		batch.draw(playerTexture, getX(), getY(), srcX, 0, 30, 30);
+	}
+
+
+	public void setIsAlive(boolean isAlive) {
+		this.isAlive = isAlive;
+		setParticleEffects(isAlive);
+
+	}
+
+
+	private void setParticleEffects(boolean on) {
+		rightEngine.setOn(on);
+		leftEngine.setOn(on);
+		shieldEmitter.setOn(on);
 	}
 
 	enum Direction {
