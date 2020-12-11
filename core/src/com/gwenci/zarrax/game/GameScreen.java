@@ -16,7 +16,6 @@ import java.util.List;
 public class GameScreen extends BaseScreen {
 
 	private final SpriteBatch batch = Zarrax.getSpriteBatch();
-	private static final int SCREEN_WIDTH = 672;
 
 	private PlayerScore playerScore;
 	private BitmapFont font;
@@ -82,16 +81,12 @@ public class GameScreen extends BaseScreen {
 
 		switch (gameState) {
 			case LEVEL_START:
-				gameWorld.setUpAliens();
-
-
+				gameWorld.initialiseAliens();
 				updatables.add(gameWorld.aliens);
 				gameState = GameState.PLAYER_START;
 				break;
 			case PLAYER_START:
-				gameWorld.playerActor.setPosition( SCREEN_WIDTH / 2.0f - 16f, 25f);
-				gameWorld.playerActor.setIsAlive(true);
-				gameWorld.playerActor.setShieldsOn(3.0f);
+				gameWorld.initialisePlayer();
 				gameState = GameState.GAME_LOOP;
 				break;
 			case GAME_LOOP:
@@ -150,7 +145,6 @@ public class GameScreen extends BaseScreen {
 		}
 		if(!paused) {
 			gameWorld.playerActor.act(dt);
-
 			updatables.forEach(update -> update.update(dt));
 			gameWorld.aliens.handleCollisions(gameWorld.playerBullets.getActiveBullets(), playerScore);
 		}

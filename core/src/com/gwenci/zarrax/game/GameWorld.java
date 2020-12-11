@@ -5,6 +5,7 @@ import com.gwenci.zarrax.Zarrax;
 public class GameWorld {
 
 	private static final int MAX_ALIEN_BULLETS = 250;
+	private static final int SCREEN_WIDTH = 672;
 
 	public PlayerActor playerActor;	// TODO - create a player wrangler - but outside of this class
 	public PlayerBullets playerBullets;
@@ -21,10 +22,14 @@ public class GameWorld {
 
 	}
 
-
-	public void setUpAliens() {
+	public void initialiseAliens() {
 		aliens = new AlienWrangler(Zarrax.getViewPort(), Zarrax.getSpriteBatch(),alienBullets);
 	}
 
+	public void initialisePlayer() {
+		playerActor.setPosition( SCREEN_WIDTH / 2.0f - 16f, 25f);
+		playerActor.setIsAlive(true);
+		playerActor.setShieldsOn(3.0f);
+	}
 
 }
