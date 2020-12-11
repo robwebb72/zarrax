@@ -20,7 +20,7 @@ public class PlayerActor extends BaseActor {
 	private Direction direction;
 	private final PlayerBullets bullets;
 	private final EngineLocation leftEngineLoc, rightEngineLoc;
-	private ParticleEmitter shieldEmitter, leftEngine, rightEngine;
+	private final ParticleEmitter shieldEmitter, leftEngine, rightEngine;
 	private boolean shield;
 	private float shieldTimer = 0.0f;
 
@@ -62,6 +62,7 @@ public class PlayerActor extends BaseActor {
 		rightEngine = ParticleFoundry.getInstance().newEmitter(rightEngineLoc,new ParticleEffectJetPlume());
 
 		shieldEmitter = ParticleFoundry.getInstance().newEmitter(this,new ParticleEffectPlayerShield());
+		setParticleEffects(false);
 	}
 
 	@Override
