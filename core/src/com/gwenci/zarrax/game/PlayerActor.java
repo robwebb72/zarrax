@@ -4,9 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gwenci.zarrax.BaseActor;
 import com.gwenci.zarrax.TextureManager;
+import com.gwenci.zarrax.Zarrax;
 import com.gwenci.zarrax.particle_system.*;
 
 public class PlayerActor extends BaseActor {
@@ -24,6 +28,7 @@ public class PlayerActor extends BaseActor {
 	private boolean shield;
 	private float shieldTimer = 0.0f;
 
+	private Stage stage;
 	private boolean isAlive = false;
 
 	class EngineLocation implements ILocation {
@@ -46,7 +51,7 @@ public class PlayerActor extends BaseActor {
 		}
 	}
 
-	PlayerActor(PlayerBullets bullets) {
+	PlayerActor(PlayerBullets bullets, Viewport vp, SpriteBatch batch) {
 		playerTexture = TextureManager.getInstance().get("assets/player.png");
 		int frameWidth = playerTexture.getWidth() / N_ANIM_FRAMES;
 		super.setWidth(frameWidth);
@@ -54,7 +59,8 @@ public class PlayerActor extends BaseActor {
 		setBoundingRect(frameWidth, playerTexture.getHeight());
 
 		this.bullets = bullets;
-
+		this.stage = new Stage(vp,batch);
+		stage.addActor(this);
 		leftEngineLoc = new EngineLocation(new Vector2(10.0f,2.0f));
 		leftEngine = ParticleFoundry.getInstance().newEmitter(leftEngineLoc,new ParticleEffectJetPlume());
 
@@ -155,7 +161,9 @@ public class PlayerActor extends BaseActor {
 		batch.draw(playerTexture, getX(), getY(), srcX, 0, 30, 30);
 	}
 
-
+	public void draw() {
+		stage.draw();
+	}
 	public void setIsAlive(boolean isAlive) {
 		this.isAlive = isAlive;
 		setParticleEffects(isAlive);

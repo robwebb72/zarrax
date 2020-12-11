@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.gwenci.zarrax.*;
 import com.gwenci.zarrax.asset_handler.AssetDisposer;
 import com.gwenci.zarrax.particle_system.ParticleFoundry;
@@ -20,6 +19,9 @@ public class GameScreen extends BaseScreen {
 	private SpriteBatch batch = Zarrax.getSpriteBatch();
 	private static final int SCREEN_WIDTH = 672;
 
+
+
+
 	private PlayerScore playerScore;
 
 	private Starfield starfield;
@@ -28,7 +30,6 @@ public class GameScreen extends BaseScreen {
 	private PlayerBullets playerBullets;
 	private BulletManager alienBullets;
 
-	private Stage playerStage;
 	private PlayerActor player;
 
 	private AlienWrangler aliens;
@@ -67,10 +68,7 @@ public class GameScreen extends BaseScreen {
 
 		gameState = GameState.LEVEL_START;
 
-		// TODO: Could this be factored out?
-		playerStage = new Stage(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
-		player = new PlayerActor(playerBullets);
-		playerStage.addActor(player);
+		player = new PlayerActor(playerBullets,Zarrax.getViewPort(), Zarrax.getSpriteBatch());
 
 		playerScore = new PlayerScore(0.01f);  // the displayScore counts up by 1 every 0.01s up to the value of the score
 
@@ -196,7 +194,7 @@ public class GameScreen extends BaseScreen {
 		batch.end();
 
 		// TODO: Need to make the drawing method consistent - have all items draw in the same batch
-		playerStage.draw();
+		player.draw();
 		aliens.draw();
 	}
 
