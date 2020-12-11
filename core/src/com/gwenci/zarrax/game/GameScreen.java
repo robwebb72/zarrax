@@ -15,7 +15,6 @@ import java.util.List;
 
 public class GameScreen extends BaseScreen {
 
-	private static final int MAX_ALIEN_BULLETS = 250;
 	private SpriteBatch batch = Zarrax.getSpriteBatch();
 	private static final int SCREEN_WIDTH = 672;
 
@@ -26,11 +25,6 @@ public class GameScreen extends BaseScreen {
 
 	private Starfield starfield;
 	private FrameRate framerate;
-
-//	private PlayerBullets playerBullets;
-	private BulletManager alienBullets;
-
-//	private PlayerActor player;
 
 	private AlienWrangler aliens;
 	private ParticleFoundry particleFoundry;
@@ -61,7 +55,6 @@ public class GameScreen extends BaseScreen {
 		font = GameFont.getInstance().getFont();
 
 
-		alienBullets = new BulletManager(MAX_ALIEN_BULLETS);
 		gameWorld = new GameWorld();
 		gameWorld.initialise();
 
@@ -84,7 +77,7 @@ public class GameScreen extends BaseScreen {
 
 		// GameWorld
 		updatables.add(gameWorld.playerBullets);
-		updatables.add(alienBullets);
+		updatables.add(gameWorld.alienBullets);
 
 	}
 
@@ -97,7 +90,7 @@ public class GameScreen extends BaseScreen {
 
 		switch (gameState) {
 			case LEVEL_START:
-				aliens = new AlienWrangler(Zarrax.getViewPort(), Zarrax.getSpriteBatch(),alienBullets);
+				aliens = new AlienWrangler(Zarrax.getViewPort(), Zarrax.getSpriteBatch(),gameWorld.alienBullets);
 				updatables.add(aliens);
 				gameState = GameState.PLAYER_START;
 				break;
@@ -119,7 +112,7 @@ public class GameScreen extends BaseScreen {
 			case LEVEL_END:
 				updatables.remove(aliens);
 				gameWorld.playerBullets.reset();
-				alienBullets.reset();
+				gameWorld.alienBullets.reset();
 				gameState = GameState.LEVEL_START;
 			case GAME_OVER:
 		}
@@ -178,7 +171,7 @@ public class GameScreen extends BaseScreen {
 
 		// game world
 		gameWorld.playerBullets.getActiveBullets().forEach(b -> b.draw(batch));
-		alienBullets.getActiveBullets().forEach(b->b.draw(batch));
+		gameWorld.alienBullets.getActiveBullets().forEach(b->b.draw(batch));
 		particleFoundry.render(batch);
 		// TODO: Aliens and Player need to be drawn here
 
