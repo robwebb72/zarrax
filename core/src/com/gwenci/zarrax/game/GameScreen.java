@@ -223,7 +223,8 @@ public class GameScreen extends BaseScreen {
 	private void setUpPlayerDied() {
 		// TODO: Player Lives - 1
 		// TODO: Screen shake
-
+		// TODO: Play Explosion
+		// TODO: Print "Gotcha!" message
 		player.setIsAlive(false);
 
 		particleFoundry.newEmitter(player, new ParticleEffectPlayerExplosion());
@@ -231,7 +232,6 @@ public class GameScreen extends BaseScreen {
 
 	@Override
 	public void dispose() {
-//		playerBullets.dispose();
 
 	}
 }
