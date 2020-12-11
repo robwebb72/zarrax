@@ -27,10 +27,10 @@ public class GameScreen extends BaseScreen {
 	private Starfield starfield;
 	private FrameRate framerate;
 
-	private PlayerBullets playerBullets;
+//	private PlayerBullets playerBullets;
 	private BulletManager alienBullets;
 
-	private PlayerActor player;
+//	private PlayerActor player;
 
 	private AlienWrangler aliens;
 	private ParticleFoundry particleFoundry;
@@ -38,7 +38,7 @@ public class GameScreen extends BaseScreen {
 
 	private List<Updatable> updatables;
 	private GameState gameState;
-
+	private GameWorld gameWorld;
 
 	enum GameState {
 		LEVEL_START,
@@ -61,14 +61,12 @@ public class GameScreen extends BaseScreen {
 		font = GameFont.getInstance().getFont();
 
 
-		playerBullets = new PlayerBullets(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
 		alienBullets = new BulletManager(MAX_ALIEN_BULLETS);
-
-
+		gameWorld = new GameWorld();
+		gameWorld.initialise();
 
 		gameState = GameState.LEVEL_START;
 
-		player = new PlayerActor(playerBullets,Zarrax.getViewPort(), Zarrax.getSpriteBatch());
 
 		playerScore = new PlayerScore(0.01f);  // the displayScore counts up by 1 every 0.01s up to the value of the score
 
@@ -77,11 +75,16 @@ public class GameScreen extends BaseScreen {
 
 	private void setUpUpdatables() {
 		updatables = new ArrayList<>();
+		// GUI
 		updatables.add(playerScore);
+
+		// Background
 		updatables.add(starfield);
-		updatables.add(playerBullets);
-		updatables.add(alienBullets);
 		updatables.add(particleFoundry);
+
+		// GameWorld
+		updatables.add(gameWorld.playerBullets);
+		updatables.add(alienBullets);
 
 	}
 
@@ -99,9 +102,9 @@ public class GameScreen extends BaseScreen {
 				gameState = GameState.PLAYER_START;
 				break;
 			case PLAYER_START:
-				player.setPosition( SCREEN_WIDTH / 2.0f - 16f, 25f);
-				player.setIsAlive(true);
-				player.setShieldsOn(3.0f);
+				gameWorld.playerActor.setPosition( SCREEN_WIDTH / 2.0f - 16f, 25f);
+				gameWorld.playerActor.setIsAlive(true);
+				gameWorld.playerActor.setShieldsOn(3.0f);
 				gameState = GameState.GAME_LOOP;
 				break;
 			case GAME_LOOP:
@@ -115,7 +118,7 @@ public class GameScreen extends BaseScreen {
 				break;
 			case LEVEL_END:
 				updatables.remove(aliens);
-				playerBullets.reset();
+				gameWorld.playerBullets.reset();
 				alienBullets.reset();
 				gameState = GameState.LEVEL_START;
 			case GAME_OVER:
@@ -139,7 +142,7 @@ public class GameScreen extends BaseScreen {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.F)) framerate.flipDisplay();
 		if (Gdx.input.isKeyJustPressed(Input.Keys.K)) changeState(GameState.PLAYER_DIED);
 		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) paused = !paused;
-		if (Gdx.input.isKeyJustPressed(Input.Keys.C)) player.setShieldsOn(3.0f);
+		if (Gdx.input.isKeyJustPressed(Input.Keys.C)) gameWorld.playerActor.setShieldsOn(3.0f);
 
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
@@ -151,12 +154,6 @@ public class GameScreen extends BaseScreen {
 			Zarrax.setActiveScreen(new AssetDisposer());
 		}
 
-
-		// TEMPORARY HACK TO "FAKE" PLAYER EXPLOSION
-		if(Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-			particleFoundry.newEmitter(player, new ParticleEffectPlayerExplosion());
-		}
-
 	}
 
 	private void updateGameWorld(float dt) {
@@ -165,10 +162,10 @@ public class GameScreen extends BaseScreen {
 			return;
 		}
 		if(!paused) {
-			player.act(dt);
+			gameWorld.playerActor.act(dt);
 
 			updatables.forEach(update -> update.update(dt));
-			aliens.handleCollisions(playerBullets.getActiveBullets(), playerScore);
+			aliens.handleCollisions(gameWorld.playerBullets.getActiveBullets(), playerScore);
 		}
 	}
 
@@ -180,7 +177,7 @@ public class GameScreen extends BaseScreen {
 		starfield.render(batch);
 
 		// game world
-		playerBullets.getActiveBullets().forEach(b -> b.draw(batch));
+		gameWorld.playerBullets.getActiveBullets().forEach(b -> b.draw(batch));
 		alienBullets.getActiveBullets().forEach(b->b.draw(batch));
 		particleFoundry.render(batch);
 		// TODO: Aliens and Player need to be drawn here
@@ -194,7 +191,7 @@ public class GameScreen extends BaseScreen {
 		batch.end();
 
 		// TODO: Need to make the drawing method consistent - have all items draw in the same batch
-		player.draw();
+		gameWorld.playerActor.draw();
 		aliens.draw();
 	}
 
@@ -223,9 +220,9 @@ public class GameScreen extends BaseScreen {
 		// TODO: Screen shake
 		// TODO: Play Explosion
 		// TODO: Print "Gotcha!" message
-		player.setIsAlive(false);
+		gameWorld.playerActor.setIsAlive(false);
 
-		particleFoundry.newEmitter(player, new ParticleEffectPlayerExplosion());
+		particleFoundry.newEmitter(gameWorld.playerActor, new ParticleEffectPlayerExplosion());
 	}
 
 	@Override
