@@ -95,7 +95,7 @@ public class BulletBaseActor extends BaseActor {
 		return inPlay;
 	}
 
-	void removeFromPlay() {inPlay = false; }
+	public void removeFromPlay() {inPlay = false; }
 }
 
 

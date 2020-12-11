@@ -1,4 +1,4 @@
-package com.gwenci.zarrax.game;
+package com.gwenci.zarrax.game.aliens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -11,6 +11,9 @@ import com.gwenci.zarrax.AudioManager;
 import com.gwenci.zarrax.SoundSystem;
 import com.gwenci.zarrax.TextureManager;
 import com.gwenci.zarrax.Updatable;
+import com.gwenci.zarrax.game.BulletBaseActor;
+import com.gwenci.zarrax.game.BulletManager;
+import com.gwenci.zarrax.game.PlayerScore;
 import com.gwenci.zarrax.particle_system.ParticleFoundry;
 
 import java.util.Arrays;
@@ -18,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-class AlienWrangler implements Updatable {
+public class AlienWrangler implements Updatable {
 
 	private static final int MAX_ALIENS = 50;
 	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth()/2.0f;
@@ -36,7 +39,7 @@ class AlienWrangler implements Updatable {
 		explosionSound = AudioManager.getInstance().get("assets/sfx/alienexpl.wav");
 	}
 
-	AlienWrangler(Viewport vp, SpriteBatch batch, BulletManager alienBullets) {
+	public AlienWrangler(Viewport vp, SpriteBatch batch, BulletManager alienBullets) {
 		stage = new Stage(vp,batch);
 		for(int i = 0 ; i< MAX_ALIENS; i++) {
 			if(i>=30) {
@@ -101,7 +104,7 @@ class AlienWrangler implements Updatable {
 	}
 
 
-	void draw() {
+	public void draw() {
 		stage.draw();
 	}
 
@@ -131,7 +134,7 @@ class AlienWrangler implements Updatable {
 	}
 
 
-	void handleCollisions(Stream<BulletBaseActor> bullets, PlayerScore score) {
+	public void handleCollisions(Stream<BulletBaseActor> bullets, PlayerScore score) {
 		List<BulletBaseActor> bulletsList= bullets.collect(Collectors.toList());
 		LiveAliens().forEach(
 				alien -> {
@@ -147,7 +150,7 @@ class AlienWrangler implements Updatable {
 	}
 
 
-	void killAllAliens(PlayerScore score) {
+	public void killAllAliens(PlayerScore score) {
 		LiveAliens().forEach(
 				alien -> {killAlien(alien); score.addScore(alien.getScore());}
 		);

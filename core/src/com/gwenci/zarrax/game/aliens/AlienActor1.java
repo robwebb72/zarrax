@@ -1,4 +1,4 @@
-package com.gwenci.zarrax.game;
+package com.gwenci.zarrax.game.aliens;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
