@@ -15,19 +15,16 @@ import java.util.List;
 
 public class GameScreen extends BaseScreen {
 
-	private SpriteBatch batch = Zarrax.getSpriteBatch();
+	private final SpriteBatch batch = Zarrax.getSpriteBatch();
 	private static final int SCREEN_WIDTH = 672;
 
-
-
-
 	private PlayerScore playerScore;
+	private BitmapFont font;
 
 	private Starfield starfield;
 	private FrameRate framerate;
 
 	private ParticleFoundry particleFoundry;
-	private BitmapFont font;
 
 	private List<Updatable> updatables;
 	private GameState gameState;
@@ -52,16 +49,12 @@ public class GameScreen extends BaseScreen {
 		framerate = new FrameRate();
 		framerate.setDisplay(true);
 		font = GameFont.getInstance().getFont();
-
+		playerScore = new PlayerScore(0.01f);  // the displayScore counts up by 1 every 0.01s up to the value of the score
 
 		gameWorld = new GameWorld();
 		gameWorld.initialise();
 
 		gameState = GameState.LEVEL_START;
-
-
-		playerScore = new PlayerScore(0.01f);  // the displayScore counts up by 1 every 0.01s up to the value of the score
-
 		setUpUpdatables();
 	}
 
