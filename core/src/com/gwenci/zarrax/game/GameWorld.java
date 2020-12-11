@@ -29,9 +29,11 @@ public class GameWorld {
 	}
 
 	public void initialisePlayer() {
-		playerActor.setPosition( SCREEN_WIDTH / 2.0f - 16f, 25f);
-		playerActor.setIsAlive(true);
-		playerActor.setShieldsOn(3.0f);
+		if (!playerActor.isAlive()) {
+			playerActor.setPosition(SCREEN_WIDTH / 2.0f - 16f, 25f);
+			playerActor.setIsAlive(true);
+			playerActor.setShieldsOn(3.0f);
+		}
 	}
 
 }

@@ -170,6 +170,9 @@ public class PlayerActor extends BaseActor {
 
 	}
 
+	public boolean isAlive() {
+		return isAlive;
+	}
 
 	private void setParticleEffects(boolean on) {
 		rightEngine.setOn(on);

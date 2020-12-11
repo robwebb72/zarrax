@@ -38,7 +38,7 @@ public class BulletManager implements Updatable {
 
 
 
-	Stream<BulletBaseActor> getActiveBullets() {
+	public Stream<BulletBaseActor> getActiveBullets() {
 		return Arrays.stream(bullets).filter(BulletBaseActor::isInPlay);
 	}
 
