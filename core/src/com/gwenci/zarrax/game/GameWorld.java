@@ -1,6 +1,7 @@
 package com.gwenci.zarrax.game;
 
 import com.gwenci.zarrax.Zarrax;
+import com.gwenci.zarrax.game.player.PlayerActor;
 
 public class GameWorld {
 

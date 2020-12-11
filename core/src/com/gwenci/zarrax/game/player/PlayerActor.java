@@ -1,4 +1,4 @@
-package com.gwenci.zarrax.game;
+package com.gwenci.zarrax.game.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gwenci.zarrax.BaseActor;
 import com.gwenci.zarrax.TextureManager;
-import com.gwenci.zarrax.Zarrax;
+import com.gwenci.zarrax.game.PlayerBullets;
 import com.gwenci.zarrax.particle_system.*;
 
 public class PlayerActor extends BaseActor {
@@ -51,7 +51,7 @@ public class PlayerActor extends BaseActor {
 		}
 	}
 
-	PlayerActor(PlayerBullets bullets, Viewport vp, SpriteBatch batch) {
+	public PlayerActor(PlayerBullets bullets, Viewport vp, SpriteBatch batch) {
 		playerTexture = TextureManager.getInstance().get("assets/player.png");
 		int frameWidth = playerTexture.getWidth() / N_ANIM_FRAMES;
 		super.setWidth(frameWidth);

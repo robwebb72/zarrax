@@ -8,7 +8,7 @@ import com.gwenci.zarrax.AudioManager;
 import com.gwenci.zarrax.TextureManager;
 import com.gwenci.zarrax.game.bullets.BulletType;
 
-class PlayerBullets extends BulletManager {
+public class PlayerBullets extends BulletManager {
 
 	private static final int MAX_BULLETS = 50;
 	private static final int BULLETS_PER_SECOND = 8;
@@ -29,7 +29,7 @@ class PlayerBullets extends BulletManager {
 //		super.setStage(vp,batch);
 	}
 
-	void fireBullet(Vector2 location) {
+	public void fireBullet(Vector2 location) {
 		if (lastMs + MS_BETWEEN_BULLETS < System.currentTimeMillis()) {
 			BulletBaseActor bullet = getNextBullet();
 			bullet.initialise(playerBullet);
