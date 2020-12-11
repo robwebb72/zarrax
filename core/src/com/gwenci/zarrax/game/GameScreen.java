@@ -101,7 +101,7 @@ public class GameScreen extends BaseScreen {
 				gameState = GameState.PLAYER_START;
 				break;
 			case PLAYER_START:
-				player.setPosition( SCREEN_WIDTH / 2.0f - 16f, 5f);
+				player.setPosition( SCREEN_WIDTH / 2.0f - 16f, 25f);
 				player.setIsAlive(true);
 				player.setShieldsOn(3.0f);
 				gameState = GameState.GAME_LOOP;
