@@ -26,7 +26,6 @@ public class GameScreen extends BaseScreen {
 	private Starfield starfield;
 	private FrameRate framerate;
 
-	private AlienWrangler aliens;
 	private ParticleFoundry particleFoundry;
 	private BitmapFont font;
 
@@ -90,8 +89,10 @@ public class GameScreen extends BaseScreen {
 
 		switch (gameState) {
 			case LEVEL_START:
-				aliens = new AlienWrangler(Zarrax.getViewPort(), Zarrax.getSpriteBatch(),gameWorld.alienBullets);
-				updatables.add(aliens);
+				gameWorld.setUpAliens();
+
+
+				updatables.add(gameWorld.aliens);
 				gameState = GameState.PLAYER_START;
 				break;
 			case PLAYER_START:
@@ -110,7 +111,7 @@ public class GameScreen extends BaseScreen {
 				handleInputs();
 				break;
 			case LEVEL_END:
-				updatables.remove(aliens);
+				updatables.remove(gameWorld.aliens);
 				gameWorld.playerBullets.reset();
 				gameWorld.alienBullets.reset();
 				gameState = GameState.LEVEL_START;
@@ -131,7 +132,7 @@ public class GameScreen extends BaseScreen {
 	}
 
 	private void handleInputs() {
-		if (Gdx.input.isKeyPressed(Input.Keys.Z)) aliens.killAllAliens(playerScore);
+		if (Gdx.input.isKeyPressed(Input.Keys.Z)) gameWorld.aliens.killAllAliens(playerScore);
 		if (Gdx.input.isKeyJustPressed(Input.Keys.F)) framerate.flipDisplay();
 		if (Gdx.input.isKeyJustPressed(Input.Keys.K)) changeState(GameState.PLAYER_DIED);
 		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) paused = !paused;
@@ -150,7 +151,7 @@ public class GameScreen extends BaseScreen {
 	}
 
 	private void updateGameWorld(float dt) {
-		if(aliens.noOfLiveAliens()==0)  {
+		if(gameWorld.aliens.noOfLiveAliens()==0)  {
 			gameState = GameState.LEVEL_END;
 			return;
 		}
@@ -158,7 +159,7 @@ public class GameScreen extends BaseScreen {
 			gameWorld.playerActor.act(dt);
 
 			updatables.forEach(update -> update.update(dt));
-			aliens.handleCollisions(gameWorld.playerBullets.getActiveBullets(), playerScore);
+			gameWorld.aliens.handleCollisions(gameWorld.playerBullets.getActiveBullets(), playerScore);
 		}
 	}
 
@@ -185,7 +186,7 @@ public class GameScreen extends BaseScreen {
 
 		// TODO: Need to make the drawing method consistent - have all items draw in the same batch
 		gameWorld.playerActor.draw();
-		aliens.draw();
+		gameWorld.aliens.draw();
 	}
 
 	@Override
