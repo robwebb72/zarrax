@@ -127,9 +127,6 @@ public class PlayerActor extends BaseActor {
 		shieldEmitter.setOn(true);
 	}
 
-	public void setShield(boolean shield) {
-		this.shield= shield;
-	}
 
 	private void checkBounds() {
 		float x = super.getX();

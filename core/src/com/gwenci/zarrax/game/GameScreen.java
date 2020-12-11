@@ -38,7 +38,6 @@ public class GameScreen extends BaseScreen {
 	private List<Updatable> updatables;
 	private GameState gameState;
 
-	private boolean shieldOn = false;
 
 	enum GameState {
 		LEVEL_START,
@@ -142,10 +141,7 @@ public class GameScreen extends BaseScreen {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.F)) framerate.flipDisplay();
 		if (Gdx.input.isKeyJustPressed(Input.Keys.K)) changeState(GameState.PLAYER_DIED);
 		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) paused = !paused;
-		if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
-			shieldOn = !shieldOn;
-			player.setShield(shieldOn);
-		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.C)) player.setShieldsOn(3.0f);
 
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
@@ -196,7 +192,6 @@ public class GameScreen extends BaseScreen {
 		font.draw(batch, String.format("%08d",playerScore.getDisplayScore()) , 275, 768- 3);
 		if(muted) font.draw(batch, "muted" , 570, 43);
 		if(paused) font.draw(batch, "paused" , 300, 400);
-		if(shieldOn) font.draw(batch, "shields" , 300, 450);
 	//	font.draw(batch,"hi 00000700" , 4, 768- 3);
 		batch.end();
 
