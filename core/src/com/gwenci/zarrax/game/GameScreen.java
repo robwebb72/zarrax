@@ -2,12 +2,10 @@ package com.gwenci.zarrax.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.gwenci.zarrax.*;
 import com.gwenci.zarrax.asset_handler.AssetDisposer;
-import com.gwenci.zarrax.particle_system.ParticleFoundry;
 import com.gwenci.zarrax.particle_system.ParticleEffectPlayerExplosion;
+import com.gwenci.zarrax.particle_system.ParticleFoundry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,19 +13,23 @@ import java.util.List;
 
 public class GameScreen extends BaseScreen {
 
-	private final SpriteBatch batch = Zarrax.getSpriteBatch();
 
-	private PlayerScore playerScore;
-	private BitmapFont font;
+	// GUI
+	boolean muted = false;
+	boolean paused = false;
 
-	private Starfield starfield;
-	private FrameRate framerate;
+	PlayerScore playerScore;
+
+	Starfield starfield;
+	FrameRate framerate;
 
 	private ParticleFoundry particleFoundry;
 
 	private List<Updatable> updatables;
 	private GameState gameState;
 	private GameWorld gameWorld;
+	private Renderer renderer;
+
 
 	enum GameState {
 		LEVEL_START,
@@ -42,12 +44,12 @@ public class GameScreen extends BaseScreen {
 
 	@Override
 	public void initialize() {
+		renderer = new Renderer();
 		starfield = Starfield.getInstance();
 		particleFoundry = ParticleFoundry.getInstance();
 		ParticleFoundry.getInstance().resetFoundry();
 		framerate = new FrameRate();
 		framerate.setDisplay(true);
-		font = GameFont.getInstance().getFont();
 		playerScore = new PlayerScore(0.01f);  // the displayScore counts up by 1 every 0.01s up to the value of the score
 
 		gameWorld = new GameWorld();
@@ -72,8 +74,6 @@ public class GameScreen extends BaseScreen {
 
 	}
 
-	private boolean muted = false;
-	private boolean paused = false;
 
 	@Override
 	public void update(float dt) {
@@ -152,28 +152,7 @@ public class GameScreen extends BaseScreen {
 
 	@Override
 	public void render() {
-		batch.begin();
-
-		// background
-		starfield.render(batch);
-
-		// game world
-		gameWorld.playerBullets.getActiveBullets().forEach(b -> b.draw(batch));
-		gameWorld.alienBullets.getActiveBullets().forEach(b->b.draw(batch));
-		particleFoundry.render(batch);
-		// TODO: Aliens and Player need to be drawn here
-
-		// gui
-		framerate.render(batch);
-		font.draw(batch, String.format("%08d",playerScore.getDisplayScore()) , 275, 768- 3);
-		if(muted) font.draw(batch, "muted" , 570, 43);
-		if(paused) font.draw(batch, "paused" , 300, 400);
-	//	font.draw(batch,"hi 00000700" , 4, 768- 3);
-		batch.end();
-
-		// TODO: Need to make the drawing method consistent - have all items draw in the same batch
-		gameWorld.playerActor.draw();
-		gameWorld.aliens.draw();
+		renderer.render(this, gameWorld);
 	}
 
 	@Override
@@ -211,4 +190,3 @@ public class GameScreen extends BaseScreen {
 
 	}
 }
-
