@@ -42,8 +42,7 @@ public class GameLoop extends GameState {
 		updateWorld(dt);
 		if(gameWorld.aliens.noOfLiveAliens()==0) {
 			stateManager.changeState(GameStateKey.LEVEL_END);
-			return;
-		}
+ 		}
 	}
 
 	private void handleInputs() {
@@ -67,6 +66,12 @@ public class GameLoop extends GameState {
 		if(gs.paused) return;
 		gameWorld.playerActor.act(dt);
 		updatables.forEach(update -> update.update(dt));
+
+		//TODO: handle collisions
+		// aliens and players bullets
+		// player and aliens' bullets
+		// player and aliens
+		// player and power ups
 		gameWorld.aliens.handleCollisions(gameWorld.playerBullets.getActiveBullets(), gs.playerScore);
 
 	}
