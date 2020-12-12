@@ -140,7 +140,7 @@ public class PlayerActor extends BaseActor {
 		float y = super.getY();
 		x = Math.max(x, 10f);
 		x = Math.min(x, SCREEN_WIDTH - 42f);
-		y = Math.max(y, 5f);
+		y = Math.max(y, 25f);
 		y = Math.min(y, MAX_PLAYER_HEIGHT);
 		super.setPosition(x, y);
 	}
