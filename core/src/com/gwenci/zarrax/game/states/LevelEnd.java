@@ -64,8 +64,7 @@ public class LevelEnd extends GameState {
 		if(gameScreen.paused) return;
 		gameWorld.playerActor.act(dt);
 		updatables.forEach(update -> update.update(dt));
-		gameWorld.aliens.handleCollisions(gameWorld.playerBullets.getActiveBullets(), gameScreen.playerScore);
-
+		gameWorld.handleCollisions(gameScreen);
 	}
 
 	@Override

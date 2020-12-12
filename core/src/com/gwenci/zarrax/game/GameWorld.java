@@ -36,4 +36,18 @@ public class GameWorld {
 		}
 	}
 
+	public void handleCollisions(GameScreen gs) {
+		collisionAliensWithPlayerBullets(gs);
+		collisionPlayerWithAlienBullets(gs);
+	}
+
+	void collisionAliensWithPlayerBullets(GameScreen gs) {
+		aliens.handleCollisions(playerBullets.getActiveBullets(), gs.playerScore);
+
+	}
+
+	void collisionPlayerWithAlienBullets(GameScreen gs) {
+
+	}
+
 }

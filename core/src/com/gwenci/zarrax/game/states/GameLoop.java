@@ -72,7 +72,7 @@ public class GameLoop extends GameState {
 		// player and aliens' bullets
 		// player and aliens
 		// player and power ups
-		gameWorld.aliens.handleCollisions(gameWorld.playerBullets.getActiveBullets(), gs.playerScore);
+		gameWorld.handleCollisions(gs);
 
 	}
 

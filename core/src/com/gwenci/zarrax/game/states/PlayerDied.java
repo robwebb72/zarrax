@@ -72,7 +72,7 @@ public class PlayerDied extends GameState {
 		if(gs.paused) return;
 		gameWorld.playerActor.act(dt);
 		updatables.forEach(update -> update.update(dt));
-		gameWorld.aliens.handleCollisions(gameWorld.playerBullets.getActiveBullets(), gs.playerScore);
+		gameWorld.handleCollisions(gs);
 	}
 
 	@Override
