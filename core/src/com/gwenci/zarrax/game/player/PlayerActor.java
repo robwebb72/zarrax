@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gwenci.zarrax.BaseActor;
 import com.gwenci.zarrax.TextureManager;
@@ -20,6 +21,9 @@ public class PlayerActor extends BaseActor {
 	private static final int SCREEN_HEIGHT = 768;
 	private static final int MAX_PLAYER_HEIGHT = SCREEN_HEIGHT / 3;
 	private static final float SPEED = 200f;  //pixels per second
+	private static final int BULLETS_PER_SECOND = 8;
+	private static final int MS_BETWEEN_BULLETS = 1000/BULLETS_PER_SECOND;
+
 	private final Texture playerTexture;
 	private Direction direction;
 	private final PlayerBullets bullets;
@@ -27,8 +31,9 @@ public class PlayerActor extends BaseActor {
 	private final ParticleEmitter shieldEmitter, leftEngine, rightEngine;
 	private boolean shield;
 	private float shieldTimer = 0.0f;
+	private long lastBulletFiredMS = 0;
 
-	private Stage stage;
+	private final Stage stage;
 	private boolean isAlive = false;
 
 	class EngineLocation implements ILocation {
@@ -98,17 +103,22 @@ public class PlayerActor extends BaseActor {
 		if (Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S)) dy -= SPEED * dt;
 		super.moveBy(dx, dy);
 
-		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-
-			bullets.fireBullet(
-			new Vector2(getX() + getWidth() / 2, getY() + getHeight())
-
-			);
-			// TODO: Player class needs to be updated to use Vector2
-		}
+		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) fireBullet();
 		updateEngineOffsets(direction);
 		shieldEmitter.setOn(shield);
 		checkBounds();
+	}
+
+
+	private void fireBullet() {
+		if(TimeUtils.timeSinceMillis(lastBulletFiredMS)>MS_BETWEEN_BULLETS) {
+			boolean bulletFired = bullets.fireBullet(fireLocation());
+			if (bulletFired) lastBulletFiredMS = TimeUtils.millis();
+		}
+	}
+
+	private Vector2 fireLocation() {
+		return new Vector2(getX() + getWidth() / 2, getY() + getHeight());
 	}
 
 
