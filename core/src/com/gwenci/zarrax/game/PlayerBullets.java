@@ -1,8 +1,6 @@
 package com.gwenci.zarrax.game;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gwenci.zarrax.Animator;
 import com.gwenci.zarrax.AudioManager;
 import com.gwenci.zarrax.TextureManager;
@@ -24,11 +22,11 @@ public class PlayerBullets extends BulletManager {
 			AudioManager.getInstance().get("assets/sfx/player_fire.wav")
 	);
 
-	PlayerBullets(Viewport vp, SpriteBatch batch) {
+	public PlayerBullets() {
 		super(MAX_BULLETS);
-//		super.setStage(vp,batch);
 	}
 
+	// TODO - the timing functionality should be in the playerActor class
 	public void fireBullet(Vector2 location) {
 		if (lastMs + MS_BETWEEN_BULLETS < System.currentTimeMillis()) {
 			BulletBaseActor bullet = getNextBullet();

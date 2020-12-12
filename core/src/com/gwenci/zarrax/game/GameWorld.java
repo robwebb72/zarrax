@@ -17,7 +17,7 @@ public class GameWorld {
 
 	public void initialise() {
 
-		playerBullets = new PlayerBullets(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
+		playerBullets = new PlayerBullets();
 		playerActor = new PlayerActor(playerBullets, Zarrax.getViewPort(), Zarrax.getSpriteBatch());
 
 		alienBullets = new BulletManager(MAX_ALIEN_BULLETS);
