@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gwenci.zarrax.BaseActor;
 import com.gwenci.zarrax.TextureManager;
 import com.gwenci.zarrax.game.PlayerBullets;
+import com.gwenci.zarrax.game.Renderer;
 import com.gwenci.zarrax.particle_system.*;
 
 public class PlayerActor extends BaseActor {
@@ -35,6 +37,10 @@ public class PlayerActor extends BaseActor {
 
 	private final Stage stage;
 	private boolean isAlive = false;
+
+	private final Rectangle generalBoundingBox = new Rectangle();
+	private final Rectangle smallUpperBoundingBox = new Rectangle();
+	private final Rectangle smallLowerBoundingBox = new Rectangle();
 
 	class EngineLocation implements ILocation {
 		Vector2 offset;
@@ -104,9 +110,38 @@ public class PlayerActor extends BaseActor {
 		super.moveBy(dx, dy);
 
 		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) fireBullet();
-		updateEngineOffsets(direction);
-		shieldEmitter.setOn(shield);
 		checkBounds();
+		updateEngineOffsets(direction);
+		updateBoundingBoxes(direction);
+		shieldEmitter.setOn(shield);
+	}
+
+	private void updateBoundingBoxes(Direction direction) {
+		generalBoundingBox.setPosition(this.getX(), this.getY());
+		switch(direction) {
+			case LEFT:
+				smallUpperBoundingBox.setPosition(this.getX()+10, this.getY()+14);
+				smallUpperBoundingBox.setSize(8.0f,16.0f);
+
+				smallLowerBoundingBox.setPosition(this.getX()+2, this.getY()+5);
+				smallLowerBoundingBox.setSize(26.0f,9.0f);
+				break;
+			case RIGHT:
+				smallUpperBoundingBox.setPosition(this.getX()+12, this.getY()+14);
+				smallUpperBoundingBox.setSize(8.0f,16.0f);
+
+				smallLowerBoundingBox.setPosition(this.getX()+2, this.getY()+5);
+				smallLowerBoundingBox.setSize(26.0f,9.0f);
+				break;
+			case STRAIGHT:
+				smallUpperBoundingBox.setPosition(this.getX()+10, this.getY()+14);
+				smallUpperBoundingBox.setSize(9.0f,16.0f);
+
+				smallLowerBoundingBox.setPosition(this.getX(), this.getY()+5);
+				smallLowerBoundingBox.setSize(30.0f,9.0f);
+				break;
+		}
+
 	}
 
 
@@ -188,6 +223,11 @@ public class PlayerActor extends BaseActor {
 		rightEngine.setOn(on);
 		leftEngine.setOn(on);
 		shieldEmitter.setOn(on);
+	}
+
+	public boolean checkCollision(Rectangle otherBoundingBox) {
+		if(!generalBoundingBox.overlaps((otherBoundingBox))) return false;
+		return smallUpperBoundingBox.overlaps(otherBoundingBox) || smallLowerBoundingBox.overlaps(otherBoundingBox);
 	}
 
 	enum Direction {
