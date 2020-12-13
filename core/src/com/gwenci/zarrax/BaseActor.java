@@ -11,7 +11,7 @@ public abstract class BaseActor extends Actor implements ILocation {
 
 	public static final int SCREEN_WIDTH = Gdx.graphics.getWidth();
 	public static final int SCREEN_HEIGHT = Gdx.graphics.getHeight();
-	private Rectangle boundingRect = new Rectangle();
+	public Rectangle boundingRect = new Rectangle();
 
 	@Override
 	public void act(float delta) {  // note: delta is time in seconds, not milliseconds
@@ -46,6 +46,10 @@ public abstract class BaseActor extends Actor implements ILocation {
 
 	public boolean collidesWith(BaseActor other) {
 		return this.boundingRect.overlaps(other.boundingRect);
+	}
+
+	public boolean collidesWith(Rectangle other) {
+		return this.boundingRect.overlaps(other);
 	}
 
 	public Vector2 location() {

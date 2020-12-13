@@ -74,14 +74,6 @@ public class BulletBaseActor extends BaseActor {
 		super.setBoundingRect(texture.getWidth(), texture.getHeight());
 	}
 
-	@Override
-	public void draw(Batch batch, float parentAlpha) {
-		if (this.inPlay) {
-			super.draw(batch, parentAlpha);
-			batch.draw(texture, getX(), getY(), animator.getCurrentFrame() *  (int) getWidth(), 0, (int) getWidth(),
-					(int) getHeight() );
-		}
-	}
 
 	public void draw(Batch batch) {
 		batch.draw(texture, getX(), getY(), animator.getCurrentFrame() *  (int) getWidth(), 0, (int) getWidth(),
@@ -103,7 +95,7 @@ public class BulletBaseActor extends BaseActor {
 		return inPlay;
 	}
 
-	void removeFromPlay() {inPlay = false; }
+	public void removeFromPlay() {inPlay = false; }
 }
 
 

@@ -1,4 +1,4 @@
-package com.gwenci.zarrax.game;
+package com.gwenci.zarrax.game.aliens;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
@@ -7,7 +7,7 @@ import com.gwenci.zarrax.Animator;
 import com.gwenci.zarrax.AudioManager;
 import com.gwenci.zarrax.TextureManager;
 import com.gwenci.zarrax.game.bullets.BulletType;
-import com.gwenci.zarrax.particle_system.AlienParticleExplosion01;
+import com.gwenci.zarrax.particle_system.ParticleEffectAlienExplosion01;
 import com.gwenci.zarrax.particle_system.EmitterType;
 import com.gwenci.zarrax.particle_system.ParticleColours;
 
@@ -46,6 +46,6 @@ public class AlienActor2 extends BaseAlien {
 
 	@Override
 	public EmitterType particleExplosion() {
-		return new AlienParticleExplosion01(ParticleColours.MAGENTA);
+		return new ParticleEffectAlienExplosion01(ParticleColours.MAGENTA);
 	}
 }

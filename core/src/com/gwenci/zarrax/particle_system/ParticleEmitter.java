@@ -51,6 +51,11 @@ public class ParticleEmitter {
 
 	void initialize(ILocation location) {
 		this.location = location;
+		resetParticles();
+	}
+
+
+	private void resetParticles() {
 		particleRange = 0;
 		for (ParticleType pt : particleTypes) particleRange += pt.particleCount;
 
@@ -60,7 +65,6 @@ public class ParticleEmitter {
 		}
 		isActive = true;
 	}
-
 
 	private ParticleType getParticleType() {
 		int rangeCounter = MathUtils.random(particleRange);
@@ -73,7 +77,13 @@ public class ParticleEmitter {
 	}
 
 	public void setOn(boolean onState) {
-		isOn= onState;
+		this.isOn= onState;
+		if(this.isOn) {
+			resetParticles();
+		}
+//		else {
+//			particles.forEach(Particle::reset);
+//		}
 	}
 
 	boolean isAvailable() {
