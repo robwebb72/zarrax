@@ -43,11 +43,25 @@ public class GameWorld {
 
 	void collisionAliensWithPlayerBullets(GameScreen gs) {
 		aliens.handleCollisions(playerBullets.getActiveBullets(), gs.playerScore);
+		//TODO: handle collisions
+		// aliens and players bullets
+		// player and aliens' bullets
+		// player and aliens
+		// player and power ups
 
 	}
 
 	void collisionPlayerWithAlienBullets(GameScreen gs) {
-
+		alienBullets.getActiveBullets().forEach(bullet -> {
+			if (playerActor.collidesWithShield(bullet)) {
+				bullet.removeFromPlay();
+				// TODO: shield hit sound
+				// TODO: shield hit effect
+			} else if (playerActor.collidesWith(bullet)) {
+				// TODO: player is dead!
+				playerActor.setIsAlive(false);
+			}
+		});
 	}
 
 }

@@ -12,8 +12,8 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gwenci.zarrax.BaseActor;
 import com.gwenci.zarrax.TextureManager;
+import com.gwenci.zarrax.game.BulletBaseActor;
 import com.gwenci.zarrax.game.PlayerBullets;
-import com.gwenci.zarrax.game.Renderer;
 import com.gwenci.zarrax.particle_system.*;
 
 public class PlayerActor extends BaseActor {
@@ -25,12 +25,13 @@ public class PlayerActor extends BaseActor {
 	private static final float SPEED = 200f;  //pixels per second
 	private static final int BULLETS_PER_SECOND = 8;
 	private static final int MS_BETWEEN_BULLETS = 1000/BULLETS_PER_SECOND;
+	private static final float SHIELD_RADIUS = 30.0f;
 
 	private final Texture playerTexture;
 	private Direction direction;
 	private final PlayerBullets bullets;
-	private final EngineLocation leftEngineLoc, rightEngineLoc;
-	private final ParticleEmitter shieldEmitter, leftEngine, rightEngine;
+	private EngineLocation leftEngineLoc, rightEngineLoc;
+	private ParticleEmitter shieldEmitter, leftEngine, rightEngine;
 	private boolean shield;
 	private float shieldTimer = 0.0f;
 	private long lastBulletFiredMS = 0;
@@ -72,15 +73,21 @@ public class PlayerActor extends BaseActor {
 		this.bullets = bullets;
 		this.stage = new Stage(vp,batch);
 		stage.addActor(this);
-		leftEngineLoc = new EngineLocation(new Vector2(10.0f,2.0f));
-		leftEngine = ParticleFoundry.getInstance().newEmitter(leftEngineLoc,new ParticleEffectJetPlume());
+		generalBoundingBox.setSize(30,30);
+		initialiseParticleEffects();
+	}
 
+	private void initialiseParticleEffects() {
+		leftEngineLoc = new EngineLocation(new Vector2(10.0f,2.0f));
 		rightEngineLoc = new EngineLocation(new Vector2(15.0f,2.0f));
+
+		leftEngine = ParticleFoundry.getInstance().newEmitter(leftEngineLoc,new ParticleEffectJetPlume());
 		rightEngine = ParticleFoundry.getInstance().newEmitter(rightEngineLoc,new ParticleEffectJetPlume());
 
-		shieldEmitter = ParticleFoundry.getInstance().newEmitter(this,new ParticleEffectPlayerShield());
+		shieldEmitter = ParticleFoundry.getInstance().newEmitter(this,new ParticleEffectPlayerShield(SHIELD_RADIUS));
 		setParticleEffects(false);
 	}
+
 
 	@Override
 	public void act(float dt) {
@@ -122,26 +129,22 @@ public class PlayerActor extends BaseActor {
 			case LEFT:
 				smallUpperBoundingBox.setPosition(this.getX()+10, this.getY()+14);
 				smallUpperBoundingBox.setSize(8.0f,16.0f);
-
 				smallLowerBoundingBox.setPosition(this.getX()+2, this.getY()+5);
 				smallLowerBoundingBox.setSize(26.0f,9.0f);
 				break;
 			case RIGHT:
 				smallUpperBoundingBox.setPosition(this.getX()+12, this.getY()+14);
 				smallUpperBoundingBox.setSize(8.0f,16.0f);
-
 				smallLowerBoundingBox.setPosition(this.getX()+2, this.getY()+5);
 				smallLowerBoundingBox.setSize(26.0f,9.0f);
 				break;
 			case STRAIGHT:
 				smallUpperBoundingBox.setPosition(this.getX()+10, this.getY()+14);
 				smallUpperBoundingBox.setSize(9.0f,16.0f);
-
 				smallLowerBoundingBox.setPosition(this.getX(), this.getY()+5);
 				smallLowerBoundingBox.setSize(30.0f,9.0f);
 				break;
 		}
-
 	}
 
 
@@ -151,6 +154,7 @@ public class PlayerActor extends BaseActor {
 			if (bulletFired) lastBulletFiredMS = TimeUtils.millis();
 		}
 	}
+
 
 	private Vector2 fireLocation() {
 		return new Vector2(getX() + getWidth() / 2, getY() + getHeight());
@@ -209,6 +213,8 @@ public class PlayerActor extends BaseActor {
 	public void draw() {
 		stage.draw();
 	}
+
+
 	public void setIsAlive(boolean isAlive) {
 		this.isAlive = isAlive;
 		setParticleEffects(isAlive);
@@ -229,6 +235,19 @@ public class PlayerActor extends BaseActor {
 		if(!generalBoundingBox.overlaps((otherBoundingBox))) return false;
 		return smallUpperBoundingBox.overlaps(otherBoundingBox) || smallLowerBoundingBox.overlaps(otherBoundingBox);
 	}
+
+	public boolean collidesWithShield(BulletBaseActor bullet) {
+		if (shieldTimer<=0.0f) return false;
+		// TODO: quickly eliminate bullet from collision with shield
+		//    - do this with bounding boxes - will need a shield bounding box
+
+		return false;
+	}
+
+	public boolean collidesWith(BulletBaseActor bullet) {
+		return checkCollision(bullet.boundingRect);
+	}
+
 
 	enum Direction {
 		LEFT,
