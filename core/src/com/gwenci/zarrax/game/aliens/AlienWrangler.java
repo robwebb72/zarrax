@@ -43,9 +43,9 @@ public class AlienWrangler implements Updatable {
 		stage = new Stage(vp,batch);
 		for(int i = 0 ; i< MAX_ALIENS; i++) {
 			if(i>=30) {
-				aliens[i] = new AlienActor2(TextureManager.getInstance().get("assets/sprites/galaxian_3_1.png"));
+				aliens[i] = new AlienActor2(TextureManager.getInstance().get("assets/sprites/alien03.png"));
 			} else {
-				aliens[i] = new AlienActor1(TextureManager.getInstance().get("assets/sprites/galaxian_1_1.png"));
+				aliens[i] = new AlienActor1(TextureManager.getInstance().get("assets/sprites/alien01.png"));
 			}
 			stage.addActor(aliens[i]);
 		}

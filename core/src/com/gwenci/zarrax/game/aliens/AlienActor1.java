@@ -46,6 +46,6 @@ public class AlienActor1 extends BaseAlien {
 
 	@Override
 	public EmitterType particleExplosion() {
-		return new ParticleEffectAlienExplosion01(ParticleColours.GREEN);
+		return new ParticleEffectAlienExplosion01(ParticleColours.RED);
 	}
 }
