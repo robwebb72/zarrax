@@ -2,7 +2,6 @@ package com.gwenci.zarrax.game.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
 import com.gwenci.zarrax.AudioManager;
 import com.gwenci.zarrax.SoundSystem;
 import com.gwenci.zarrax.Updatable;
@@ -18,7 +17,6 @@ import java.util.List;
 
 public class PlayerDied extends GameState {
 
-	private static final int HALF_SCREEN_WIDTH = 672/2;
 	private final GameScreen gs;
 	private final GameWorld gameWorld;
 	private final Renderer renderer;
@@ -42,10 +40,12 @@ public class PlayerDied extends GameState {
 		// TODO: Print "Gotcha!" message
 		gameWorld.playerActor.setIsAlive(false);
 		playerDiedTimer = 1.0f;
-		Sound playerExplosion = AudioManager.getInstance().get("assets/sfx/player_expd.wav");
-		float x = gameWorld.playerActor.getPositionVector().x;
-		float pan = (x - HALF_SCREEN_WIDTH) / HALF_SCREEN_WIDTH;
-		SoundSystem.getInstance().play(playerExplosion, 1.0f, ((float) Math.random() * 0.6f) + 0.7f, pan);
+		SoundSystem.getInstance().play(
+				AudioManager.getInstance().get("assets/sfx/player_expd.wav"),
+				gameWorld.playerActor,
+				1.0f,
+				0.3f
+		);
 		ParticleFoundry.getInstance().newEmitter(gameWorld.playerActor, new ParticleEffectPlayerExplosion());
 	}
 
