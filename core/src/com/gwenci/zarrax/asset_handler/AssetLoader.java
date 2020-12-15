@@ -42,6 +42,9 @@ public class AssetLoader extends BaseScreen {
 		am.get("assets/sfx/player_fire.wav");
 		am.get("assets/sfx/alien_fire_1.wav");
 		am.get("assets/sfx/alien_fire_2.wav");
+
+		// other sounds
+		am.get("assets/sfx/shield_hit.wav");
 	}
 
 	private void loadFonts() {

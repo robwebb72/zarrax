@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -42,6 +44,8 @@ public class PlayerActor extends BaseActor {
 	private final Rectangle generalBoundingBox = new Rectangle();
 	private final Rectangle smallUpperBoundingBox = new Rectangle();
 	private final Rectangle smallLowerBoundingBox = new Rectangle();
+	private final Rectangle shieldBoundingBox = new Rectangle();
+	private final Circle shieldCircle = new Circle();
 
 	class EngineLocation implements ILocation {
 		Vector2 offset;
@@ -74,6 +78,8 @@ public class PlayerActor extends BaseActor {
 		this.stage = new Stage(vp,batch);
 		stage.addActor(this);
 		generalBoundingBox.setSize(30,30);
+		shieldBoundingBox.setSize(SHIELD_RADIUS * 2.0f, SHIELD_RADIUS * 2.0f);
+		shieldCircle.setRadius(SHIELD_RADIUS);
 		initialiseParticleEffects();
 	}
 
@@ -117,6 +123,9 @@ public class PlayerActor extends BaseActor {
 		super.moveBy(dx, dy);
 
 		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) fireBullet();
+
+		shieldCircle.setPosition(location());
+		shieldBoundingBox.setPosition(location().x - SHIELD_RADIUS, location().y-SHIELD_RADIUS);
 		checkBounds();
 		updateEngineOffsets(direction);
 		updateBoundingBoxes(direction);
@@ -238,10 +247,11 @@ public class PlayerActor extends BaseActor {
 
 	public boolean collidesWithShield(BulletBaseActor bullet) {
 		if (shieldTimer<=0.0f) return false;
-		// TODO: quickly eliminate bullet from collision with shield
-		//    - do this with bounding boxes - will need a shield bounding box
-
-		return false;
+		if (!shieldBoundingBox.overlaps(bullet.boundingRect)) return false;
+		return Intersector.overlaps(shieldCircle,bullet.boundingRect);
+		// TODO: need to roughly work out the point of impact to create particle effect at this point
+		//       will need point of impact (roughly) and a vector from player's centre to point of impact (for direction
+		//       of particles)
 	}
 
 	public boolean collidesWith(BulletBaseActor bullet) {

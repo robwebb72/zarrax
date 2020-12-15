@@ -1,5 +1,7 @@
 package com.gwenci.zarrax.game;
 
+import com.gwenci.zarrax.AudioManager;
+import com.gwenci.zarrax.SoundSystem;
 import com.gwenci.zarrax.Zarrax;
 import com.gwenci.zarrax.game.aliens.AlienWrangler;
 import com.gwenci.zarrax.game.player.PlayerActor;
@@ -8,6 +10,7 @@ public class GameWorld {
 
 	private static final int MAX_ALIEN_BULLETS = 250;
 	private static final int SCREEN_WIDTH = 672;
+	private static final int HALF_SCREEN_WIDTH = SCREEN_WIDTH / 2;
 
 	public PlayerActor playerActor;	// TODO - create a player wrangler - but outside of this class
 	public PlayerBullets playerBullets;
@@ -30,7 +33,7 @@ public class GameWorld {
 
 	public void initialisePlayer() {
 		if (!playerActor.isAlive()) {
-			playerActor.setPosition(SCREEN_WIDTH / 2.0f - 16f, 25f);
+			playerActor.setPosition(HALF_SCREEN_WIDTH - 16f, 25f);
 			playerActor.setIsAlive(true);
 			playerActor.setShieldsOn(3.0f);
 		}
@@ -55,6 +58,13 @@ public class GameWorld {
 		alienBullets.getActiveBullets().forEach(bullet -> {
 			if (playerActor.collidesWithShield(bullet)) {
 				bullet.removeFromPlay();
+				SoundSystem.getInstance().play(AudioManager.getInstance().get("assets/sfx/shield_hit.wav"),
+						1.0f,
+						1.0f,
+						(playerActor.getX() - HALF_SCREEN_WIDTH) / HALF_SCREEN_WIDTH
+				);
+
+
 				// TODO: shield hit sound
 				// TODO: shield hit effect
 			} else if (playerActor.collidesWith(bullet)) {
