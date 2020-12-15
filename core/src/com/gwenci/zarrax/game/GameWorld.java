@@ -59,9 +59,9 @@ public class GameWorld {
 			if (playerActor.collidesWithShield(bullet)) {
 				bullet.removeFromPlay();
 				SoundSystem.getInstance().play(AudioManager.getInstance().get("assets/sfx/shield_hit.wav"),
+						playerActor,
 						1.0f,
-						1.0f,
-						(playerActor.getX() - HALF_SCREEN_WIDTH) / HALF_SCREEN_WIDTH
+						0.1f
 				);
 
 

@@ -1,6 +1,5 @@
 package com.gwenci.zarrax.game.aliens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -24,7 +23,6 @@ import java.util.stream.Stream;
 public class AlienWrangler implements Updatable {
 
 	private static final int MAX_ALIENS = 50;
-	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth()/2.0f;
 	private static final Sound explosionSound;
 
 	private final Stage stage;
@@ -160,14 +158,10 @@ public class AlienWrangler implements Updatable {
 		);
 	}
 
-	boolean temp = false;
 	private void killAlien(BaseAlien alien) {
-
 		alien.setState(AlienState.DEAD);
 		particleFoundry.newEmitter(alien, alien.particleExplosion());
-
-		float pan = (alien.getCentreX() - HALF_SCREEN_WIDTH)/HALF_SCREEN_WIDTH;
-		SoundSystem.getInstance().play(explosionSound,1.0f,MathUtils.random(0.7f,1.3f),pan);
+		SoundSystem.getInstance().play(explosionSound, alien, 1.0f, 0.3f);
 	}
 
 	public int noOfLiveAliens() {

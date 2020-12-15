@@ -1,6 +1,7 @@
 package com.gwenci.zarrax.particle_system;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.gwenci.zarrax.ILocation;
 import com.gwenci.zarrax.Updatable;
 
 import java.util.Arrays;

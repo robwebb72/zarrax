@@ -3,6 +3,7 @@ package com.gwenci.zarrax.particle_system;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.gwenci.zarrax.ILocation;
 import com.gwenci.zarrax.TextureManager;
 
 import java.util.ArrayList;

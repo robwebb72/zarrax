@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gwenci.zarrax.BaseActor;
+import com.gwenci.zarrax.ILocation;
 import com.gwenci.zarrax.TextureManager;
 import com.gwenci.zarrax.game.BulletBaseActor;
 import com.gwenci.zarrax.game.PlayerBullets;
