@@ -22,9 +22,10 @@ public class AssetLoader extends BaseScreen {
 		texManager.get("assets/spectrum.png");
 		texManager.get("assets/alien_bullet.png");
 		texManager.get("assets/alien_bullet2.png");
-		texManager.get("assets/sprites/galaxian_1_1.png");
-		texManager.get("assets/sprites/galaxian_2_1.png");
-		texManager.get("assets/sprites/galaxian_3_1.png");
+		texManager.get("assets/sprites/alien01.png");
+		texManager.get("assets/sprites/alien02.png");
+		texManager.get("assets/sprites/alien03.png");
+		texManager.get("assets/sprites/alien04.png");
 		texManager.get("assets/player_bullet.png");
 		texManager.get("assets/player.png");
 
@@ -35,11 +36,15 @@ public class AssetLoader extends BaseScreen {
 
 		// explosions
 		am.get("assets/sfx/alienexpl.wav");
+		am.get("assets/sfx/player_expd.wav");
 
 		// firing sounds
 		am.get("assets/sfx/player_fire.wav");
 		am.get("assets/sfx/alien_fire_1.wav");
 		am.get("assets/sfx/alien_fire_2.wav");
+
+		// other sounds
+		am.get("assets/sfx/shield_hit.wav");
 	}
 
 	private void loadFonts() {
