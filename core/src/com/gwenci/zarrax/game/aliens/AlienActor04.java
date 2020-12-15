@@ -11,27 +11,27 @@ import com.gwenci.zarrax.particle_system.ParticleEffectAlienExplosion01;
 import com.gwenci.zarrax.particle_system.EmitterType;
 import com.gwenci.zarrax.particle_system.ParticleColours;
 
-public class AlienActor2 extends BaseAlien {
+public class AlienActor04 extends BaseAlien {
 
-	public AlienActor2(Texture texture) {
-		super(texture, 3, 0.25f);
+	public AlienActor04(Texture texture) {
+		super(texture, 3, 0.2f);
+
 		bulletType = new BulletType(
 				TextureManager.getInstance().get("assets/alien_bullet2.png"),
 				new Animator(2, 0.2f),
 				350f,
 				AudioManager.getInstance().get("assets/sfx/alien_fire_2.wav")
-
 		);
 	}
 
 	@Override
 	public int getScore() {
-		return 20;
+		return 30;
 	}
 
 	@Override
 	public boolean canFire() {
-		return TimeUtils.timeSinceMillis(lastTimeFired) > 100;
+		return TimeUtils.timeSinceMillis(lastTimeFired) > 1000;
 	}
 
 	@Override
@@ -46,6 +46,6 @@ public class AlienActor2 extends BaseAlien {
 
 	@Override
 	public EmitterType particleExplosion() {
-		return new ParticleEffectAlienExplosion01(ParticleColours.MAGENTA);
+		return new ParticleEffectAlienExplosion01(ParticleColours.DULL_MAGENTA);
 	}
 }

@@ -25,6 +25,7 @@ public class AssetLoader extends BaseScreen {
 		texManager.get("assets/sprites/alien01.png");
 		texManager.get("assets/sprites/alien02.png");
 		texManager.get("assets/sprites/alien03.png");
+		texManager.get("assets/sprites/alien04.png");
 		texManager.get("assets/player_bullet.png");
 		texManager.get("assets/player.png");
 

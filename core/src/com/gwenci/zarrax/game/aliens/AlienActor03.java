@@ -11,22 +11,22 @@ import com.gwenci.zarrax.particle_system.ParticleEffectAlienExplosion01;
 import com.gwenci.zarrax.particle_system.EmitterType;
 import com.gwenci.zarrax.particle_system.ParticleColours;
 
-public class AlienActor1 extends BaseAlien {
+public class AlienActor03 extends BaseAlien {
 
-	public AlienActor1(Texture texture) {
+	public AlienActor03(Texture texture) {
 		super(texture, 3, 0.2f);
 
 		bulletType = new BulletType(
-				TextureManager.getInstance().get("assets/alien_bullet.png"),
+				TextureManager.getInstance().get("assets/alien_bullet2.png"),
 				new Animator(2, 0.2f),
-				250.0f,
-				AudioManager.getInstance().get("assets/sfx/alien_fire_1.wav")
+				350f,
+				AudioManager.getInstance().get("assets/sfx/alien_fire_2.wav")
 		);
 	}
 
 	@Override
 	public int getScore() {
-		return 10;
+		return 50;
 	}
 
 	@Override
