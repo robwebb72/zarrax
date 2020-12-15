@@ -7,6 +7,7 @@ import com.gwenci.zarrax.Animator;
 import com.gwenci.zarrax.AudioManager;
 import com.gwenci.zarrax.TextureManager;
 import com.gwenci.zarrax.game.bullets.BulletType;
+import com.gwenci.zarrax.game.bullets.BulletTypeFactory;
 import com.gwenci.zarrax.particle_system.ParticleEffectAlienExplosion01;
 import com.gwenci.zarrax.particle_system.EmitterType;
 import com.gwenci.zarrax.particle_system.ParticleColours;
@@ -16,12 +17,8 @@ public class AlienActor04 extends BaseAlien {
 	public AlienActor04(Texture texture) {
 		super(texture, 3, 0.2f);
 
-		bulletType = new BulletType(
-				TextureManager.getInstance().get("assets/alien_bullet2.png"),
-				new Animator(2, 0.2f),
-				350f,
-				AudioManager.getInstance().get("assets/sfx/alien_fire_2.wav")
-		);
+		bulletType = BulletTypeFactory.createBulletType(BulletTypeFactory.BulletTypeID.TYPE02);
+
 	}
 
 	@Override
