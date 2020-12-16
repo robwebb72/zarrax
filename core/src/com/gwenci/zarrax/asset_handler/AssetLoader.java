@@ -18,16 +18,16 @@ public class AssetLoader extends BaseScreen {
 
 	private void loadTextures() {
 		TextureManager texManager = TextureManager.getInstance();
-		texManager.get("assets/stars.png");
-		texManager.get("assets/spectrum.png");
-		texManager.get("assets/alien_bullet.png");
-		texManager.get("assets/alien_bullet2.png");
-		texManager.get("assets/sprites/alien01.png");
-		texManager.get("assets/sprites/alien02.png");
-		texManager.get("assets/sprites/alien03.png");
-		texManager.get("assets/sprites/alien04.png");
-		texManager.get("assets/player_bullet.png");
-		texManager.get("assets/player.png");
+		texManager.get("stars.png");
+		texManager.get("spectrum.png");
+		texManager.get("alien_bullet.png");
+		texManager.get("alien_bullet2.png");
+		texManager.get("sprites/alien01.png");
+		texManager.get("sprites/alien02.png");
+		texManager.get("sprites/alien03.png");
+		texManager.get("sprites/alien04.png");
+		texManager.get("player_bullet.png");
+		texManager.get("player.png");
 
 	}
 
@@ -35,16 +35,16 @@ public class AssetLoader extends BaseScreen {
 		AudioManager am = AudioManager.getInstance();
 
 		// explosions
-		am.get("assets/sfx/alienexpl.wav");
-		am.get("assets/sfx/player_expd.wav");
+		am.get("sfx/alienexpl.wav");
+		am.get("sfx/player_expd.wav");
 
 		// firing sounds
-		am.get("assets/sfx/player_fire.wav");
-		am.get("assets/sfx/alien_fire_1.wav");
-		am.get("assets/sfx/alien_fire_2.wav");
+		am.get("sfx/player_fire.wav");
+		am.get("sfx/alien_fire_1.wav");
+		am.get("sfx/alien_fire_2.wav");
 
 		// other sounds
-		am.get("assets/sfx/shield_hit.wav");
+		am.get("sfx/shield_hit.wav");
 	}
 
 	private void loadFonts() {

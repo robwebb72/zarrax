@@ -41,7 +41,7 @@ public class PlayerDied extends GameState {
 		gameWorld.playerActor.setIsAlive(false);
 		playerDiedTimer = 1.0f;
 		SoundSystem.getInstance().play(
-				AudioManager.getInstance().get("assets/sfx/player_expd.wav"),
+				AudioManager.getInstance().get("sfx/player_expd.wav"),
 				gameWorld.playerActor,
 				1.0f,
 				0.3f

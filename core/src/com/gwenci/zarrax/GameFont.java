@@ -11,7 +11,7 @@ public class GameFont {
 	BitmapFont customFont;
 	private GameFont() {
 		FreeTypeFontGenerator fontGenerator =
-				new FreeTypeFontGenerator(Gdx.files.internal("assets/PressStart2P-vaV7.ttf"));
+				new FreeTypeFontGenerator(Gdx.files.internal("PressStart2P-vaV7.ttf"));
 
 		FreeTypeFontGenerator.FreeTypeFontParameter fontParameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		fontParameters.size = 16;

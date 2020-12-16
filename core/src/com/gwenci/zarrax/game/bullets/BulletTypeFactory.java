@@ -15,17 +15,17 @@ public class BulletTypeFactory {
 		switch(type) {
 			case TYPE01:
 				return new BulletType(
-						TextureManager.getInstance().get("assets/alien_bullet.png"),
+						TextureManager.getInstance().get("alien_bullet.png"),
 						new Animator(2, 0.2f),
 						250.0f,
-						AudioManager.getInstance().get("assets/sfx/alien_fire_1.wav")
+						AudioManager.getInstance().get("sfx/alien_fire_1.wav")
 				);
 			case TYPE02:
 				return new BulletType(
-						TextureManager.getInstance().get("assets/alien_bullet2.png"),
+						TextureManager.getInstance().get("alien_bullet2.png"),
 						new Animator(2, 0.2f),
 						350f,
-						AudioManager.getInstance().get("assets/sfx/alien_fire_2.wav")
+						AudioManager.getInstance().get("sfx/alien_fire_2.wav")
 				);
 		}
 		return null;

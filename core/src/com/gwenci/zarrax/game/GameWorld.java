@@ -57,16 +57,13 @@ public class GameWorld {
 	void collisionPlayerWithAlienBullets(GameScreen gs) {
 		alienBullets.getActiveBullets().forEach(bullet -> {
 			if (playerActor.collidesWithShield(bullet)) {
-				bullet.removeFromPlay();
-				SoundSystem.getInstance().play(AudioManager.getInstance().get("assets/sfx/shield_hit.wav"),
+				SoundSystem.getInstance().play(AudioManager.getInstance().get("sfx/shield_hit.wav"),
 						playerActor,
 						1.0f,
 						0.1f
 				);
-
-
-				// TODO: shield hit sound
-				// TODO: shield hit effect
+				// TODO: shield hit particle effect
+				bullet.removeFromPlay();
 			} else if (playerActor.collidesWith(bullet)) {
 				// TODO: player is dead!
 				playerActor.setIsAlive(false);
