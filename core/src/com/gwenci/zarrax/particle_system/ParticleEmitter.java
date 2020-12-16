@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class ParticleEmitter {
 
 	private final ArrayList<Particle> particles = new ArrayList<>();
-	private final Texture texture = TextureManager.getInstance().get("assets/spectrum.png");
+	private final Texture texture = TextureManager.getInstance().get("spectrum.png");
 	ArrayList<ParticleType> particleTypes = new ArrayList<>();
 	int particleRange;
 	int nParticles;

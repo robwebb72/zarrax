@@ -69,7 +69,7 @@ public class PlayerActor extends BaseActor {
 	}
 
 	public PlayerActor(PlayerBullets bullets, Viewport vp, SpriteBatch batch) {
-		playerTexture = TextureManager.getInstance().get("assets/player.png");
+		playerTexture = TextureManager.getInstance().get("player.png");
 		int frameWidth = playerTexture.getWidth() / N_ANIM_FRAMES;
 		super.setWidth(frameWidth);
 		super.setHeight(playerTexture.getHeight());

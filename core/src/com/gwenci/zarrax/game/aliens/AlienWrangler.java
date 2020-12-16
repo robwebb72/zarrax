@@ -34,20 +34,20 @@ public class AlienWrangler implements Updatable {
 	private float chanceToFireMod = 1;
 
 	static {
-		explosionSound = AudioManager.getInstance().get("assets/sfx/alienexpl.wav");
+		explosionSound = AudioManager.getInstance().get("sfx/alienexpl.wav");
 	}
 
 	public AlienWrangler(Viewport vp, SpriteBatch batch, BulletManager alienBullets) {
 		stage = new Stage(vp,batch);
 		for(int i = 0 ; i< MAX_ALIENS; i++) {
 			if(i<20) {
-				aliens[i] = new AlienActor01(TextureManager.getInstance().get("assets/sprites/alien01.png"));
+				aliens[i] = new AlienActor01(TextureManager.getInstance().get("sprites/alien01.png"));
 			} else if(i<40) {
-				aliens[i] = new AlienActor02(TextureManager.getInstance().get("assets/sprites/alien02.png"));
+				aliens[i] = new AlienActor02(TextureManager.getInstance().get("sprites/alien02.png"));
 			} else if (i<43 || i>46) {
-				aliens[i] = new AlienActor03(TextureManager.getInstance().get("assets/sprites/alien03.png"));
+				aliens[i] = new AlienActor03(TextureManager.getInstance().get("sprites/alien03.png"));
 			} else {
-				aliens[i] = new AlienActor04(TextureManager.getInstance().get("assets/sprites/alien04.png"));
+				aliens[i] = new AlienActor04(TextureManager.getInstance().get("sprites/alien04.png"));
 			}
 			stage.addActor(aliens[i]);
 		}

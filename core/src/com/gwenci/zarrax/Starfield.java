@@ -20,7 +20,7 @@ public class Starfield implements Updatable {
 	private TextureRegion[] textures = new TextureRegion[8];
 
 	private Starfield() {
-		Texture texture = TextureManager.getInstance().get("assets/stars.png");
+		Texture texture = TextureManager.getInstance().get("stars.png");
 		for (int i = 0; i < 8; i++) {
 			textures[i] = new TextureRegion(texture, i, 0, 1, 1);
 		}

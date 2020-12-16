@@ -14,10 +14,10 @@ public class PlayerBullets extends BulletManager {
 	private long lastMs = System.currentTimeMillis();
 
 	BulletType playerBullet = new BulletType(
-			TextureManager.getInstance().get("assets/player_bullet.png"),
+			TextureManager.getInstance().get("player_bullet.png"),
 			new Animator(2, 0.05f),
 			1.0f,
-			AudioManager.getInstance().get("assets/sfx/player_fire.wav")
+			AudioManager.getInstance().get("sfx/player_fire.wav")
 	);
 
 	public PlayerBullets() {
