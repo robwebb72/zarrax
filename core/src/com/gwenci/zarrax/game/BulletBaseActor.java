@@ -73,11 +73,11 @@ public class BulletBaseActor extends BaseActor {
 	}
 
 	@Override
-	public void act(float dtInSeconds) {
+	public void act(float dt) {
 		if (this.inPlay) {
-			animator.update(dtInSeconds);
-			Vector2 temp_vec = new Vector2(delta_vec).scl(dtInSeconds);
-			super.moveBy(temp_vec.x, temp_vec.y);
+			animator.update(dt);
+			Vector2 temp_vec = new Vector2(delta_vec).scl(dt);
+			super.moveBy(temp_vec.x, temp_vec.y,dt);
 			this.inPlay = getY() > 0 && getY() < SCREEN_HEIGHT;
 		}
 	}

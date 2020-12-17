@@ -121,7 +121,7 @@ public class PlayerActor extends BaseActor {
 
 		}
 		if (Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S)) dy -= SPEED * dt;
-		super.moveBy(dx, dy);
+		super.moveBy(dx, dy, dt);
 
 		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) fireBullet();
 
