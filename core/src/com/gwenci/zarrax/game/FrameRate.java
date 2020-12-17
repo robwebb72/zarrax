@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.TimeUtils;
  *
  * @author William Hartman
  */
-class FrameRate implements Disposable{
+public class FrameRate implements Disposable{
 	private long lastTimeCounted;
 	private float sinceChange;
 	private float frameRate;
@@ -27,7 +27,7 @@ class FrameRate implements Disposable{
 		display = false;
 	}
 
-	void flipDisplay() {
+	public void flipDisplay() {
 		display = !display;
 	}
 

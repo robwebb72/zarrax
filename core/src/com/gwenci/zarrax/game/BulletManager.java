@@ -1,9 +1,6 @@
 package com.gwenci.zarrax.game;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gwenci.zarrax.Updatable;
 import com.gwenci.zarrax.game.bullets.BulletType;
 
@@ -13,7 +10,6 @@ import java.util.stream.Stream;
 public class BulletManager implements Updatable {
 
 	private final int maxBullets;
-	private Stage bulletStage;
 	private int nextBullet = 0;
 
 	BulletBaseActor[] bullets;
@@ -29,14 +25,6 @@ public class BulletManager implements Updatable {
 	}
 
 
-	void setStage(Viewport vp, SpriteBatch batch) {
-		bulletStage = new Stage(vp, batch);
-		for(int i= 0; i<maxBullets; i++) {
-			bulletStage.addActor(bullets[i]);
-		}
-	}
-
-
 	public BulletBaseActor getNextBullet() {
 		nextBullet++;
 		if (nextBullet >= maxBullets) nextBullet= 0;
@@ -44,28 +32,19 @@ public class BulletManager implements Updatable {
 	}
 
 
-	void act(float dt) {
-		bulletStage.act(dt);
-	}
-
-
-	@Override
 	public void update(float dt) {
-		act(dt);
-	}
-
-	void draw() {
-		bulletStage.draw();
+		getActiveBullets().forEach(b->b.act(dt));
 	}
 
 
-	Stream<BulletBaseActor> getActiveBullets() {
+
+	public Stream<BulletBaseActor> getActiveBullets() {
 		return Arrays.stream(bullets).filter(BulletBaseActor::isInPlay);
 	}
 
 
-	void dispose() {
-		bulletStage.dispose();
+	public void reset() {
+		getActiveBullets().forEach(BulletBaseActor::removeFromPlay);
 	}
 
 	public void fireBullet(BulletType bulletType, Vector2 location, Vector2 direction) {

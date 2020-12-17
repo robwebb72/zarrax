@@ -1,14 +1,10 @@
 package com.gwenci.zarrax.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.gwenci.zarrax.*;
-import com.gwenci.zarrax.asset_handler.AssetDisposer;
+import com.gwenci.zarrax.BaseScreen;
+import com.gwenci.zarrax.Starfield;
+import com.gwenci.zarrax.Updatable;
+import com.gwenci.zarrax.game.states.*;
 import com.gwenci.zarrax.particle_system.ParticleFoundry;
-import com.gwenci.zarrax.particle_system.PlayerExplosion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,123 +12,74 @@ import java.util.List;
 
 public class GameScreen extends BaseScreen {
 
-	private static final int MAX_ALIEN_BULLETS = 250;
-	private SpriteBatch batch = Zarrax.getSpriteBatch();
-
-	private PlayerScore playerScore;
-
-	private Starfield stars;
-	private FrameRate framerate;
-
-	private PlayerBullets playerBullets;
-	private BulletManager alienBullets;
-
-	private Stage playerStage;
-	private PlayerActor player;
-
-	private AlienWrangler aliens;
-	private ParticleFoundry particleFoundry;
-	private BitmapFont font;
+	// GUI
+	public boolean muted = false;
+	public boolean paused = false;
+	public PlayerScore playerScore;
+	public FrameRate framerate;
 
 	private List<Updatable> updatables;
+	private GameWorld gameWorld;
+	private Renderer renderer;
+
+	private StateManager stateManager;
+
 
 	@Override
 	public void initialize() {
-		stars = Starfield.getInstance();
-		playerStage = new Stage(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
-		playerBullets = new PlayerBullets(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
-		alienBullets = new BulletManager(MAX_ALIEN_BULLETS);
-		alienBullets.setStage(Zarrax.getViewPort(), Zarrax.getSpriteBatch());
-		player = new PlayerActor(playerBullets);
-		playerStage.addActor(player);
-		aliens = new AlienWrangler(Zarrax.getViewPort(), Zarrax.getSpriteBatch(),alienBullets);
+		ParticleFoundry.getInstance().resetFoundry();
 		framerate = new FrameRate();
 		framerate.setDisplay(true);
-		particleFoundry = ParticleFoundry.getInstance();
-		font = GameFont.getInstance().getFont();
 		playerScore = new PlayerScore(0.01f);  // the displayScore counts up by 1 every 0.01s up to the value of the score
 
+		gameWorld = new GameWorld();
+		gameWorld.initialise();
+		renderer = new Renderer(this, gameWorld);
 		setUpUpdatables();
+		setUpStateMachine();
 	}
 
 	private void setUpUpdatables() {
 		updatables = new ArrayList<>();
-		updatables.add(aliens);
+		// GUI
 		updatables.add(playerScore);
-		updatables.add(stars);
-		updatables.add(playerBullets);
-		updatables.add(alienBullets);
-		updatables.add(particleFoundry);
+
+		// Background
+		updatables.add(Starfield.getInstance());
+		updatables.add(ParticleFoundry.getInstance());
+
+		// GameWorld
+		updatables.add(gameWorld.playerBullets);
+		updatables.add(gameWorld.alienBullets);
 
 	}
 
-	private boolean muted = false;
-	private boolean paused = false;
+
+	private void setUpStateMachine() {
+		stateManager = new StateManager();
+		stateManager.addState(GameStateKey.LEVEL_START,new LevelStart(gameWorld, updatables));
+		stateManager.addState(GameStateKey.PLAYER_START,new PlayerStart(gameWorld));
+		stateManager.addState(GameStateKey.GAME_LOOP,new GameLoop(this, gameWorld, updatables, renderer));
+		stateManager.addState(GameStateKey.PLAYER_DIED, new PlayerDied(this, gameWorld, updatables, renderer));
+		stateManager.addState(GameStateKey.LEVEL_END, new LevelEnd(this, gameWorld,updatables,renderer));
+		stateManager.changeState(GameStateKey.LEVEL_START);
+
+	}
 
 	@Override
 	public void update(float dt) {
-
-		if (Gdx.input.isKeyPressed(Input.Keys.Z)) aliens.killAllAliens(playerScore);
-		if (Gdx.input.isKeyJustPressed(Input.Keys.F)) framerate.flipDisplay();
-		if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
-			muted = !muted;
-			SoundSystem.getInstance().setMute(muted);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-			this.dispose();
-
-			Zarrax.setActiveScreen(new AssetDisposer());
-		}
-
-		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-			paused = !paused;
-		}
-
-		// TEMPORARY HACK TO "FAKE" PLAYER EXPLOSION
-		if(Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-			particleFoundry.newEmitter(player, new PlayerExplosion());
-		}
-		if(aliens.noOfLiveAliens()==0)  {
-			dispose();
-			ParticleFoundry.getInstance().resetFoundry();
-			Zarrax.setActiveScreen(new GameScreen());
-			return;
-		}
-		if(!paused) {
-			player.act(dt);
-
-			updatables.forEach(update -> update.update(dt));
-			aliens.handleCollisions(playerBullets.getActiveBullets(), playerScore);
-		}
 		framerate.update();
+		stateManager.getCurrentState().update(dt);
 	}
 
 	@Override
 	public void render() {
-		batch.begin();
-		stars.render(batch);
-		framerate.render(batch);
-		particleFoundry.render(batch);
-		font.draw(batch, String.format("%08d",playerScore.getDisplayScore()) , 275, 768- 3);
-		if(muted) font.draw(batch, "muted" , 570, 43);
-		if(paused) font.draw(batch, "paused" , 300, 400);
-	//	font.draw(batch,"hi 00000700" , 4, 768- 3);
-		batch.end();
-		playerBullets.draw();
-		alienBullets.draw();
-		playerStage.draw();
-		aliens.draw();
+		stateManager.getCurrentState().render();
 	}
 
 	@Override
-	public void resize(int width, int height) {
-
-	}
+	public void resize(int width, int height) {	}
 
 	@Override
-	public void dispose() {
-		playerBullets.dispose();
-
-	}
+	public void dispose() {	}
 }
-

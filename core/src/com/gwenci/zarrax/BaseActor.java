@@ -5,13 +5,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.gwenci.zarrax.particle_system.ILocation;
 
 public abstract class BaseActor extends Actor implements ILocation {
 
 	public static final int SCREEN_WIDTH = Gdx.graphics.getWidth();
 	public static final int SCREEN_HEIGHT = Gdx.graphics.getHeight();
-	private Rectangle boundingRect = new Rectangle();
+	public Rectangle boundingRect = new Rectangle();
 
 	@Override
 	public void act(float delta) {  // note: delta is time in seconds, not milliseconds
@@ -46,6 +45,10 @@ public abstract class BaseActor extends Actor implements ILocation {
 
 	public boolean collidesWith(BaseActor other) {
 		return this.boundingRect.overlaps(other.boundingRect);
+	}
+
+	public boolean collidesWith(Rectangle other) {
+		return this.boundingRect.overlaps(other);
 	}
 
 	public Vector2 location() {

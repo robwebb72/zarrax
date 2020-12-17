@@ -20,6 +20,10 @@ class ParticleFunctionLibrary {
 
 	static final BiFunction<Float, Integer, Integer> ALIEN_EXP_SIZE_1 = (time_pc, size) -> (time_pc < 0.25f) ? size / 2 : size;
 
+
+	static final Function<Float, Supplier<Vector2>> CIRCULAR_UNIT_VECTOR = size ->
+			() -> new Vector2().set(0.0f, size).rotate(MathUtils.random(360.0f));
+
 	static final Function<Float, Vector2> RANDOM_CIRCULAR_UNIT_VECTOR = speed ->
 			new Vector2().set(0.0f, MathUtils.random(speed * 0.01f, speed)).rotate(MathUtils.random(360.0f));
 

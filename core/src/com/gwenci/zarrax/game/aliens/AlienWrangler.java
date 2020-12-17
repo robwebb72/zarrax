@@ -1,6 +1,5 @@
-package com.gwenci.zarrax.game;
+package com.gwenci.zarrax.game.aliens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -11,6 +10,9 @@ import com.gwenci.zarrax.AudioManager;
 import com.gwenci.zarrax.SoundSystem;
 import com.gwenci.zarrax.TextureManager;
 import com.gwenci.zarrax.Updatable;
+import com.gwenci.zarrax.game.BulletBaseActor;
+import com.gwenci.zarrax.game.BulletManager;
+import com.gwenci.zarrax.game.PlayerScore;
 import com.gwenci.zarrax.particle_system.ParticleFoundry;
 
 import java.util.Arrays;
@@ -18,10 +20,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-class AlienWrangler implements Updatable {
+public class AlienWrangler implements Updatable {
 
 	private static final int MAX_ALIENS = 50;
-	private static final float HALF_SCREEN_WIDTH = Gdx.graphics.getWidth()/2.0f;
 	private static final Sound explosionSound;
 
 	private final Stage stage;
@@ -33,16 +34,20 @@ class AlienWrangler implements Updatable {
 	private float chanceToFireMod = 1;
 
 	static {
-		explosionSound = AudioManager.getInstance().get("assets/sfx/alienexpl.wav");
+		explosionSound = AudioManager.getInstance().get("sfx/alienexpl.wav");
 	}
 
-	AlienWrangler(Viewport vp, SpriteBatch batch, BulletManager alienBullets) {
+	public AlienWrangler(Viewport vp, SpriteBatch batch, BulletManager alienBullets) {
 		stage = new Stage(vp,batch);
 		for(int i = 0 ; i< MAX_ALIENS; i++) {
-			if(i>=30) {
-				aliens[i] = new AlienActor2(TextureManager.getInstance().get("assets/sprites/galaxian_3_1.png"));
+			if(i<20) {
+				aliens[i] = new AlienActor01(TextureManager.getInstance().get("sprites/alien01.png"));
+			} else if(i<40) {
+				aliens[i] = new AlienActor02(TextureManager.getInstance().get("sprites/alien02.png"));
+			} else if (i<43 || i>46) {
+				aliens[i] = new AlienActor03(TextureManager.getInstance().get("sprites/alien03.png"));
 			} else {
-				aliens[i] = new AlienActor1(TextureManager.getInstance().get("assets/sprites/galaxian_1_1.png"));
+				aliens[i] = new AlienActor04(TextureManager.getInstance().get("sprites/alien04.png"));
 			}
 			stage.addActor(aliens[i]);
 		}
@@ -101,7 +106,7 @@ class AlienWrangler implements Updatable {
 	}
 
 
-	void draw() {
+	public void draw() {
 		stage.draw();
 	}
 
@@ -131,7 +136,7 @@ class AlienWrangler implements Updatable {
 	}
 
 
-	void handleCollisions(Stream<BulletBaseActor> bullets, PlayerScore score) {
+	public void handleCollisions(Stream<BulletBaseActor> bullets, PlayerScore score) {
 		List<BulletBaseActor> bulletsList= bullets.collect(Collectors.toList());
 		LiveAliens().forEach(
 				alien -> {
@@ -147,20 +152,16 @@ class AlienWrangler implements Updatable {
 	}
 
 
-	void killAllAliens(PlayerScore score) {
+	public void killAllAliens(PlayerScore score) {
 		LiveAliens().forEach(
 				alien -> {killAlien(alien); score.addScore(alien.getScore());}
 		);
 	}
 
-	boolean temp = false;
 	private void killAlien(BaseAlien alien) {
-
 		alien.setState(AlienState.DEAD);
 		particleFoundry.newEmitter(alien, alien.particleExplosion());
-
-		float pan = (alien.getCentreX() - HALF_SCREEN_WIDTH)/HALF_SCREEN_WIDTH;
-		SoundSystem.getInstance().play(explosionSound,1.0f,MathUtils.random(0.7f,1.3f),pan);
+		SoundSystem.getInstance().play(explosionSound, alien, 1.0f, 0.3f);
 	}
 
 	public int noOfLiveAliens() {

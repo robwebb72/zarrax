@@ -3,6 +3,7 @@ package com.gwenci.zarrax.particle_system;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.gwenci.zarrax.ILocation;
 import com.gwenci.zarrax.TextureManager;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 public class ParticleEmitter {
 
 	private final ArrayList<Particle> particles = new ArrayList<>();
-	private final Texture texture = TextureManager.getInstance().get("assets/spectrum.png");
+	private final Texture texture = TextureManager.getInstance().get("spectrum.png");
 	ArrayList<ParticleType> particleTypes = new ArrayList<>();
 	int particleRange;
 	int nParticles;
@@ -51,6 +52,11 @@ public class ParticleEmitter {
 
 	void initialize(ILocation location) {
 		this.location = location;
+		resetParticles();
+	}
+
+
+	private void resetParticles() {
 		particleRange = 0;
 		for (ParticleType pt : particleTypes) particleRange += pt.particleCount;
 
@@ -60,7 +66,6 @@ public class ParticleEmitter {
 		}
 		isActive = true;
 	}
-
 
 	private ParticleType getParticleType() {
 		int rangeCounter = MathUtils.random(particleRange);
@@ -73,7 +78,13 @@ public class ParticleEmitter {
 	}
 
 	public void setOn(boolean onState) {
-		isOn= onState;
+		this.isOn= onState;
+		if(this.isOn) {
+			resetParticles();
+		}
+//		else {
+//			particles.forEach(Particle::reset);
+//		}
 	}
 
 	boolean isAvailable() {

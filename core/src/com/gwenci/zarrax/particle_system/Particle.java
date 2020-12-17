@@ -24,7 +24,7 @@ class Particle {
 	void initialise(Vector2 location, ParticleType pt, Texture texture) {
 		this.lifeInSeconds = pt.lifeTime.get();
 		this.remainingLife = lifeInSeconds;
-		this.position.set(location).add(pt.offset);
+		this.position.set(location).add(pt.offset).add(pt.offsetFunc.get());
 		this.velocity.set(pt.moveFunc.get());
 		this.texture = texture;        // must be declared BEFORE setColour is used
 		this.colourFunc = pt.colourFunc;

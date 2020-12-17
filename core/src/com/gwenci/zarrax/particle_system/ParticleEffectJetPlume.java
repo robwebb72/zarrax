@@ -2,9 +2,9 @@ package com.gwenci.zarrax.particle_system;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class JetPlumeParticles extends EmitterType {
+public class ParticleEffectJetPlume extends EmitterType {
 
-	public JetPlumeParticles() {
+	public ParticleEffectJetPlume() {
 		particleTypes.clear();
 
 		nParticles = 50;
@@ -15,8 +15,8 @@ public class JetPlumeParticles extends EmitterType {
 				time_pc -> ParticleColours.YELLOW,
 				time_pc -> 2,
 				ParticleFunctionLibrary.PLUME_MOVE_VECTOR.apply(375.0f),
-				new Vector2(1.0f,
-						0.0f)
+				() -> new Vector2(0.0f, 0.0f),
+				new Vector2(1.0f, 0.0f)
 		));
 
 		particleTypes.add (new ParticleType(
@@ -25,8 +25,8 @@ public class JetPlumeParticles extends EmitterType {
 				time_pc -> ParticleColours.RED,
 				time_pc ->(time_pc < 0.9f) ? 2 : 1,
 				ParticleFunctionLibrary.PLUME_MOVE_VECTOR.apply(750.0f),
-				new Vector2(1.0f,
-						0.0f)
+				() -> new Vector2(0.0f, 0.0f),
+				new Vector2(1.0f,0.0f)
 		));
 
 		particleTypes.add (new ParticleType(
@@ -35,8 +35,8 @@ public class JetPlumeParticles extends EmitterType {
 				time_pc -> ParticleColours.RED,
 				time_pc -> 2,
 				ParticleFunctionLibrary.PLUME_MOVE_VECTOR.apply(300.0f),
-				new Vector2(0.0f,
-						0.0f)
+				() -> new Vector2(0.0f, 0.0f),
+				new Vector2(0.0f, 0.0f)
 		));
 
 		particleTypes.add (new ParticleType(
@@ -45,8 +45,8 @@ public class JetPlumeParticles extends EmitterType {
 				time_pc -> ParticleColours.RED,
 				time_pc -> 2,
 				ParticleFunctionLibrary.PLUME_MOVE_VECTOR.apply(300.0f),
-				new Vector2(3.0f,
-						0.0f)
+				() -> new Vector2(0.0f, 0.0f),
+				new Vector2(3.0f, 0.0f)
 		));
 
 	}
