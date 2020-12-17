@@ -51,16 +51,20 @@ abstract class BaseAlien extends BaseActor {
 		 return getY() + getHeight()/2.0f;
 	 }
 
-
 	boolean isAlive() {
 		return state == AlienState.ALIVE;
 	 }
+
+	public void moveTo(float x, float y, float dt) {
+		super.moveBy(x-getX(), y-getY(), dt);
+	}
 
 
 	public void act(float dt) {
 		if (state != AlienState.ALIVE ) return;
 		animator.update(dt);
 		super.act(dt);
+		super.update(dt);
 	}
 
 

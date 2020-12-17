@@ -79,7 +79,8 @@ public class AlienWrangler implements Updatable {
 
 		for( int i= 0; i< MAX_ALIENS; i++) {
 			if(!aliens[i].isAlive()) continue;
-			aliens[i].setPosition(100 + swarmXPos * 30 + (i % 10) * 45 , aliens[i].getY());
+//			aliens[i].setPosition(100 + swarmXPos * 30 + (i % 10) * 45 , aliens[i].getY());
+			aliens[i].moveTo(100 + swarmXPos * 30 + (i % 10) * 45 , aliens[i].getY(), dt);
 		}
 
 		firing();
